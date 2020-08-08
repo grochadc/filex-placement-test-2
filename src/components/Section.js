@@ -6,6 +6,7 @@ const generateCode = (level) => {
   let str = Math.random().toString(36).substring(7);
   return str.substr(0, 3) + level + str.substr(3)
 }
+const replaceAt = (arr, index, value) => [...arr.slice(0,index), value, ...arr.slice(index+1)]
 
 const Section = ({currentSection, handleNext, handleGrade, handleGiveUp}) =>
 {
@@ -14,25 +15,17 @@ const Section = ({currentSection, handleNext, handleGrade, handleGiveUp}) =>
   const [disableButton, setDisableButton] = useState(true);
   const [showResult, setShowResult] = useState(false);
   const [resetOptions, setResetOptions] = useState(false);
-  let pass = grade > questions.length/2;
+  const [answers, setAnswers] = useState((new Array(questions.length)).fill(0))
+  const newGrade = answers.reduce((acc, curr) => acc + curr );
+  let pass = newGrade > questions.length/2;
   return (
     <div>
     <h2>Seccion {currentSection + 1}</h2>
-      {questions.map((question, currentSection) => {
+      {questions.map((question, index) => {
         return (
           <Question
+            handleSelection={(correct) => setAnswers(replaceAt(answers, index, correct ? 1 : 0))}
             questionObj={question}
-            handleSelection={(selection, previousSelection) => {
-              if(selection) {
-                setGrade(grade + 1)
-              } else if(!selection){
-                if(!previousSelection){ //do nothingif last seleciton was false
-                  return;
-                } else if(previousSelection){
-                  setGrade(grade - 1);
-                }
-              }
-            } }
             resetOptions={resetOptions} />
         )
       })}
@@ -47,13 +40,14 @@ const Section = ({currentSection, handleNext, handleGrade, handleGiveUp}) =>
       onClick={() => {
         handleNext();
         setGrade(0);
+        setAnswers((new Array(questions.length)).fill(0))
         setDisableButton(true);
         setShowResult(false);
         setResetOptions(true);
         window.scrollTo(0,0);
       }
     }>Siguiente</button>
-    <div style={{position: "fixed", top: "5px", left:"500px"}}><strong>Calificacion:</strong> {grade} / {questions.length}<br /> <em>{pass ? "Pass" : "Fail"}</em></div>
+  <div style={{position: "fixed", top: "5px", left:"500px"}}><strong>Calificacion:</strong> {newGrade} / {questions.length}<br /> <em>{pass ? "Pass" : "Fail"}</em></div>
     </div>
   );
 }

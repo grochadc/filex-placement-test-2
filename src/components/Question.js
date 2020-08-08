@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from "react";
 
 
-const Question = ({questionObj, handleSelection, resetOptions}) => {
+const Question = ({questionObj, resetOptions, handleSelection}) => {
   const [checkedOption, setCheckedOption] = useState();
-  const [previousSelection, setPreviousSelection] = useState();
-  useEffect(() => setCheckedOption(), [resetOptions])
+  const [previousSelection, setPreviousSelection] = useState("none");
+  useEffect(() => setCheckedOption(), [questionObj])
   return (
   <div>
     <ul>
       <form onChange={(event) => {
           let currentIndex = parseInt(event.target.name)
           setCheckedOption(currentIndex)
-          handleSelection(questionObj.options[currentIndex].correct, previousSelection);
+          handleSelection(questionObj.options[currentIndex].correct)
           setPreviousSelection(questionObj.options[currentIndex].correct)
         } }>
     {questionObj.title}

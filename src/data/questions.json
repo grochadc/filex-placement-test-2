@@ -497,9 +497,9 @@
         {
           "title": "Basketball is _____ soccer.",
           "options": [
-            { "text": "popular as ", "correct": true },
+            { "text": "popular as ", "correct": false },
             { "text": "not as popular", "correct": false },
-            { "text": "not as popular as", "correct": false },
+            { "text": "not as popular as", "correct": true },
             { "text": "not as popular than", "correct": false }
           ]
         },
@@ -796,7 +796,7 @@
             { "text": "she want coffee", "correct": false },
             { "text": "she doesn't want coffe", "correct": false },
             { "text": "she wants coffee", "correct": false },
-            { "text": "she didn't want coffee", "correct": false }
+            { "text": "she didn't want coffee", "correct": true }
           ]
         },
         {
