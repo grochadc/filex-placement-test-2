@@ -1,9 +1,6 @@
 import React, {useState} from "react";
 import Section from "./components/Section"
 import Result from "./components/Result"
-import test from "./data/questions.json";
-
-let {questions} = test.sections[0]
 
 function App() {
   const [currentSection, setCurrentSection] = useState(0)
