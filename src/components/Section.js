@@ -33,20 +33,24 @@ const Section = ({currentSection, handleNext, handleGrade, handleGiveUp}) =>
       <button onClick={() => {
         setDisableButton(!pass);
         setShowResult(true);
-      }}>Calificar</button>{showResult ? pass ? "Pasaste esta seccion! Haz click en siguiente" : "Fallaste esta seccion. Haz click en rendirme." : null }<br />
-      <button onClick={() => handleGiveUp(generateCode(currentSection + 1))}>Rendirme</button>
+      }}>Calificar</button>
+
+      {showResult ? pass ? "Pasaste esta seccion! Haz click en siguiente" : "Fallaste esta seccion. Haz click en rendirme." : null }<br />
+    <button onClick={() => handleGiveUp(generateCode(currentSection + 1))}>Terminar Examen</button>
+      { !(currentSection + 1 == test.sections.length) ? //last section?
       <button
-      disabled={disableButton}
-      onClick={() => {
-        handleNext();
-        setGrade(0);
-        setAnswers((new Array(questions.length)).fill(0))
-        setDisableButton(true);
-        setShowResult(false);
-        setResetOptions(true);
-        window.scrollTo(0,0);
+          disabled={disableButton}
+          onClick={() => {
+            handleNext();
+            setGrade(0);
+            setAnswers((new Array(questions.length)).fill(0))
+            setDisableButton(true);
+            setShowResult(false);
+            setResetOptions(true);
+            window.scrollTo(0,0);
+          }
+        }>Siguiente</button> : null
       }
-    }>Siguiente</button>
   <div style={{position: "fixed", top: "5px", left:"500px"}}><strong>Calificacion:</strong> {newGrade} / {questions.length}<br /> <em>{pass ? "Pass" : "Fail"}</em></div>
     </div>
   );
