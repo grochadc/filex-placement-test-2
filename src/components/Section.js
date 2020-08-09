@@ -35,7 +35,8 @@ const Section = ({currentSection, handleNext, handleGrade, handleGiveUp}) =>
         setShowResult(true);
       }}>Calificar</button>
 
-      {showResult ? pass ? "Pasaste esta seccion! Haz click en siguiente" : "Fallaste esta seccion. Haz click en rendirme." : null }<br />
+    {showResult ? pass ? "Pasaste esta seccion! Haz click en siguiente" : "Fallaste esta seccion. Haz click en terminar examen." : null }<br />
+
     <button onClick={() => handleGiveUp(generateCode(currentSection + 1))}>Terminar Examen</button>
       { !(currentSection + 1 == test.sections.length) ? //last section?
       <button

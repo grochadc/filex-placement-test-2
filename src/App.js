@@ -5,16 +5,15 @@ import Result from "./components/Result"
 function App() {
   const [currentSection, setCurrentSection] = useState(0)
   const [finished, setFinished] = useState(false);
-  const [lastSection, setLastSection] = useState(false);
   const [code, setCode] = useState('noc1ode');
   return (<div>
     {!finished ? <Section
+      handleNext={() => { setCurrentSection(currentSection + 1) }}
       currentSection={currentSection}
       handleGiveUp={(newCode) => {
         setFinished(true);
         setCode(newCode);
       }}
-      handleNext={() => { setCurrentSection(currentSection + 1) }}
        /> : null}
      {finished ? <Result code={code} /> : null}
   </div>)
