@@ -1,26 +1,24 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Question from "./Question";
 import test from "../data/questions.json"
 
-const generateCode = (level) => {
-  let str = Math.random().toString(36).substring(7);
-  return str.substr(0, 3) + level + str.substr(3)
-}
 const replaceAt = (arr, index, value) => [...arr.slice(0,index), value, ...arr.slice(index+1)]
 
-const Section = ({currentSection, handleNext, handleGrade, handleGiveUp}) =>
+const Section = ({handleNext, handleGrade, handleGiveUp, nextLevel, currentSection, setCode}) =>
 {
-  let {questions} = test.sections[currentSection]
-  const [grade, setGrade] = useState(0);
+  let {questions} = test.sections[currentSection-1]
+  useEffect(() => {
+    setCode(currentSection)
+  },[currentSection, setCode])
   const [disableButton, setDisableButton] = useState(true);
   const [showResult, setShowResult] = useState(false);
   const [resetOptions, setResetOptions] = useState(false);
   const [answers, setAnswers] = useState((new Array(questions.length)).fill(0))
-  const newGrade = answers.reduce((acc, curr) => acc + curr );
-  let pass = newGrade > questions.length/2;
+  const grade = answers.reduce((acc, curr) => acc + curr );
+  let pass = grade > questions.length/2;
   return (
     <div>
-    <h2>Seccion {currentSection + 1}</h2>
+    <h2>Seccion {currentSection}</h2>
       {questions.map((question, index) => {
         return (
           <Question
@@ -37,13 +35,12 @@ const Section = ({currentSection, handleNext, handleGrade, handleGiveUp}) =>
 
     {showResult ? pass ? "Pasaste esta seccion! Haz click en siguiente" : "Fallaste esta seccion. Haz click en terminar examen." : null }<br />
 
-    <button onClick={() => handleGiveUp(generateCode(currentSection + 1))}>Terminar Examen</button>
-      { !(currentSection + 1 == test.sections.length) ? //last section?
+    <button onClick={() => handleGiveUp(currentSection)}>Terminar Examen</button>
+      { !(currentSection === test.sections.length) ? //last section?
       <button
           disabled={disableButton}
           onClick={() => {
-            handleNext();
-            setGrade(0);
+            nextLevel()
             setAnswers((new Array(questions.length)).fill(0))
             setDisableButton(true);
             setShowResult(false);
@@ -52,7 +49,7 @@ const Section = ({currentSection, handleNext, handleGrade, handleGiveUp}) =>
           }
         }>Siguiente</button> : null
       }
-  <div style={{position: "fixed", top: "5px", left:"500px"}}><strong>Calificacion:</strong> {newGrade} / {questions.length}<br /> <em>{pass ? "Pass" : "Fail"}</em></div>
+  <div style={{position: "fixed", top: "5px", left:"500px"}}><strong>Calificacion:</strong> {grade} / {questions.length}<br /> <em>{pass ? "Pass" : "Fail"}</em></div>
     </div>
   );
 }

@@ -1027,7 +1027,7 @@
           "options": [
             { "text": "interesting / boring", "correct": false },
             { "text": "interested / bored", "correct": false },
-            { "text": "interesting / bored", "correct": false },
+            { "text": "interesting / bored", "correct": true },
             { "text": "interested / boring", "correct": false }
           ]
         },
