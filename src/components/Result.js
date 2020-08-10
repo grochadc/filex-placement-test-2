@@ -1,18 +1,27 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
-const Result = ({code}) => {
+const Result = ({ code }) => {
   const [showAlert, setShowAlert] = useState(false);
   return (
     <div>
       <h2>Nivel Filex: {code.charAt(3)}</h2>
-      <p>Tu codigo para inscribirte es:<br />
-      <input type="text" value={code} />{" "}
-      <button onClick={() => {
-        navigator.clipboard.writeText(code)
-        setShowAlert(true);
-      }}>Copiar Codigo</button> {showAlert ? "Copiado!" : null}</p>
+      Tu codigo para inscribirte es:<br />
+      <Form>
+        <Form.Control type="text" value={code} />{" "}
+        <Button
+          onClick={() => {
+            navigator.clipboard.writeText(code);
+            setShowAlert(true);
+          }}
+        >
+          Copiar Codigo
+        </Button>{" "}
+        {showAlert ? "Copiado!" : null}{" "}
+      </Form>
     </div>
-  )
-}
+  );
+};
 
 export default Result;
