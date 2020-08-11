@@ -27,6 +27,7 @@ const Question = ({
               key={index}
               name={index}
               checked={index === checkedOption ? true : false}
+              onChange={() => true}
             />
           ))}
         </Form>

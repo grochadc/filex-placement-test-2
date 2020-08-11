@@ -1,13 +1,33 @@
 import React from "react";
 import { connect } from "react-redux";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Jumbotron from "react-bootstrap/Jumbotron";
 import Section from "./components/Section";
 import Result from "./components/Result";
 import PersonalForm from "./components/PersonalForm";
-
 import { Router, Show } from "./components/Router";
-import Jumbotron from "react-bootstrap/Jumbotron";
 
-import "bootstrap/dist/css/bootstrap.min.css";
+import store from "./store";
+import firebase from "firebase/app";
+import "firebase/database";
+
+import DB_CONFIG from "./config";
+
+const app = firebase.initializeApp(DB_CONFIG);
+
+function checkFinished() {
+  let state = store.getState();
+  if (state.finished) {
+    console.log("Posting results to db");
+    app
+      .database()
+      .ref(`applicants/${state.code}`)
+      .set({ ...state.info, applicantCode: state.code, level: state.level });
+  }
+}
+
+// eslint-disable-next-line
+const unsubscribe = store.subscribe(checkFinished);
 
 const VisibleResult = connect(state => {
   return { code: state.code };
@@ -34,13 +54,13 @@ const VisiblePersonalForm = connect(
 
 const mapDispatchToPropsSection = dispatch => {
   return {
-    handleGiveUp: () => dispatch({ type: "route", payload: "result" }),
+    handleGiveUp: () => dispatch({ type: "FINISH_EXAM" }),
     nextLevel: () => dispatch({ type: "ADVANCE_LEVEL" })
   };
 };
 
 const mapStateToPropsSection = state => {
-  return { currentSection: state.level };
+  return { currentSection: state.level, applicantCode: state.code };
 };
 
 const VisibleSection = connect(

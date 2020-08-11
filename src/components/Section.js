@@ -15,7 +15,8 @@ const Section = ({
   handleGrade,
   handleGiveUp,
   nextLevel,
-  currentSection
+  currentSection,
+  applicantCode
 }) => {
   let { questions } = test.sections[currentSection - 1];
   const [disableButton, setDisableButton] = useState(true);
@@ -32,6 +33,7 @@ const Section = ({
       {questions.map((question, index) => {
         return (
           <Question
+            key={index}
             handleSelection={correct =>
               setAnswers(replaceAt(answers, index, correct ? 1 : 0))
             }
@@ -60,7 +62,7 @@ const Section = ({
         : null}
       <br />
 
-      <Button variant="primary" onClick={() => handleGiveUp(currentSection)}>
+      <Button variant="primary" onClick={() => handleGiveUp()}>
         Terminar Examen
       </Button>
       {!(currentSection === test.sections.length) ? ( //last section?

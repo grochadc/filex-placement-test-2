@@ -9,7 +9,7 @@ const Result = ({ code }) => {
       <h2>Nivel Filex: {code.charAt(3)}</h2>
       Tu codigo para inscribirte es:<br />
       <Form>
-        <Form.Control type="text" value={code} />{" "}
+        <Form.Control type="text" defaultValue={code} />{" "}
         <Button
           onClick={() => {
             navigator.clipboard.writeText(code);
