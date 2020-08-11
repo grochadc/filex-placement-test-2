@@ -81,10 +81,6 @@ const Section = ({
           Siguiente
         </Button>
       ) : null}
-      <div style={{ position: "fixed", top: "5px", left: "500px" }}>
-        <strong>Calificacion:</strong> {grade} / {questions.length}
-        <br /> <em>{pass ? "Pass" : "Fail"}</em>
-      </div>
     </div>
   );
 };
