@@ -59,6 +59,7 @@ const Section = ({
           onClick={() => {
             nextLevel(pass);
             setAnswers(new Array(questions.length).fill(0));
+            setChecked(new Array(questions.length).fill(0));
             setResetOptions(true);
             window.scrollTo(0, 0);
           }}
