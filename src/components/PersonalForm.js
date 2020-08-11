@@ -2,13 +2,39 @@ import React from "react";
 import { Formik } from "formik";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
+import * as Yup from "yup";
 
 const carreras = ["Agrobiotecnologia", "Derecho", "Medicina"];
+
+const InformationSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .min(2, "Nombre muy corto")
+    .max(50, "Nombre muy largo")
+    .required("Obligatorio"),
+  firstLastName: Yup.string()
+    .min(2, "Apellido muy corto")
+    .max(50, "Apellido muy largo")
+    .required("Obligatorio"),
+  secondLastName: Yup.string()
+    .min(2, "Apellido muy corto")
+    .max(50, "Apellido muy largo")
+    .required("Obligatorio"),
+  code: Yup.number().min(7, "Codigo muy corto"),
+  external: Yup.boolean(),
+  phone: Yup.number().min(10, "Numero muy corto"),
+  carrera: Yup.string(),
+  reubicacion: Yup.boolean(),
+  email: Yup.string()
+    .email("email no valido")
+    .required("Obligatorio")
+});
 
 const PersonalForm = ({ handleSubmit }) => {
   return (
     <div>
       <Formik
+        validationSchema={InformationSchema}
         initialValues={{
           firstName: "",
           firstLastName: "",
@@ -17,12 +43,12 @@ const PersonalForm = ({ handleSubmit }) => {
           external: false,
           phone: "",
           carrera: "",
-          reubicacion: "false",
+          reubicacion: false,
           email: ""
         }}
         onSubmit={values => handleSubmit(values)}
       >
-        {({ values, handleSubmit, handleChange }) => (
+        {({ values, errors, touched, handleSubmit, handleChange }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="code">
               <Form.Label>Código:</Form.Label>
@@ -33,6 +59,9 @@ const PersonalForm = ({ handleSubmit }) => {
                 onChange={handleChange}
                 disabled={values.external}
               />
+              {touched.code && errors.code ? (
+                <Alert variant="warning">{errors.code}</Alert>
+              ) : null}
             </Form.Group>
             <Form.Group controlId="external">
               <input
@@ -52,6 +81,9 @@ const PersonalForm = ({ handleSubmit }) => {
                 value={values.firstName}
                 onChange={handleChange}
               />
+              {touched.firstName && errors.firstName ? (
+                <Alert variant="warning">{errors.firstName}</Alert>
+              ) : null}
             </Form.Group>
             <Form.Group controlId="firstLastName">
               <Form.Label>Apellido Paterno:</Form.Label>
@@ -61,6 +93,9 @@ const PersonalForm = ({ handleSubmit }) => {
                 value={values.firstLastName}
                 onChange={handleChange}
               />
+              {touched.firstLastName && errors.firstLastName ? (
+                <Alert variant="warning">{errors.firstLastName}</Alert>
+              ) : null}
             </Form.Group>
             <Form.Group controlId="secondLastName">
               <Form.Label>Apellido Materno:</Form.Label>
@@ -70,6 +105,9 @@ const PersonalForm = ({ handleSubmit }) => {
                 value={values.secondLastName}
                 onChange={handleChange}
               />
+              {touched.secondLastName && errors.secondLastName ? (
+                <Alert variant="warning">{errors.secondLastName}</Alert>
+              ) : null}
             </Form.Group>
             <Form.Group controlId="phone">
               <Form.Label controlId="phone">Teléfono Celular:</Form.Label>
@@ -79,6 +117,9 @@ const PersonalForm = ({ handleSubmit }) => {
                 value={values.phone}
                 onChange={handleChange}
               />
+              {touched.phone && errors.phone ? (
+                <Alert variant="warning">{errors.phone}</Alert>
+              ) : null}
             </Form.Group>
             <Form.Group controlId="email">
               <Form.Label controlId="email">Correo Electrónico:</Form.Label>
@@ -88,6 +129,9 @@ const PersonalForm = ({ handleSubmit }) => {
                 value={values.email}
                 onChange={handleChange}
               />
+              {touched.email && errors.email ? (
+                <Alert variant="warning">{errors.email}</Alert>
+              ) : null}
             </Form.Group>
             <Form.Group controlId="carrera">
               <Form.Label controlId="carrera">Carrera:</Form.Label>
@@ -102,6 +146,9 @@ const PersonalForm = ({ handleSubmit }) => {
                   <option key={carrera}>{carrera}</option>
                 ))}
               </Form.Control>
+              {touched.carrera && errors.carrera ? (
+                <Alert variant="warning">{errors.carrera}</Alert>
+              ) : null}
             </Form.Group>
             <Form.Group controlId="reubicacion">
               <input

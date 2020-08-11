@@ -16,7 +16,8 @@
     "react-redux-firebase": "^3.7.0",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
-    "redux-firestore": "^0.13.0"
+    "redux-firestore": "^0.13.0",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",
