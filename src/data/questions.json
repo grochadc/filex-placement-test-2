@@ -645,7 +645,7 @@
         },
         {
           "title":
-            "My parents have already decided. They _____ to boy a new house.",
+            "My parents have already decided. They _____ to buy a new house.",
           "options": [
             { "text": "will", "correct": false },
             { "text": "won't", "correct": false },
@@ -1099,7 +1099,7 @@
         },
         {
           "title":
-            "Replace the underlined verb with the correct option:\nIn Hollywood there are a lot of celebrities I admire.",
+            "Replace the verb 'admire' with the correct option:\nIn Hollywood there are a lot of celebrities I admire.",
           "options": [
             { "text": "draw up", "correct": false },
             { "text": "bring up", "correct": false },
