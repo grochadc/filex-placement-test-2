@@ -10,6 +10,8 @@ const replaceAt = (arr, index, value) => [
   ...arr.slice(index + 1)
 ];
 
+const sumArray = arr => arr.reduce((acc, curr) => acc + curr);
+
 const Section = ({
   handleNext,
   handleGrade,
@@ -19,12 +21,13 @@ const Section = ({
   applicantCode
 }) => {
   let { questions } = test.sections[currentSection - 1];
-  const [disableButton, setDisableButton] = useState(true);
-  const [showResult, setShowResult] = useState(false);
   const [resetOptions, setResetOptions] = useState(false);
   const [answers, setAnswers] = useState(new Array(questions.length).fill(0));
-  const grade = answers.reduce((acc, curr) => acc + curr);
+  const [checked, setChecked] = useState(new Array(questions.length).fill(0));
+  const grade = sumArray(answers);
   let pass = grade > questions.length / 2;
+  let answeredMin = sumArray(checked) > questions.length / 2;
+
   return (
     <div>
       <Jumbotron>
@@ -34,32 +37,16 @@ const Section = ({
         return (
           <Question
             key={index}
-            handleSelection={correct =>
-              setAnswers(replaceAt(answers, index, correct ? 1 : 0))
-            }
+            handleSelection={correct => {
+              setAnswers(replaceAt(answers, index, correct ? 1 : 0));
+              setChecked(replaceAt(checked, index, 1));
+            }}
             questionObj={question}
             questionIndex={index}
             resetOptions={resetOptions}
           />
         );
       })}
-
-      <Button
-        block
-        variant="success"
-        onClick={() => {
-          setDisableButton(!pass);
-          setShowResult(true);
-        }}
-      >
-        Calificar
-      </Button>
-
-      {showResult
-        ? pass
-          ? "Pasaste esta seccion! Haz click en siguiente"
-          : "Fallaste esta seccion. Haz click en terminar examen."
-        : null}
       <br />
 
       <Button variant="primary" onClick={() => handleGiveUp()}>
@@ -67,18 +54,16 @@ const Section = ({
       </Button>
       {!(currentSection === test.sections.length) ? ( //last section?
         <Button
-          variant="secondary"
-          disabled={disableButton}
+          disabled={!answeredMin}
+          variant="primary"
           onClick={() => {
-            nextLevel();
+            nextLevel(pass);
             setAnswers(new Array(questions.length).fill(0));
-            setDisableButton(true);
-            setShowResult(false);
             setResetOptions(true);
             window.scrollTo(0, 0);
           }}
         >
-          Siguiente
+          Siguiente Seccion
         </Button>
       ) : null}
     </div>

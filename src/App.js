@@ -55,7 +55,10 @@ const VisiblePersonalForm = connect(
 const mapDispatchToPropsSection = dispatch => {
   return {
     handleGiveUp: () => dispatch({ type: "FINISH_EXAM" }),
-    nextLevel: () => dispatch({ type: "ADVANCE_LEVEL" })
+    nextLevel: pass =>
+      pass
+        ? dispatch({ type: "ADVANCE_LEVEL" })
+        : dispatch({ type: "FINISH_EXAM" })
   };
 };
 
