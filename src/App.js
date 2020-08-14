@@ -1,77 +1,36 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, {useEffect} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import Section from "./components/Section";
-import Result from "./components/Result";
-import PersonalForm from "./components/PersonalForm";
-import { Router, Show } from "./components/Router";
+import  { VisibleSection, VisibleResult, VisibleRouter, VisiblePersonalForm } from "./visibleComponents";
+import { Show } from "./components/Router";
 
 import store from "./store";
-import firebase from "firebase/app";
-import "firebase/database";
-
-import DB_CONFIG from "./config";
-
-const app = firebase.initializeApp(DB_CONFIG);
+import db from './db'
 
 function checkFinished() {
   let state = store.getState();
   if (state.finished) {
     console.log("Posting results to db");
-    app
-      .database()
+    db
       .ref(`applicants/${state.code}`)
       .set({ ...state.info, applicantCode: state.code, level: state.level });
+    db.ref('meetLinksCounter').once('value').then(snapshot => {
+      db.ref('meetLinksCounter').set( snapshot.val() <= 3 ? snapshot.val() + 1 : 0)
+    }).catch(console.log)
   }
 }
 
 // eslint-disable-next-line
 const unsubscribe = store.subscribe(checkFinished);
 
-const VisibleResult = connect(state => {
-  return { code: state.code };
-})(Result);
-
-const VisibleRouter = connect(state => {
-  return { route: state.route };
-})(Router);
-
-const mapDispatchToPropsPersonal = dispatch => {
-  return {
-    handleSubmit: (values, route) => {
-      dispatch({ type: "route", payload: "test" });
-      dispatch({ type: "info", payload: values });
-    }
-  };
-};
-const VisiblePersonalForm = connect(
-  state => {
-    return { none: 0 };
-  },
-  mapDispatchToPropsPersonal
-)(PersonalForm);
-
-const mapDispatchToPropsSection = dispatch => {
-  return {
-    handleGiveUp: () => dispatch({ type: "FINISH_EXAM" }),
-    nextLevel: pass =>
-      pass
-        ? dispatch({ type: "ADVANCE_LEVEL" })
-        : dispatch({ type: "FINISH_EXAM" })
-  };
-};
-
-const mapStateToPropsSection = state => {
-  return { currentSection: state.level, applicantCode: state.code };
-};
-
-const VisibleSection = connect(
-  mapStateToPropsSection,
-  mapDispatchToPropsSection
-)(Section);
-
 function App() {
+  useEffect(() => {
+    console.log('Mounted App');
+    db.ref('meetLinksCounter').once('value').then(snapshot => {
+      console.log('Setting state counter as', snapshot.val());
+      store.dispatch({ type: 'SET_MEET_LINK_COUNTER', payload: snapshot.val() })
+      }).catch(console.log);
+  }, [])
   return (
     <div>
       <VisibleRouter>
