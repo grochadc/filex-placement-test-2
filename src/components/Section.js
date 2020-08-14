@@ -17,8 +17,7 @@ const Section = ({
   handleGrade,
   handleGiveUp,
   nextLevel,
-  currentSection,
-  applicantCode
+  currentSection
 }) => {
   let { questions } = test.sections[currentSection - 1];
   const [resetOptions, setResetOptions] = useState(false);

@@ -7,8 +7,8 @@ import PersonalForm from './components/PersonalForm';
 
 const mapStateToPropsResult = state => {
   return {
-    code: state.code,
-    currentLink: state.currentLink
+    currentLink: state.currentLink,
+    level: state.level
   }
 }
 
@@ -50,7 +50,7 @@ const mapDispatchToPropsSection = dispatch => {
 };
 
 const mapStateToPropsSection = state => {
-  return { currentSection: state.level, applicantCode: state.code };
+  return { currentSection: state.level };
 };
 
 const VisibleSection = connect(
