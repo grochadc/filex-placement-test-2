@@ -15,8 +15,7 @@ function checkFinished() {
       .ref(`applicants/${state.code}`)
       .set({ ...state.info, applicantCode: state.code, level: state.level });
     db.ref('meetLinksCounter').once('value').then(snapshot => {
-      console.log('Current link counter', snapshot.val());
-      db.ref('meetLinksCounter').set( snapshot.val() <= 4 ? snapshot.val() + 1 : 0)
+      db.ref('meetLinksCounter').set( snapshot.val() <= 3 ? snapshot.val() + 1 : 0)
     }).catch(console.log)
   }
 }
@@ -27,7 +26,10 @@ const unsubscribe = store.subscribe(checkFinished);
 function App() {
   useEffect(() => {
     console.log('Mounted App');
-    db.ref('meetLinksCounter').once('value').then(snapshot => store.dispatch({ type: 'SET_MEET_LINK_COUNTER', payload: snapshot.val()} )).catch(console.log);
+    db.ref('meetLinksCounter').once('value').then(snapshot => {
+      console.log('Setting state counter as', snapshot.val());
+      store.dispatch({ type: 'SET_MEET_LINK_COUNTER', payload: snapshot.val() })
+      }).catch(console.log);
   }, [])
   return (
     <div>
