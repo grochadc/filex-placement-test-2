@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const Result = ({ code }) => {
+const Result = ({ code, currentLink}) => {
   const [showAlert, setShowAlert] = useState(false);
   return (
     <div>
@@ -20,6 +20,7 @@ const Result = ({ code }) => {
         </Button>{" "}
         {showAlert ? "Copiado!" : null}{" "}
       </Form>
+      <p>Examen Oral: <a href={currentLink}>{currentLink}</a></p>
     </div>
   );
 };
