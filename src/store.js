@@ -38,7 +38,7 @@ const myReducer = (state, action) => {
       return { ...state, route: action.payload };
     case "info":
       return { ...state, info: action.payload };
-    case "SET_DB_EROR":
+    case "SET_DB_ERROR":
       return { ...state, dbError: action.payload };
     case "SET_MEET_LINK_COUNTER":
       return { ...state, currentLink: state.meetLinks[action.payload] };

@@ -1,27 +1,25 @@
 import { connect } from "react-redux";
-import Result from './components/Result';
-import Section from './components/Section';
-import {Router} from './components/Router';
-import PersonalForm from './components/PersonalForm';
-
+import { ADVANCE_LEVEL, FINISH_EXAM } from "./redux/actionTypes";
+import Result from "./components/Result";
+import Section from "./components/Section";
+import { Router } from "./components/Router";
+import PersonalForm from "./components/PersonalForm";
 
 const mapStateToPropsResult = state => {
   return {
     currentLink: state.currentLink,
     level: state.level
-  }
-}
+  };
+};
 
-const VisibleResult = connect(
-  mapStateToPropsResult
-)(Result);
+const VisibleResult = connect(mapStateToPropsResult)(Result);
 
 const VisibleRouter = connect(state => {
   let props = {
     route: state.route,
     meetLink: state.meetLinks.currentLink
-  }
-  return props
+  };
+  return props;
 })(Router);
 
 const mapDispatchToPropsPersonal = dispatch => {
@@ -41,11 +39,9 @@ const VisiblePersonalForm = connect(
 
 const mapDispatchToPropsSection = dispatch => {
   return {
-    handleGiveUp: () => dispatch({ type: "FINISH_EXAM" }),
+    handleGiveUp: () => dispatch({ type: FINISH_EXAM }),
     nextLevel: pass =>
-      pass
-        ? dispatch({ type: "ADVANCE_LEVEL" })
-        : dispatch({ type: "FINISH_EXAM" })
+      pass ? dispatch({ type: ADVANCE_LEVEL }) : dispatch({ type: FINISH_EXAM })
   };
 };
 
@@ -58,6 +54,4 @@ const VisibleSection = connect(
   mapDispatchToPropsSection
 )(Section);
 
-export {
-  VisibleSection, VisiblePersonalForm, VisibleResult, VisibleRouter
-}
+export { VisibleSection, VisiblePersonalForm, VisibleResult, VisibleRouter };

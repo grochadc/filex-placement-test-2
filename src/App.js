@@ -10,6 +10,7 @@ import {
 import { Show } from "./components/Router";
 
 import store from "./store";
+import { SET_DB_ERROR, SET_MEET_LINK_COUNTER } from "./redux/actionTypes";
 import db from "./db";
 
 function checkFinished() {
@@ -19,7 +20,7 @@ function checkFinished() {
     db.ref(`applicants/${state.code}`)
       .set({ ...state.info, applicantCode: state.code, level: state.level })
       .then(() => console.log("Posted to db successfully"))
-      .catch(e => store.dispatch({ type: "SET_DB_ERROR", payload: e.code }));
+      .catch(e => store.dispatch({ type: SET_DB_ERROR, payload: e.code }));
     db.ref("meetLinksCounter")
       .once("value")
       .then(snapshot => {
@@ -42,7 +43,7 @@ function App() {
       .then(snapshot => {
         console.log("Setting state counter as", snapshot.val());
         store.dispatch({
-          type: "SET_MEET_LINK_COUNTER",
+          type: SET_MEET_LINK_COUNTER,
           payload: snapshot.val()
         });
       })
