@@ -4,8 +4,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import * as Yup from "yup";
-
-const carreras = ["Agrobiotecnologia", "Derecho", "Medicina"];
+import carreras from "../data/carreras";
 
 const InformationSchema = Yup.object().shape({
   firstName: Yup.string()
