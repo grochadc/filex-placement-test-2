@@ -5,9 +5,20 @@ const now = new Date();
 
 console.log(now.getHours());
 
-const linksMorning = ['http://meet.google.com/zym-djkh-kmc', 'https://meet.google.com/wqf-dmjq-qza', 'https://meet.google.com/kzx-emdw-tac', 'https://meet.google.com/ucv-dwyu-reh'];
-const linksAfternoon = [ 'https://meet.google.com/dkg-zqni-phx', 'https://meet.google.com/jao-wiqv-kmn', 'https://meet.google.com/jvp-ijky-bjy', 'https://meet.google.com/xni-zart-qav','https://meet.google.com/baw-iuzn-mbj'];
-const timeLinks = now.getHours() > 14 ? linksAfternoon : linksMorning
+const linksMorning = [
+  "http://meet.google.com/zym-djkh-kmc",
+  "https://meet.google.com/wqf-dmjq-qza",
+  "https://meet.google.com/kzx-emdw-tac",
+  "https://meet.google.com/ucv-dwyu-reh"
+];
+const linksAfternoon = [
+  "https://meet.google.com/dkg-zqni-phx",
+  "https://meet.google.com/jao-wiqv-kmn",
+  "https://meet.google.com/jvp-ijky-bjy",
+  "https://meet.google.com/xni-zart-qav",
+  "https://meet.google.com/baw-iuzn-mbj"
+];
+const timeLinks = now.getHours() > 14 ? linksAfternoon : linksMorning;
 
 const initialValues = {
   info: "",
@@ -17,9 +28,9 @@ const initialValues = {
   finished: false,
   meetLinks: timeLinks,
   counterLinks: 0,
-  currentLink: ''
+  currentLink: "",
+  dbError: ""
 };
-
 
 const myReducer = (state, action) => {
   switch (action.type) {
@@ -27,8 +38,10 @@ const myReducer = (state, action) => {
       return { ...state, route: action.payload };
     case "info":
       return { ...state, info: action.payload };
-    case 'SET_MEET_LINK_COUNTER':
-      return {...state, currentLink: state.meetLinks[action.payload]};
+    case "SET_DB_EROR":
+      return { ...state, dbError: action.payload };
+    case "SET_MEET_LINK_COUNTER":
+      return { ...state, currentLink: state.meetLinks[action.payload] };
     case "ADVANCE_LEVEL":
       return {
         ...state,
