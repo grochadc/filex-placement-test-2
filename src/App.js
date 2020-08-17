@@ -18,7 +18,12 @@ function checkFinished() {
   if (state.finished) {
     console.log("Posting results to db");
     db.ref(`applicants/${state.code}`)
-      .set({ ...state.info, applicantCode: state.code, level: state.level })
+      .set({
+        ...state.info,
+        applicantCode: state.code,
+        level: state.level,
+        meetLink: state.level > 1 ? state.currentLink.substr(24) : ""
+      })
       .then(() => console.log("Posted to db successfully"))
       .catch(e => store.dispatch({ type: SET_DB_ERROR, payload: e.code }));
     db.ref("meetLinksCounter")
