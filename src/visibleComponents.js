@@ -8,7 +8,9 @@ import PersonalForm from "./components/PersonalForm";
 const mapStateToPropsResult = state => {
   return {
     currentLink: state.currentLink,
-    level: state.level
+    level: state.level,
+    externo: state.info.external,
+    code: state.code
   };
 };
 
