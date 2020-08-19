@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/col";
+import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
 const Result = ({ code, currentLink, level, dbError, externo }) => {
