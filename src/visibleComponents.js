@@ -48,7 +48,7 @@ const mapDispatchToPropsSection = dispatch => {
 };
 
 const mapStateToPropsSection = state => {
-  return { currentSection: state.level };
+  return { currentSection: state.level, curso: state.info.curso };
 };
 
 const VisibleSection = connect(

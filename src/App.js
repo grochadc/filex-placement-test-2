@@ -20,6 +20,7 @@ function checkFinished() {
     db.ref(`applicants/${state.code}`)
       .set({
         ...state.info,
+        course: state.info.curso,
         applicantCode: state.code,
         level: state.level,
         meetLink: state.level > 1 ? state.currentLink.substr(24) : ""

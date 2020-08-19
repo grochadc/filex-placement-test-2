@@ -27,7 +27,8 @@ const InformationSchema = Yup.object().shape({
   reubicacion: Yup.boolean(),
   email: Yup.string()
     .email("email no valido")
-    .required("Obligatorio")
+    .required("Obligatorio"),
+  curso: Yup.string().required("Campo Obligatorio")
 });
 
 const PersonalForm = ({ handleSubmit }) => {
@@ -44,7 +45,8 @@ const PersonalForm = ({ handleSubmit }) => {
           phone: "",
           carrera: "",
           reubicacion: false,
-          email: ""
+          email: "",
+          curso: ""
         }}
         onSubmit={values => handleSubmit(values)}
       >
@@ -143,13 +145,26 @@ const PersonalForm = ({ handleSubmit }) => {
                   onChange={handleChange}
                   disabled={values.external}
                 >
-                  {carreras.map(carrera => (
-                    <option key={carrera}>{carrera}</option>
+                  {carreras.map((carrera, index) => (
+                    <option key={index}>{carrera}</option>
                   ))}
                 </Form.Control>
                 {touched.carrera && errors.carrera ? (
                   <Alert variant="warning">{errors.carrera}</Alert>
                 ) : null}
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Curso:</Form.Label>
+                <Form.Control
+                  name="curso"
+                  as="select"
+                  value={values.curso}
+                  onChange={handleChange}
+                >
+                  <option>Selecciona el curso:</option>
+                  <option value="english">Inglés</option>
+                  <option value="french">Francés</option>
+                </Form.Control>
               </Form.Group>
               <Form.Group controlId="reubicacion">
                 <input

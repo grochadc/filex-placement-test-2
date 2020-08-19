@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Question from "./Question";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
-import test from "../data/questions.json";
+import englishTest from "../data/questions.json";
+import frenchTest from "../data/questions_french.json";
 
 const replaceAt = (arr, index, value) => [
   ...arr.slice(0, index),
@@ -17,8 +18,10 @@ const Section = ({
   handleGrade,
   handleGiveUp,
   nextLevel,
-  currentSection
+  currentSection,
+  curso
 }) => {
+  let test = curso === "english" ? englishTest : frenchTest;
   let { questions } = test.sections[currentSection - 1];
   const [resetOptions, setResetOptions] = useState(false);
   const [answers, setAnswers] = useState(new Array(questions.length).fill(0));
@@ -30,7 +33,9 @@ const Section = ({
   return (
     <div>
       <Jumbotron>
-        <h2>Seccion {currentSection}</h2>
+        <h1>EXAMEN DE UBICACION FILEX</h1>
+        <h2>{curso === "english" ? "Inglés" : "Francés"}</h2>
+        <h3>Seccion {currentSection}</h3>
       </Jumbotron>
       {questions.map((question, index) => {
         return (
