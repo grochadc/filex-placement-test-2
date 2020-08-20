@@ -17,7 +17,9 @@ function checkFinished() {
   let state = store.getState();
   if (state.finished) {
     console.log("Posting results to db");
-    db.ref(`applicants/${state.info.external ? state.code : state.info.code}`)
+    db.ref(
+      `applicants/${state.info.external ? state.info.phone : state.info.code}`
+    )
       .set({
         ...state.info,
         course: state.info.curso,
