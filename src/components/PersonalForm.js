@@ -154,8 +154,9 @@ const PersonalForm = ({ handleSubmit }) => {
                 ) : null}
               </Form.Group>
               <Form.Group>
-                <Form.Label>Curso:</Form.Label>
+                <Form.Label id="curso">Curso:</Form.Label>
                 <Form.Control
+                  aria-labelledby="curso"
                   name="curso"
                   as="select"
                   value={values.curso}
