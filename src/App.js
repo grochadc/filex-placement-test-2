@@ -17,7 +17,7 @@ function checkFinished() {
   let state = store.getState();
   if (state.finished) {
     console.log("Posting results to db");
-    db.ref(`applicants/${state.code}`)
+    db.ref(`applicants/${state.info.external ? state.code : state.info.code}`)
       .set({
         ...state.info,
         course: state.info.curso,
@@ -42,8 +42,8 @@ function checkFinished() {
 const unsubscribe = store.subscribe(checkFinished);
 
 function App() {
+  console.log("App");
   useEffect(() => {
-    console.log("Mounted App");
     db.ref("meetLinksCounter")
       .once("value")
       .then(snapshot => {
