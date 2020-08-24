@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Jumbotron from "react-bootstrap/Jumbotron";
+import Container from "react-bootstrap/Container";
 import {
   VisibleSection,
   VisibleResult,
@@ -62,7 +63,10 @@ function App() {
       <VisibleRouter>
         <Show route="personal">
           <Jumbotron>
-            <h1>Datos Personales</h1>
+            <Container>
+              <h1>EXAMEN DE UBICACION FILEX</h1>
+              <h3>Datos Personales</h3>
+            </Container>
           </Jumbotron>
           <VisiblePersonalForm />
         </Show>
