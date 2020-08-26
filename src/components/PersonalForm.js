@@ -6,6 +6,15 @@ import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
 import carreras from "../data/carreras";
+import { isPast } from "date-fns";
+
+function disableButton() {
+  if (process.env.NODE_ENV === "production") {
+    return !isPast(new Date(2020, 8, 1, 8, 30));
+  } else {
+    return false;
+  }
+}
 
 const InformationSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -176,7 +185,11 @@ const PersonalForm = ({ handleSubmit }) => {
                 />{" "}
                 Reubicacion
               </Form.Group>
-              <Button type="submit" variant="primary">
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={disableButton()}
+              >
                 Enviar
               </Button>
             </Form>
