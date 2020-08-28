@@ -1,5 +1,7 @@
 const carreras = [
   "Elige tu carrera",
+  "Academico",
+  "Administrativo",
   "Abogado",
   "Administración de Negocios",
   "Agrobiotecnología",
