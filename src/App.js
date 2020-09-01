@@ -44,6 +44,10 @@ function checkFinished() {
 // eslint-disable-next-line
 const unsubscribe = store.subscribe(checkFinished);
 
+function getRand(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 function App() {
   console.log("App");
   useEffect(() => {
@@ -53,7 +57,7 @@ function App() {
         console.log("Setting state counter as", snapshot.val());
         store.dispatch({
           type: SET_MEET_LINK_COUNTER,
-          payload: snapshot.val()
+          payload: getRand(0, 4)
         });
       })
       .catch(console.log);
