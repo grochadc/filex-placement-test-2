@@ -19,7 +19,7 @@ const linksAfternoon = [
   "https://meet.google.com/xni-zart-qav",
   "https://meet.google.com/baw-iuzn-mbj"
 ];
-const timeLinks = now.getHours() > 14 ? linksAfternoon : linksMorning;
+const timeLinks = linksAfternoon;
 
 const initialValues = {
   info: "",
