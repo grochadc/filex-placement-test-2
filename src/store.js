@@ -5,6 +5,7 @@ const now = new Date();
 
 console.log(now.getHours());
 
+/*
 const linksMorning = [
   "https://meet.google.com/kzx-emdw-tac",
   "https://meet.google.com/wqf-dmjq-qza",
@@ -12,6 +13,7 @@ const linksMorning = [
   "https://meet.google.com/huz-dbiq-hry",
   "https://meet.google.com/huz-dbiq-hry"
 ];
+*/
 const linksAfternoon = [
   "https://meet.google.com/dkg-zqni-phx",
   "https://meet.google.com/jao-wiqv-kmn",
