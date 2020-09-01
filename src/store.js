@@ -16,7 +16,7 @@ const linksMorning = [
 */
 const linksAfternoon = [
   "https://meet.google.com/dkg-zqni-phx",
-  "https://meet.google.com/jao-wiqv-kmn",
+  "https://meet.google.com/dkg-zqni-phx",
   "https://meet.google.com/jvp-ijky-bjy",
   "https://meet.google.com/xni-zart-qav",
   "https://meet.google.com/baw-iuzn-mbj"
