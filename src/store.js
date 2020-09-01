@@ -6,9 +6,9 @@ const now = new Date();
 console.log(now.getHours());
 
 const linksMorning = [
-  "http://meet.google.com/zym-djkh-kmc",
-  "https://meet.google.com/wqf-dmjq-qza",
   "https://meet.google.com/kzx-emdw-tac",
+  "https://meet.google.com/wqf-dmjq-qza",
+  "http://meet.google.com/zym-djkh-kmc",
   "https://meet.google.com/ucv-dwyu-reh",
   "https://meet.google.com/ucv-dwyu-reh"
 ];
