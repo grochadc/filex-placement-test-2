@@ -10,7 +10,7 @@ const linksMorning = [
   "https://meet.google.com/wqf-dmjq-qza",
   "http://meet.google.com/zym-djkh-kmc",
   "https://meet.google.com/ucv-dwyu-reh",
-  "https://meet.google.com/ucv-dwyu-reh"
+  "https://meet.google.com/huz-dbiq-hry"
 ];
 const linksAfternoon = [
   "https://meet.google.com/dkg-zqni-phx",
