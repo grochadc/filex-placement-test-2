@@ -57,7 +57,7 @@ function App() {
         console.log("Setting state counter as", snapshot.val());
         store.dispatch({
           type: SET_MEET_LINK_COUNTER,
-          payload: getRand(0, 4)
+          payload: getRand(0, 5)
         });
       })
       .catch(console.log);
