@@ -6,11 +6,14 @@ import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
 import carreras from "../data/carreras";
-import { isPast } from "date-fns";
+import { isWithinInterval } from "date-fns";
 
 function disableButton() {
   if (process.env.NODE_ENV === "production") {
-    return !isPast(new Date(2020, 8, 2, 8, 30));
+    return !isWithinInterval(new Date(), {
+      start: new Date(2020, 8, 2, 8, 30),
+      end: new Date(2020, 8, 2, 20, 0)
+    });
   } else {
     return false;
   }
