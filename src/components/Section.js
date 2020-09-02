@@ -54,7 +54,7 @@ const Section = ({
       <br />
 
       <Button variant="primary" onClick={() => handleGiveUp()}>
-        Terminar Examen
+        Rendirse
       </Button>
       {!(currentSection === test.sections.length) ? ( //last section?
         <Button
@@ -68,7 +68,7 @@ const Section = ({
             window.scrollTo(0, 0);
           }}
         >
-          Siguiente Seccion
+          Continuar Exámen
         </Button>
       ) : null}
     </div>
