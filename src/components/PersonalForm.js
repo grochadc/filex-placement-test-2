@@ -10,7 +10,7 @@ import { isPast } from "date-fns";
 
 function disableButton() {
   if (process.env.NODE_ENV === "production") {
-    return !isPast(new Date(2020, 8, 1, 8, 30));
+    return !isPast(new Date(2020, 8, 2, 8, 30));
   } else {
     return false;
   }
