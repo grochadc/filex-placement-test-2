@@ -12,7 +12,7 @@ function disableButton() {
   if (process.env.NODE_ENV === "production") {
     return !isWithinInterval(new Date(), {
       start: new Date(2020, 8, 2, 8, 30),
-      end: new Date(2020, 8, 2, 20, 0)
+      end: new Date(2020, 8, 2, 18, 0)
     });
   } else {
     return false;
