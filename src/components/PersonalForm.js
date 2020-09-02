@@ -6,9 +6,8 @@ import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
 import carreras from "../data/carreras";
-//import { isPast } from "date-fns";
+import { isPast } from "date-fns";
 
-/*
 function disableButton() {
   if (process.env.NODE_ENV === "production") {
     return !isPast(new Date(2020, 8, 2, 8, 30));
@@ -16,7 +15,6 @@ function disableButton() {
     return false;
   }
 }
-*/
 
 const InformationSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -45,12 +43,6 @@ const InformationSchema = Yup.object().shape({
 const PersonalForm = ({ handleSubmit }) => {
   return (
     <div>
-      {process.NODE_ENV === "production" ? (
-        <Alert variant="primary">
-          La plataforma estará disponible en un momento más. Tenemos
-          dificultades tecnicas.
-        </Alert>
-      ) : null}
       <Formik
         validationSchema={InformationSchema}
         initialValues={{
@@ -196,7 +188,7 @@ const PersonalForm = ({ handleSubmit }) => {
               <Button
                 type="submit"
                 variant="primary"
-                disabled={!(process.NODE_ENV === "production")}
+                disabled={disableButton()}
               >
                 Enviar
               </Button>

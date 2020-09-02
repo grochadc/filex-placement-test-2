@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
@@ -11,8 +11,9 @@ import {
 import { Show } from "./components/Router";
 
 import store from "./store";
-import { SET_DB_ERROR } from "./redux/actionTypes";
+import { SET_DB_ERROR, SET_CURRENT_LINK } from "./redux/actionTypes";
 import db from "./db";
+import { getNextItem } from "./lib";
 
 // eslint-disable-next-line
 const unsubscribe = store.subscribe(checkFinished);
@@ -41,6 +42,22 @@ function postResults(state) {
 }
 
 function App() {
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log("Getting link");
+        const { current, all } = (await db
+          .ref("/meetLinks")
+          .once("value")).val();
+        const nextLinkFromDB = getNextItem(all, current);
+        console.log("Next link ", nextLinkFromDB);
+        store.dispatch({ type: SET_CURRENT_LINK, payload: current });
+        db.ref("/meetLinks/current").set(nextLinkFromDB);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
   return (
     <div>
       <VisibleRouter>

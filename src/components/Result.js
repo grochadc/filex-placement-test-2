@@ -1,27 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Container from "react-bootstrap/Container";
 
-import db from "../db";
-import { getNextItem } from "../lib";
-
-const Result = ({ code, level, dbError, externo }) => {
-  const [currentLink, setCurrentLink] = useState("");
-  useEffect(() => {
-    (async () => {
-      try {
-        console.log("Getting link");
-        const { current, all } = (await db
-          .ref("/meetLinks")
-          .once("value")).val();
-        const nextLinkFromDB = getNextItem(all, current);
-        console.log("Next link ", nextLinkFromDB);
-        setCurrentLink(current);
-        db.ref("/meetLinks/current").set(nextLinkFromDB);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, []);
+const Result = ({ code, level, currentLink, dbError, externo }) => {
   return (
     <Container>
       <h2>Examen de Ubicación FILEX</h2>

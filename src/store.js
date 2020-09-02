@@ -44,8 +44,8 @@ const myReducer = (state, action) => {
       return { ...state, info: action.payload };
     case "SET_DB_ERROR":
       return { ...state, dbError: action.payload };
-    case "SET_MEET_LINK_COUNTER":
-      return { ...state, currentLink: state.meetLinks[action.payload] };
+    case "SET_CURRENT_LINK":
+      return { ...state, currentLink: action.payload };
     case "ADVANCE_LEVEL":
       return {
         ...state,
