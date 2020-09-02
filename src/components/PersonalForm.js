@@ -196,7 +196,7 @@ const PersonalForm = ({ handleSubmit }) => {
               <Button
                 type="submit"
                 variant="primary"
-                disabled={process.NODE_ENV === "production"}
+                disabled={!(process.NODE_ENV === "production")}
               >
                 Enviar
               </Button>
