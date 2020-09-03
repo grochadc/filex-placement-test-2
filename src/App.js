@@ -48,9 +48,6 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        db.ref("/onlineUsers")
-          .once("value")
-          .then(snapshot => db.ref("onlineUsers").set(snapshot.val() + 1));
         console.log("Getting link");
         const { current, all } = (await db
           .ref("/meetLinks")

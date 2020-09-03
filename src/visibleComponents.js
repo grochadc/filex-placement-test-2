@@ -4,6 +4,7 @@ import Result from "./components/Result";
 import Section from "./components/Section";
 import { Router } from "./components/Router";
 import PersonalForm from "./components/PersonalForm";
+import db from "./db";
 
 const mapStateToPropsResult = state => {
   return {
@@ -27,15 +28,16 @@ const VisibleRouter = connect(state => {
 const mapDispatchToPropsPersonal = dispatch => {
   return {
     handleSubmit: (values, route) => {
+      db.ref("/onlineUsers")
+        .once("value")
+        .then(snapshot => db.ref("onlineUsers").set(snapshot.val() + 1));
       dispatch({ type: "route", payload: "test" });
       dispatch({ type: "info", payload: values });
     }
   };
 };
 const VisiblePersonalForm = connect(
-  state => {
-    return { none: 0 };
-  },
+  null,
   mapDispatchToPropsPersonal
 )(PersonalForm);
 
