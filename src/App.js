@@ -26,6 +26,9 @@ async function checkFinished() {
 }
 
 function postResults(state) {
+  db.ref("/onlineUsers")
+    .once("value")
+    .then(snapshot => db.ref("onlineUsers").set(snapshot.val() - 1));
   console.log("Posting results to db");
   db.ref(
     `applicants/${state.info.external ? state.info.phone : state.info.code}`
@@ -45,6 +48,9 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
+        db.ref("/onlineUsers")
+          .once("value")
+          .then(snapshot => db.ref("onlineUsers").set(snapshot.val() + 1));
         console.log("Getting link");
         const { current, all } = (await db
           .ref("/meetLinks")
