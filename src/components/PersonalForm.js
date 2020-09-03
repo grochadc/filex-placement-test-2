@@ -7,12 +7,22 @@ import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
 import carreras from "../data/carreras";
 import { isWithinInterval } from "date-fns";
+import db from "../db";
 
-function disableButton() {
+async function disableButton() {
   if (process.env.NODE_ENV === "production") {
+    const openingHours = (await db.ref("openingHours").once("value")).val();
+    const [openingStartHour, openingStartMinutes] = openingHours.start.split(
+      ","
+    );
+    const [openingEndHour, openingEndMinutes] = openingHours.start.split(",");
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const day = now.getDate();
     return !isWithinInterval(new Date(), {
-      start: new Date(2020, 8, 2, 8, 30),
-      end: new Date(2020, 8, 2, 19, 45)
+      start: new Date(year, month, day, openingStartHour, openingStartMinutes),
+      end: new Date(year, month, day, openingEndHour, openingEndMinutes)
     });
   } else {
     return false;
