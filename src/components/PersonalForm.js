@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,28 +6,7 @@ import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
 import carreras from "../data/carreras";
-import { isWithinInterval } from "date-fns";
-import db from "../db";
-
-async function disableButton() {
-  if (process.env.NODE_ENV === "production") {
-    const openingHours = (await db.ref("openingHours").once("value")).val();
-    const [openingStartHour, openingStartMinutes] = openingHours.start.split(
-      ","
-    );
-    const [openingEndHour, openingEndMinutes] = openingHours.start.split(",");
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const day = now.getDate();
-    return !isWithinInterval(new Date(), {
-      start: new Date(year, month, day, openingStartHour, openingStartMinutes),
-      end: new Date(year, month, day, openingEndHour, openingEndMinutes)
-    });
-  } else {
-    return false;
-  }
-}
+import { withinOpeningHours } from "../lib";
 
 const InformationSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -54,6 +33,10 @@ const InformationSchema = Yup.object().shape({
 });
 
 const PersonalForm = ({ handleSubmit }) => {
+  const [disableButton, setDisableButton] = useState(false);
+  useEffect(() => {
+    withinOpeningHours().then(bool => setDisableButton(bool));
+  });
   return (
     <div>
       <Formik
@@ -198,11 +181,7 @@ const PersonalForm = ({ handleSubmit }) => {
                 />{" "}
                 Reubicacion
               </Form.Group>
-              <Button
-                type="submit"
-                variant="primary"
-                disabled={disableButton()}
-              >
+              <Button type="submit" variant="primary" disabled={disableButton}>
                 Enviar
               </Button>
             </Form>
