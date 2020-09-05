@@ -38,7 +38,7 @@ function postResults(state) {
       course: state.info.curso,
       applicantCode: state.code,
       level: state.level,
-      meetLink: state.level > 1 ? state.currentLink.substr(24) : ""
+      meetLink: state.level > 2 ? state.currentLink.substr(24) : ""
     })
     .then(() => console.log("Posted to db successfully"))
     .catch(e => store.dispatch({ type: SET_DB_ERROR, payload: e.code }));
