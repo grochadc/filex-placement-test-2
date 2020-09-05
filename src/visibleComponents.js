@@ -19,8 +19,7 @@ const VisibleResult = connect(mapStateToPropsResult)(Result);
 
 const VisibleRouter = connect(state => {
   let props = {
-    route: state.route,
-    meetLink: state.meetLinks.currentLink
+    route: state.route
   };
   return props;
 })(Router);
