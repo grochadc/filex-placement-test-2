@@ -31,7 +31,7 @@ function postResults(state) {
     .then(snapshot => db.ref("onlineUsers").set(snapshot.val() - 1));
   console.log("Posting results to db");
   db.ref(
-    `applicants/${state.info.external ? state.info.phone : state.info.code}`
+    `applicants/${state.info.external ? state.info.phone : state.info.code ? state.info.code : state.info.phone}`
   )
     .set({
       ...state.info,
