@@ -35,7 +35,7 @@ const InformationSchema = Yup.object().shape({
 const PersonalForm = ({ handleSubmit }) => {
   const [disableButton, setDisableButton] = useState(true);
   useEffect(() => {
-    withinOpeningHours().then(bool => setDisableButton(bool));
+    withinOpeningHours().then(bool => setDisableButton(true));
   });
   return (
     <div>
