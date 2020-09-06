@@ -33,7 +33,7 @@ const InformationSchema = Yup.object().shape({
 });
 
 const PersonalForm = ({ handleSubmit }) => {
-  const [disableButton, setDisableButton] = useState(false);
+  const [disableButton, setDisableButton] = useState(true);
   useEffect(() => {
     withinOpeningHours().then(bool => setDisableButton(bool));
   });
@@ -181,7 +181,7 @@ const PersonalForm = ({ handleSubmit }) => {
                 />{" "}
                 Reubicacion
               </Form.Group>
-              <Button type="submit" variant="primary" disabled={true}>
+              <Button type="submit" variant="primary" disabled={disableButton}>
                 Enviar
               </Button>
             </Form>
