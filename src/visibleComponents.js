@@ -11,7 +11,8 @@ const mapStateToPropsResult = state => {
     currentLink: state.currentLink,
     level: state.level,
     externo: state.info.external,
-    code: state.code
+    code: state.code,
+    curso: state.info.curso
   };
 };
 
