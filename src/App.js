@@ -31,14 +31,14 @@ function postResults(state) {
     .then(snapshot => db.ref("onlineUsers").set(snapshot.val() - 1));
   console.log("Posting results to db");
   db.ref(
-    `applicants/${state.info.external ? state.info.phone : state.info.code}`
+    `applicants/${state.info.external ? state.info.phone : state.info.code ? state.info.code : state.info.phone}`
   )
     .set({
       ...state.info,
       course: state.info.curso,
       applicantCode: state.code,
       level: state.level,
-      meetLink: state.level > 1 ? state.currentLink.substr(24) : ""
+      meetLink: state.level > 2 ? state.currentLink.substr(24) : ""
     })
     .then(() => console.log("Posted to db successfully"))
     .catch(e => store.dispatch({ type: SET_DB_ERROR, payload: e.code }));
