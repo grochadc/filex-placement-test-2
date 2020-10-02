@@ -182,7 +182,7 @@ const PersonalForm = ({ handleSubmit }) => {
                 />{" "}
                 Reubicacion
               </Form.Group>
-              <Button type="submit" variant="primary" disabled>
+              <Button type="submit" variant="primary">
                 Enviar
               </Button>
             </Form>
