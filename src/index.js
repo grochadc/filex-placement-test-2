@@ -6,11 +6,25 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import store from "./store";
 
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+const ServerUri =
+  process.env.NODE_ENV === "production"
+    ? "https://filex-database.herokuapp.com/"
+    : "http://localhost:5000/";
+
+const client = new ApolloClient({
+  uri: ServerUri,
+  cache: new InMemoryCache(),
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

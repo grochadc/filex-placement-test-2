@@ -1,8 +1,18 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import Container from "react-bootstrap/Container";
 
-const Result = ({ code, level, currentLink, dbError, externo, curso }) => {
-  console.log("Curso from stat", curso);
+interface RootState {
+  currentLink: string;
+  dbError: string;
+  level: number;
+  curso: string;
+}
+
+const Result = () => {
+  const { level, curso, currentLink, dbError } = useSelector(
+    (state: RootState) => state
+  );
   return (
     <Container>
       <h2>Examen de Ubicación FILEX</h2>

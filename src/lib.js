@@ -1,10 +1,8 @@
 import { isWithinInterval } from "date-fns";
 import db from "./db";
 
-const generateCode = level => {
-  let str = Math.random()
-    .toString(36)
-    .substring(7);
+const generateCode = (level) => {
+  let str = Math.random().toString(36).substring(7);
   return str.substr(0, 3) + level + str.substr(3);
 };
 function getNextItem(arr, el) {
@@ -22,7 +20,7 @@ function getNextItem(arr, el) {
 }
 
 async function withinOpeningHours() {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "developmento") {
     const openingHours = (await db.ref("openingHours").once("value")).val();
     const [openingStartHour, openingStartMinutes] = openingHours.start.split(
       ","
@@ -48,7 +46,7 @@ async function withinOpeningHours() {
     );
     const disable = !isWithinInterval(new Date(), {
       start: startDate,
-      end: endDate
+      end: endDate,
     });
     return disable;
   } else {
