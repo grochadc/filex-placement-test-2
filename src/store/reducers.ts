@@ -40,7 +40,7 @@ const initialState: RootState = {
     externo: false,
     reubicacion: false,
   },
-  route: "personal",
+  route: window.location.pathname === "/dashboard" ? "dashboard" : "personal",
   course: "en",
   code: generateCode(1),
   level: 1,

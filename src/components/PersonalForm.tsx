@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Formik } from "formik";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
-import { withinOpeningHours } from "../lib";
 import { setInfo, setRoute } from "../store/actions";
 import { Info } from "../store/types";
 import { useDispatch } from "react-redux";
@@ -16,6 +15,7 @@ const GET_CARRERAS = gql`
     carreras {
       name
     }
+    isClosed
   }
 `;
 
@@ -52,12 +52,15 @@ const PersonalForm = () => {
   const carreras = loading
     ? ["Cargando..."]
     : data.carreras.map((el: { name: string }) => el.name);
+  const isClosed = loading ? false : data.isClosed;
 
-  // eslint-disable-next-line
-  const [disableButton, setDisableButton] = useState(false);
-  useEffect(() => {
-    withinOpeningHours().then(() => setDisableButton(true));
-  });
+  if (loading) return <div>Cargando...</div>;
+  if (isClosed)
+    return (
+      <div>
+        <h1>Por el momento no se estan aplicando examenes. Vuelve despues.</h1>
+      </div>
+    );
   return (
     <div>
       <Formik

@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import Result from "./components/Result";
 import Section from "./components/Section";
 import PersonalForm from "./components/PersonalForm";
+import Dashboard from "./components/Dashboard";
 import RouterView from "./components/Router";
 
 import { useDispatch } from "react-redux";
@@ -54,8 +55,8 @@ const SAVE_RESULTS_DB = gql`
 `;
 
 function App() {
-  const [saveResultsDB, { data }] = useMutation(SAVE_RESULTS_DB);
   const dispatch = useDispatch();
+  const [saveResultsDB, { data }] = useMutation(SAVE_RESULTS_DB);
   data && dispatch(setCurrentLink(data.saveWrittenResults.meetLink));
   data && console.log("data", data);
   let info = useTypedSelector((state) => state.info);
@@ -96,6 +97,9 @@ function App() {
       </RouterView>
       <RouterView route="result">
         <Result />
+      </RouterView>
+      <RouterView route="dashboard">
+        <Dashboard />
       </RouterView>
     </div>
   );

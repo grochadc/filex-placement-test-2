@@ -16,6 +16,7 @@ const ServerUri =
 const client = new ApolloClient({
   uri: ServerUri,
   cache: new InMemoryCache(),
+  connectToDevtools: true,
 });
 
 ReactDOM.render(
