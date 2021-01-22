@@ -1,8 +1,8 @@
-import { myReducer } from "./reducers";
+import { rootReducer } from "./reducers";
 import { createStore } from "redux";
 
 let store = createStore(
-  myReducer,
+  rootReducer,
   (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
     (window as any).__REDUX_DEVTOOLS_EXTENSION__()
 );

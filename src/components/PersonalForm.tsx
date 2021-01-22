@@ -5,8 +5,8 @@ import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
-import { setInfo, setRoute } from "../store/actions";
-import { Info } from "../store/types";
+import { setApplicant, setRoute } from "../store/actions";
+import { Applicant } from "../store/types";
 import { useDispatch } from "react-redux";
 import { gql, useQuery } from "@apollo/client";
 
@@ -43,8 +43,8 @@ const InformationSchema = Yup.object().shape({
 
 const PersonalForm = () => {
   const dispatch = useDispatch();
-  const handleSubmit = (values: Info) => {
-    dispatch(setInfo(values));
+  const handleSubmit = (values: Applicant) => {
+    dispatch(setApplicant(values));
     dispatch(setRoute("test"));
   };
   const { data, loading } = useQuery(GET_CARRERAS);

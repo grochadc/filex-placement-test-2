@@ -1,45 +1,23 @@
+import { combineReducers } from "redux";
 import {
   ActionTypes,
-  Info,
+  SystemState,
+  Applicant,
+  RootState,
   SET_CURRENT_LINK,
   ADVANCE_LEVEL,
   FINISH_EXAM,
   SET_DB_ERROR,
-  SET_INFO,
+  SET_APPLICANT,
   SET_ROUTE,
 } from "./types";
 import { generateCode } from "../lib";
 
 import { useSelector, TypedUseSelectorHook } from "react-redux";
 
-interface RootState {
-  info: Info;
-  route: string;
-  course: string;
-  code: string;
-  level: number;
-  currentLink: string;
-  dbError: string;
-}
+const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
-
-const initialState: RootState = {
-  info: {
-    codigo: "",
-    nombre: "",
-    apellido_paterno: "",
-    apellido_materno: "",
-    genero: "",
-    ciclo: "",
-    carrera: "",
-    telefono: "",
-    email: "",
-    nivel_escrito: 1,
-    curso: "",
-    externo: false,
-    reubicacion: false,
-  },
+const initialStateSystem: SystemState = {
   route: window.location.pathname === "/dashboard" ? "dashboard" : "personal",
   course: "en",
   code: generateCode(1),
@@ -48,15 +26,10 @@ const initialState: RootState = {
   dbError: "",
 };
 
-export const myReducer = (
-  state = initialState,
-  action: ActionTypes
-): RootState => {
+const system = (state = initialStateSystem, action: ActionTypes) => {
   switch (action.type) {
     case SET_ROUTE:
       return { ...state, route: action.payload };
-    case SET_INFO:
-      return { ...state, info: action.payload };
     case SET_DB_ERROR:
       return { ...state, dbError: action.payload };
     case SET_CURRENT_LINK:
@@ -73,3 +46,32 @@ export const myReducer = (
       return state;
   }
 };
+
+const initialStateApplicant: Applicant = {
+  codigo: "",
+  nombre: "",
+  apellido_paterno: "",
+  apellido_materno: "",
+  genero: "",
+  ciclo: "",
+  carrera: "",
+  telefono: "",
+  email: "",
+  nivel_escrito: 1,
+  curso: "",
+  externo: false,
+  reubicacion: false,
+};
+
+const applicant = (state = initialStateApplicant, action: ActionTypes) => {
+  switch (action.type) {
+    case SET_APPLICANT:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+const rootReducer = combineReducers({ applicant, system });
+
+export { rootReducer, useTypedSelector };

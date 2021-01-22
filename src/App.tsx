@@ -59,7 +59,7 @@ function App() {
   const [saveResultsDB, { data }] = useMutation(SAVE_RESULTS_DB);
   data && dispatch(setCurrentLink(data.saveWrittenResults.meetLink));
   data && console.log("data", data);
-  let info = useTypedSelector((state) => state.info);
+  let info = useTypedSelector((state) => state.applicant);
 
   const handleGiveup = () => {
     dispatch(setRoute("result"));

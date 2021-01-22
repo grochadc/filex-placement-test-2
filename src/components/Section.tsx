@@ -6,7 +6,7 @@ import Question from "./Question";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
 
-import { State } from "../store/types";
+import { RootState } from "../store/types";
 
 const TEST_SECTION_QUERY = gql`
   query($course: String!, $level: Int!) {
@@ -35,7 +35,7 @@ const replaceAt = (arr: any, index: number, value: any) => [
 const sumArray = (arr: any) => arr.reduce((acc: any, curr: any) => acc + curr);
 
 const Section: React.FC<any> = (props) => {
-  const { level, course } = useSelector((state: State) => state);
+  const { level, course } = useSelector((state: RootState) => state.system);
   const { data, loading, error } = useQuery(TEST_SECTION_QUERY, {
     variables: { course: "en", level: level },
   });

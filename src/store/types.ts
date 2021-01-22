@@ -1,4 +1,4 @@
-export interface Info {
+export interface Applicant {
   codigo: string;
   nombre: string;
   apellido_paterno: string;
@@ -14,24 +14,33 @@ export interface Info {
   reubicacion: boolean;
 }
 
-export interface State {
-  info: Info | null;
-  course: string;
+export interface SystemState {
   route: string;
+  course: string;
   code: string;
   level: number;
-  finished: boolean;
-  counterLinks: number;
   currentLink: string;
   dbError: string;
+}
+
+export interface RootState {
+  applicant: Applicant;
+  system: SystemState;
+  settings: {
+    links: string[];
+  };
 }
 
 export const SET_DB_ERROR = "SET_DB_ERROR";
 export const SET_CURRENT_LINK = "SET_CURRENT_LINK";
 export const ADVANCE_LEVEL = "ADVANCE_LEVEL";
 export const FINISH_EXAM = "FINISH_EXAM";
-export const SET_INFO = "SET_INFO";
+export const SET_APPLICANT = "SET_APPLICANT";
 export const SET_ROUTE = "SET_ROUTE";
+export const CHANGE_LINK = "CHANGE_LINK";
+export const REMOVE_LINK = "REMOVE_LINK";
+export const SET_DEFAULT_LINKS = "SET_DEFAULT_LINKS";
+export const ADD_LINK = "ADD_LINK";
 
 interface setCurrentLinkAction {
   type: typeof SET_CURRENT_LINK;
@@ -52,7 +61,7 @@ interface setDbErrorAction {
 }
 
 interface setInfoAction {
-  type: typeof SET_INFO;
+  type: typeof SET_APPLICANT;
   payload: any;
 }
 
@@ -61,10 +70,34 @@ interface setRouteAction {
   payload: string;
 }
 
+interface removeLinkAction {
+  type: typeof REMOVE_LINK;
+  payload: { index: number };
+}
+
+interface changeLinkAction {
+  type: typeof CHANGE_LINK;
+  payload: { index: number; value: string };
+}
+
+interface setDefaultLinksAction {
+  type: typeof SET_DEFAULT_LINKS;
+  payload: string[];
+}
+
+interface addLinkAction {
+  type: typeof ADD_LINK;
+  payload: any;
+}
+
 export type ActionTypes =
   | setCurrentLinkAction
   | advanceLevelAction
   | finishExamAction
   | setDbErrorAction
   | setInfoAction
-  | setRouteAction;
+  | setRouteAction
+  | removeLinkAction
+  | changeLinkAction
+  | setDefaultLinksAction
+  | addLinkAction;
