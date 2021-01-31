@@ -1,73 +1,80 @@
 import React from "react";
-import {
-  render,
-  screen,
-  act,
-  waitForElement,
-  waitFor
-} from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
+import { GET_CARRERAS } from "./components/PersonalForm";
+import { TEST_SECTION_QUERY } from "./components/Section";
+import { MockedProvider } from "@apollo/client/testing";
 import { Provider } from "react-redux";
 import store from "./store";
 
-const personalInfo = [
-  { label: "Código:", value: "1234567890" },
-  { label: "Nombre:", value: "Pedro" },
-  { label: "Apellido Paterno:", value: "Paramo" },
-  { label: "Apellido Materno:", value: "Preciado" },
-  { label: "Teléfono Celular:", value: "3412345678" },
-  { label: "Correo Electrónico:", value: "pedro@mail.com" },
-  { label: "Carrera:", value: "Abogado" },
-  { label: "Curso:", value: "english" }
+const mocks = [
+  {
+    request: { query: GET_CARRERAS },
+    result: {
+      data: {
+        carreras: [{ name: "Abogado" }],
+        isClosed: false,
+      },
+    },
+  },
+  {
+    request: {
+      query: TEST_SECTION_QUERY,
+      variables: { course: "en", level: 1 },
+    },
+    result: {
+      data: {
+        section: {
+          questions: [
+            {
+              title: "Question title",
+              options: [
+                {
+                  text: "Option 1",
+                  correct: false,
+                },
+                {
+                  text: "Option 2",
+                  correct: true,
+                },
+              ],
+            },
+          ],
+          pageInfo: {
+            hasNextPage: true,
+            hasPreviousPage: false,
+          },
+        },
+      },
+    },
+  },
 ];
 
 describe("App", () => {
   test("Fills the personal information form", async () => {
     render(
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </MockedProvider>
+    );
+    await act(
+      async () => await new Promise((resolve) => setTimeout(resolve, 0))
     );
 
-    await act(async () => {
-      personalInfo.forEach(input =>
-        userEvent.type(screen.getByLabelText(input.label), input.value)
-      );
+    act(() => {
+      userEvent.type(screen.getByLabelText(/código/i), "1234567890");
+      userEvent.type(screen.getByLabelText(/nombre/i), "Pedro");
+      userEvent.type(screen.getByLabelText(/paterno/i), "Paramo");
+      userEvent.type(screen.getByLabelText(/materno/i), "Preciado");
+      userEvent.type(screen.getByLabelText(/celular/i), "3411234567");
+      userEvent.selectOptions(screen.getByTestId("carrera"), ["Abogado"]);
+      userEvent.type(screen.getByLabelText(/correo/i), "pedro@mail.com");
+      userEvent.selectOptions(screen.getByTestId("curso"), ["french"]);
     });
-    await act(async () => {
-      userEvent.click(screen.getByText("Enviar"));
-    });
-    screen.debug();
-  });
-
-  test("Advances to next level on enough correct answers", async () => {
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>
-    );
-    let answers = ["is", "cellphone", "are", "Jeniffer's", "What", "There is"];
-
-    await act(async () => {
-      personalInfo.forEach(input =>
-        userEvent.type(screen.getByLabelText(input.label), input.value)
-      );
-      userEvent.click(screen.getByText("Enviar"));
-
-      await waitForElement(() => {
-        expect(
-          screen.getByText("1. Jessica _______ a good dancer.")
-        ).toBeInTheDocument();
-      });
-    });
-
-    await act(async () => {
-      answers.forEach(answer => {
-        userEvent.click(screen.getByLabelText(answer));
-      });
-      userEvent.click(screen.getByText("Siguiente Seccion"));
-    });
-    expect(screen.getByText("Seccion 2")).toBeInTheDocument();
+    userEvent.click(screen.getByRole("button", { name: /enviar/i }));
+    expect(await screen.findByText(/seccion/i)).toBeInTheDocument();
   });
 });

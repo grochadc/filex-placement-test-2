@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 
 import { RootState } from "../store/types";
 
-const TEST_SECTION_QUERY = gql`
+export const TEST_SECTION_QUERY = gql`
   query($course: String!, $level: Int!) {
     section(course: $course, level: $level) {
       questions {
@@ -34,7 +34,21 @@ const replaceAt = (arr: any, index: number, value: any) => [
 
 const sumArray = (arr: any) => arr.reduce((acc: any, curr: any) => acc + curr);
 
-const Section: React.FC<any> = (props) => {
+const reducer = (state: any[], action: { type: String; payload?: any }) => {
+  switch (action.type) {
+    case "REPLACE_AT":
+      return [
+        ...state.slice(0, action.payload.index),
+        action.payload.value,
+        ...state.slice(action.payload.index + 1),
+      ];
+    default:
+      return state;
+  }
+};
+
+type SectionProps = { handleGiveup: () => void };
+const Section: React.FC<any> = (props: SectionProps) => {
   const { level, course } = useSelector((state: RootState) => state.system);
   const { data, loading, error } = useQuery(TEST_SECTION_QUERY, {
     variables: { course: "en", level: level },

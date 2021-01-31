@@ -10,7 +10,7 @@ import { Applicant } from "../store/types";
 import { useDispatch } from "react-redux";
 import { gql, useQuery } from "@apollo/client";
 
-const GET_CARRERAS = gql`
+export const GET_CARRERAS = gql`
   query {
     carreras {
       name
@@ -48,10 +48,6 @@ const PersonalForm = () => {
     dispatch(setRoute("test"));
   };
   const { data, loading } = useQuery(GET_CARRERAS);
-
-  const carreras = loading
-    ? ["Cargando..."]
-    : data.carreras.map((el: { name: string }) => el.name);
   const isClosed = loading ? false : data.isClosed;
 
   if (loading) return <div>Cargando...</div>;
@@ -61,6 +57,9 @@ const PersonalForm = () => {
         <h1>Por el momento no se estan aplicando examenes. Vuelve despues.</h1>
       </div>
     );
+  const carreras = loading
+    ? ["Cargando..."]
+    : data.carreras.map((el: { name: string }) => el.name);
   return (
     <div>
       <Formik
@@ -101,7 +100,6 @@ const PersonalForm = () => {
               <Form.Group controlId="externo">
                 <input
                   type="checkbox"
-                  id="externo"
                   value={(values.externo as unknown) as string}
                   onChange={handleChange}
                 />
@@ -172,6 +170,7 @@ const PersonalForm = () => {
                 <Form.Control
                   name="carrera"
                   as="select"
+                  data-testid="carrera"
                   value={values.carrera}
                   onChange={handleChange}
                   disabled={values.externo}
@@ -180,7 +179,9 @@ const PersonalForm = () => {
                     Elige una opcion...
                   </option>
                   {carreras.map((carrera: string, index: number) => (
-                    <option key={index}>{carrera}</option>
+                    <option key={index} value={carrera}>
+                      {carrera}
+                    </option>
                   ))}
                 </Form.Control>
                 {touched.carrera && errors.carrera ? (
@@ -191,6 +192,7 @@ const PersonalForm = () => {
                 <Form.Label id="curso">Curso:</Form.Label>
                 <Form.Control
                   aria-labelledby="curso"
+                  data-testid="curso"
                   name="curso"
                   as="select"
                   value={values.curso}
@@ -205,7 +207,6 @@ const PersonalForm = () => {
                 <input
                   type="checkbox"
                   name="reubicacion"
-                  id="reubicacion"
                   value={(values.reubicacion as unknown) as string}
                 />{" "}
                 Reubicacion
