@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import {
-  ActionTypes,
-  CHANGE_LINK,
-  REMOVE_LINK,
-  ADD_LINK,
-} from "../store/types";
+import { CHANGE_LINK, REMOVE_LINK, ADD_LINK } from "../store/types";
 import { changeLink, removeLink, addLink } from "../store/actions";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { useReducerMiddleware } from "./utils";
+import { useReducerMiddleware, Action, StoreAPI } from "./utils";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Button from "react-bootstrap/Button";
@@ -93,7 +88,7 @@ const MeetLinksForm = (props: LinksProps) => {
     }
   );
   const initialState = props.links;
-  const reducer = (state = initialState, action: ActionTypes) => {
+  const reducer = (state = initialState, action: Action) => {
     switch (action.type) {
       case CHANGE_LINK:
         return [
@@ -113,10 +108,12 @@ const MeetLinksForm = (props: LinksProps) => {
     }
   };
   const middleware = [
-    () => (next: any) => (action: ActionTypes) => {
+    (store: StoreAPI) => (next: (action: Action) => any) => (
+      action: Action
+    ) => {
       setShowUnsavedChanges(true);
       setUpdateLinksSuccess(false);
-      next(action);
+      return next(action);
     },
   ];
   const [links, dispatch] = useReducerMiddleware(
