@@ -2,17 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Container from "react-bootstrap/Container";
 
-interface RootState {
-  currentLink: string;
-  dbError: string;
-  level: number;
-  curso: string;
-}
-
 const Result = () => {
-  const { level, curso, currentLink, dbError } = useSelector(
-    (state: RootState) => state
+  const { level, course, currentLink } = useSelector(
+    (state: any) => state.system
   );
+  const dbError = undefined;
   return (
     <Container>
       <h2>Examen de Ubicación FILEX</h2>
@@ -21,7 +15,7 @@ const Result = () => {
         <div>
           <p>
             Haz click en el enlace para continuar con tu Ubicación:{" "}
-            {curso === "french" ? (
+            {course === "fr" ? (
               <a href="https://meet.google.com/kib-wbvn-doa">
                 {"https://meet.google.com/kib-wbvn-doa"}
               </a>

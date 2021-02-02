@@ -56,13 +56,12 @@ const SAVE_RESULTS_DB = gql`
 
 function App() {
   const dispatch = useDispatch();
-  const [saveResultsDB, { data }] = useMutation(SAVE_RESULTS_DB);
+  const [saveResultsDB, { data, error }] = useMutation(SAVE_RESULTS_DB);
   data && dispatch(setCurrentLink(data.saveWrittenResults.meetLink));
   data && console.log("data", data);
   let info = useTypedSelector((state) => state.applicant);
 
   const handleGiveup = () => {
-    dispatch(setRoute("result"));
     saveResultsDB({
       variables: {
         code: info.codigo,
@@ -80,6 +79,7 @@ function App() {
         curso: info.curso,
       },
     });
+    dispatch(setRoute("result"));
   };
   return (
     <div>

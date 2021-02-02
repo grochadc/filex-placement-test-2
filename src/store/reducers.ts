@@ -67,6 +67,8 @@ const applicant = (state = initialStateApplicant, action: ActionTypes) => {
   switch (action.type) {
     case SET_APPLICANT:
       return action.payload;
+    case ADVANCE_LEVEL:
+      return { ...state, nivel_escrito: state.nivel_escrito + 1 };
     default:
       return state;
   }

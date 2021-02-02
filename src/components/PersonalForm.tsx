@@ -74,7 +74,7 @@ const PersonalForm = () => {
           carrera: "Elige una opcion...",
           telefono: "",
           email: "",
-          nivel_escrito: 0,
+          nivel_escrito: 1,
           curso: "",
           externo: false,
           reubicacion: false,
