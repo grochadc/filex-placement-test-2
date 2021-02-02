@@ -34,19 +34,6 @@ const replaceAt = (arr: any, index: number, value: any) => [
 
 const sumArray = (arr: any) => arr.reduce((acc: any, curr: any) => acc + curr);
 
-const reducer = (state: any[], action: { type: String; payload?: any }) => {
-  switch (action.type) {
-    case "REPLACE_AT":
-      return [
-        ...state.slice(0, action.payload.index),
-        action.payload.value,
-        ...state.slice(action.payload.index + 1),
-      ];
-    default:
-      return state;
-  }
-};
-
 type SectionProps = { handleGiveup: () => void };
 const Section: React.FC<any> = (props: SectionProps) => {
   const { level, course } = useSelector((state: RootState) => state.system);
