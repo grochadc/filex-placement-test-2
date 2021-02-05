@@ -156,7 +156,7 @@ const PersonalForm = () => {
               <Form.Group controlId="email">
                 <Form.Label>Correo Electrónico:</Form.Label>
                 <Form.Control
-                  type="email"
+                  type="text"
                   name="email"
                   value={values.email}
                   onChange={handleChange}
