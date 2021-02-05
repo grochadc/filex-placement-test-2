@@ -7,6 +7,7 @@ import Section from "./components/Section";
 import PersonalForm from "./components/PersonalForm";
 import Dashboard from "./components/Dashboard";
 import RouterView from "./components/Router";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "./store/reducers";
@@ -82,26 +83,30 @@ function App() {
     dispatch(setRoute("result"));
   };
   return (
-    <div>
-      <RouterView route="personal">
-        <Jumbotron>
-          <Container>
-            <h1>EXAMEN DE UBICACION FILEX</h1>
-            <h3>Datos Personales</h3>
-          </Container>
-        </Jumbotron>
-        <PersonalForm />
-      </RouterView>
-      <RouterView route="test">
-        <Section handleGiveup={handleGiveup} />
-      </RouterView>
-      <RouterView route="result">
-        <Result />
-      </RouterView>
-      <RouterView route="dashboard">
-        <Dashboard />
-      </RouterView>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/dashboard">
+          <Dashboard />
+        </Route>
+        <Route path="/">
+          <RouterView route="personal">
+            <Jumbotron>
+              <Container>
+                <h1>EXAMEN DE UBICACION FILEX</h1>
+                <h3>Datos Personales</h3>
+              </Container>
+            </Jumbotron>
+            <PersonalForm />
+          </RouterView>
+          <RouterView route="test">
+            <Section handleGiveup={handleGiveup} />
+          </RouterView>
+          <RouterView route="result">
+            <Result />
+          </RouterView>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
