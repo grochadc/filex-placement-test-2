@@ -9,6 +9,7 @@ const carreras = [
   "Carrera en Enfermería (ENFE)",
   "Ciencia del Comportamiento con Orientación en Alimentación y Nutrición",
   "Ciencia del Comportamiento con orientación en Alimentación y Nutrición",
+  "Cirujano Dentista",
   "Cultura Física y Deportes",
   "Derecho",
   "Desarrollo Turístico Sustentable",
@@ -27,12 +28,12 @@ const carreras = [
   "Periodismo",
   "Protección Civil y Emergencias",
   "Psicología",
-  "Psicología con Orientación en Calidad de Vida y Salud",
-  "Psicología con Orientación en Calidad de Vida y Salud",
+  "Maestría en Psicología con Orientación en Calidad de Vida y Salud",
+  "Doctorado en Psicología con Orientación en Calidad de Vida y Salud",
   "Salud Pública",
   "Seguridad Laboral",
   "Tecnologías para el Aprendizaje",
-  "Trabajo Social"
+  "Trabajo Social",
 ];
 
 export default carreras;
