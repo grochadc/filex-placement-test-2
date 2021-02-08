@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { finishExam, advanceLevel } from "../store/actions";
+import { advanceLevel } from "../store/actions";
 import { gql, useQuery } from "@apollo/client";
+import { useHistory } from "react-router-dom";
 import Question from "./Question";
-import Jumbotron from "react-bootstrap/Jumbotron";
 import Button from "react-bootstrap/Button";
+import { Header } from "./componentUtils";
 
 import { RootState } from "../store/types";
 
@@ -32,29 +33,86 @@ const replaceAt = (arr: any, index: number, value: any) => [
   ...arr.slice(index + 1),
 ];
 
-const sumArray = (arr: any) => arr.reduce((acc: any, curr: any) => acc + curr);
+const sumArray = (arr: number[]) =>
+  arr.reduce((acc: number, curr: number) => acc + curr);
 
 type SectionProps = { handleGiveup: () => void };
 const Section: React.FC<any> = (props: SectionProps) => {
   const { level, course } = useSelector((state: RootState) => state.system);
+  const history = useHistory();
+
+  const handleQueryComplete: (data: any) => void = (data) =>
+    localDispatch(actionCreators.resetValues(data.section.questions.length));
   const { data, loading, error } = useQuery(TEST_SECTION_QUERY, {
     variables: { course: "en", level: level },
+    onCompleted: handleQueryComplete,
   });
 
-  const questions = data ? data.section.questions : [];
-  const [answers, setAnswers] = useState(new Array(questions.length).fill(0));
-  const [checked, setChecked] = useState(new Array(questions.length).fill(0));
-  const [resetOptions, setResetOptions] = useState(false);
+  const questions = data ? data.section.questions : [0];
+  const initialState = {
+    answers: new Array(10).fill(0),
+    checked: new Array(10).fill(0),
+    pass: false,
+    answeredMin: false,
+  };
+  const reducer = (state: any, action: { type: string; payload?: any }) => {
+    switch (action.type) {
+      case "SET_ANSWERS":
+        return {
+          ...state,
+          answers: replaceAt(
+            state.answers,
+            action.payload.index,
+            action.payload.correct ? 1 : 0
+          ),
+          checked: replaceAt(state.checked, action.payload.index, 1),
+        };
+      case "RESET_VALUES":
+        return {
+          ...state,
+          answers: new Array(action.payload.quantity).fill(0),
+          checked: new Array(action.payload.quantity).fill(0),
+          pass: false,
+          answeredMin: false,
+        };
+      case "SET_ANSWEREDMIN":
+        return {
+          ...state,
+          answeredMin: sumArray(state.checked) > state.answers.length / 2,
+        };
+      case "CHECK_EXAM":
+        return {
+          ...state,
+          pass: sumArray(state.answers) > state.answers.length / 2,
+        };
+      default:
+        return state;
+    }
+  };
 
-  const grade = answers.length ? sumArray(answers) : 0;
-  let pass = grade > questions.length / 2;
-  let answeredMin = checked.length
-    ? sumArray(checked) > questions.length / 2
-    : false;
+  const actionCreators = {
+    setAnswers: (index: number, correct: boolean) => {
+      return {
+        type: "SET_ANSWERS",
+        payload: { index: index, correct: correct },
+      };
+    },
+    resetValues: (quantity: number) => {
+      return { type: "RESET_VALUES", payload: { quantity: quantity } };
+    },
+    checkExam: () => {
+      return { type: "CHECK_EXAM" };
+    },
+    setAnsweredMin: () => {
+      return { type: "SET_ANSWEREDMIN" };
+    },
+  };
+  const [localState, localDispatch] = useReducer(reducer, initialState);
+  const [resetOptions, setResetOptions] = useState(false);
 
   const dispatch = useDispatch();
   const nextLevel = (pass: boolean) =>
-    pass ? dispatch(advanceLevel()) : dispatch(finishExam());
+    pass ? dispatch(advanceLevel()) : history.push("/result");
 
   if (loading) {
     return <p>Loading...</p>;
@@ -64,18 +122,18 @@ const Section: React.FC<any> = (props: SectionProps) => {
 
   return (
     <div>
-      <Jumbotron>
-        <h1>EXAMEN DE UBICACION FILEX</h1>
+      <Header>
         <h2>{course === "en" ? "Inglés" : "Francés"}</h2>
         <h3>Seccion {level}</h3>
-      </Jumbotron>
+      </Header>
       {questions.map((question: any, index: number) => {
         return (
           <Question
             key={index}
             handleSelection={(correct: boolean) => {
-              setAnswers(replaceAt(answers, index, correct ? 1 : 0));
-              setChecked(replaceAt(checked, index, 1));
+              localDispatch(actionCreators.setAnswers(index, correct));
+              localDispatch(actionCreators.setAnsweredMin());
+              localDispatch(actionCreators.checkExam());
             }}
             questionObj={question}
             questionIndex={index}
@@ -89,12 +147,10 @@ const Section: React.FC<any> = (props: SectionProps) => {
       </Button>
       {!data.hasNextPage ? ( //last section?
         <Button
-          disabled={!answeredMin}
+          disabled={!localState.answeredMin}
           variant="primary"
           onClick={() => {
-            nextLevel(pass);
-            setAnswers(new Array(questions.length).fill(0));
-            setChecked(new Array(questions.length).fill(0));
+            nextLevel(localState.pass);
             setResetOptions(true);
             window.scrollTo(0, 0);
           }}

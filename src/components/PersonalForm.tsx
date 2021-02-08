@@ -5,10 +5,11 @@ import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
-import { setApplicant, setRoute } from "../store/actions";
+import { setApplicant } from "../store/actions";
 import { Applicant } from "../store/types";
 import { useDispatch } from "react-redux";
 import { gql, useQuery } from "@apollo/client";
+import { useHistory } from "react-router-dom";
 
 export const GET_CARRERAS = gql`
   query {
@@ -42,13 +43,17 @@ const InformationSchema = Yup.object().shape({
 });
 
 const PersonalForm = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const handleSubmit = (values: Applicant) => {
     dispatch(setApplicant(values));
-    dispatch(setRoute("test"));
+    history.push("test");
   };
   const { data, loading } = useQuery(GET_CARRERAS);
-  const isClosed = loading ? false : data.isClosed;
+  const isClosed = loading ? false : data && data.isClosed;
+  const carreras = loading
+    ? false
+    : data && data.carreras.map((el: { name: string }) => el.name);
 
   if (loading) return <div>Cargando...</div>;
   if (isClosed)
@@ -57,9 +62,6 @@ const PersonalForm = () => {
         <h1>Por el momento no se estan aplicando examenes. Vuelve despues.</h1>
       </div>
     );
-  const carreras = loading
-    ? ["Cargando..."]
-    : data.carreras.map((el: { name: string }) => el.name);
   return (
     <div>
       <Formik
@@ -102,6 +104,7 @@ const PersonalForm = () => {
                   type="checkbox"
                   value={(values.externo as unknown) as string}
                   onChange={handleChange}
+                  id="externo"
                 />
                 <Form.Label> Externo</Form.Label>
               </Form.Group>

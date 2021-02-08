@@ -8,7 +8,7 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 
-const CLOSE_EXAM = gql`
+export const CLOSE_EXAM = gql`
   mutation {
     closeExam {
       isClosed
@@ -16,14 +16,14 @@ const CLOSE_EXAM = gql`
   }
 `;
 
-const GET_DEFAULT_SETTINGS = gql`
+export const GET_DEFAULT_SETTINGS = gql`
   query {
     isClosed
     meetLinks
   }
 `;
 
-const Dashboard = () => {
+export const Dashboard = () => {
   const { loading: loadingDefaults, data: defaults } = useQuery(
     GET_DEFAULT_SETTINGS
   );
@@ -41,8 +41,8 @@ const Dashboard = () => {
   );
 };
 
-const CloseExamToggle = (props: {
-  isClosed: any;
+export const CloseExamToggle = (props: {
+  isClosed: boolean;
   handleToggle: () => void;
 }) => {
   const [isClosed, setIsClosed] = useState(props.isClosed);
@@ -59,10 +59,10 @@ const CloseExamToggle = (props: {
         value={isClosed}
         onChange={handleChange}
       >
-        <ToggleButton value={false} variant="secondary">
+        <ToggleButton value={false} checked={false} variant="secondary">
           Open
         </ToggleButton>
-        <ToggleButton value={true} variant="secondary">
+        <ToggleButton value={true} checked={true} variant="secondary">
           Close
         </ToggleButton>
       </ToggleButtonGroup>
@@ -80,7 +80,7 @@ interface LinksProps {
   links: string[];
 }
 
-const MeetLinksForm = (props: LinksProps) => {
+export const MeetLinksForm = (props: LinksProps) => {
   const [updateServerLinks, { loading: updateLinksLoading }] = useMutation(
     UPDATE_LINKS,
     {

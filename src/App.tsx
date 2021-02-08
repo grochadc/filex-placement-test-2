@@ -1,12 +1,10 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Container from "react-bootstrap/Container";
 import Result from "./components/Result";
 import Section from "./components/Section";
 import PersonalForm from "./components/PersonalForm";
 import Dashboard from "./components/Dashboard";
-import RouterView from "./components/Router";
+import { Header } from "./components/componentUtils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
@@ -88,22 +86,17 @@ function App() {
         <Route path="/dashboard">
           <Dashboard />
         </Route>
+        <Route path="/test">
+          <Section handleGiveup={handleGiveup} />
+        </Route>
+        <Route path="/result">
+          <Result />
+        </Route>
         <Route path="/">
-          <RouterView route="personal">
-            <Jumbotron>
-              <Container>
-                <h1>EXAMEN DE UBICACION FILEX</h1>
-                <h3>Datos Personales</h3>
-              </Container>
-            </Jumbotron>
-            <PersonalForm />
-          </RouterView>
-          <RouterView route="test">
-            <Section handleGiveup={handleGiveup} />
-          </RouterView>
-          <RouterView route="result">
-            <Result />
-          </RouterView>
+          <Header>
+            <h3>Datos Personales</h3>
+          </Header>
+          <PersonalForm />
         </Route>
       </Switch>
     </Router>
