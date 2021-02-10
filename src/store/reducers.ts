@@ -42,6 +42,8 @@ const system = (state = initialStateSystem, action: ActionTypes) => {
       };
     case FINISH_EXAM:
       return { ...state, route: "result" };
+    case SET_APPLICANT:
+      return { ...state, course: action.payload.curso };
     default:
       return state;
   }

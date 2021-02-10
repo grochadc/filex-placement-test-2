@@ -202,8 +202,8 @@ const PersonalForm = () => {
                   onChange={handleChange}
                 >
                   <option>Selecciona el curso:</option>
-                  <option value="english">Inglés</option>
-                  <option value="french">Francés</option>
+                  <option value="en">Inglés</option>
+                  <option value="fr">Francés</option>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId="reubicacion">

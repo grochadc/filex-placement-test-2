@@ -41,10 +41,12 @@ const Section: React.FC<any> = (props: SectionProps) => {
   const { level, course } = useSelector((state: RootState) => state.system);
   const history = useHistory();
 
+  console.log("Getting exam for course ", course);
+
   const handleQueryComplete: (data: any) => void = (data) =>
     localDispatch(actionCreators.resetValues(data.section.questions.length));
   const { data, loading, error } = useQuery(TEST_SECTION_QUERY, {
-    variables: { course: "en", level: level },
+    variables: { course: course, level: level },
     onCompleted: handleQueryComplete,
   });
 
