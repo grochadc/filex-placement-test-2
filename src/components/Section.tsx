@@ -41,8 +41,6 @@ const Section: React.FC<any> = (props: SectionProps) => {
   const { level, course } = useSelector((state: RootState) => state.system);
   const history = useHistory();
 
-  console.log("Getting exam for course ", course);
-
   const handleQueryComplete: (data: any) => void = (data) =>
     localDispatch(actionCreators.resetValues(data.section.questions.length));
   const { data, loading, error } = useQuery(TEST_SECTION_QUERY, {
@@ -113,8 +111,14 @@ const Section: React.FC<any> = (props: SectionProps) => {
   const [resetOptions, setResetOptions] = useState(false);
 
   const dispatch = useDispatch();
-  const nextLevel = (pass: boolean) =>
-    pass ? dispatch(advanceLevel()) : history.push("/result");
+  const nextLevel = (pass: boolean) => {
+    if (pass) {
+      dispatch(advanceLevel());
+    } else {
+      props.handleGiveup();
+      history.push("/result");
+    }
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -144,7 +148,13 @@ const Section: React.FC<any> = (props: SectionProps) => {
         );
       })}
       <br />
-      <Button variant="primary" onClick={() => props.handleGiveup()}>
+      <Button
+        variant="primary"
+        onClick={() => {
+          history.push("/result");
+          props.handleGiveup();
+        }}
+      >
         Rendirse
       </Button>
       {!data.hasNextPage ? ( //last section?
