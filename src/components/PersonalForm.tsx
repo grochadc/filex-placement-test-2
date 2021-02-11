@@ -218,6 +218,12 @@ const PersonalForm = () => {
                 Enviar
               </Button>
             </Form>
+            <Alert variant="warning" style={{ margin: "1em" }}>
+              <small>
+                Es probable que al finalizar el examen escrito debas hacer un
+                examen oral.
+              </small>
+            </Alert>
           </Container>
         )}
       </Formik>
