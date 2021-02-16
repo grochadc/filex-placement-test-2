@@ -8,6 +8,12 @@ import { MockedProvider } from "@apollo/client/testing";
 import { Provider } from "react-redux";
 import store from "./store";
 
+type TestElement = Document | Element | Window | Node;
+
+function hasInputValue(e: TestElement, inputValue: string) {
+  return screen.getByDisplayValue(inputValue) === e;
+}
+
 const mocks = [
   {
     request: { query: GET_CARRERAS },
@@ -21,7 +27,7 @@ const mocks = [
   {
     request: {
       query: TEST_SECTION_QUERY,
-      variables: { course: "en", level: 1 },
+      variables: { course: "fr", level: 1 },
     },
     result: {
       data: {
@@ -64,16 +70,26 @@ describe("App", () => {
       async () => await new Promise((resolve) => setTimeout(resolve, 0))
     );
 
-    act(() => {
-      userEvent.type(screen.getByLabelText(/código/i), "1234567890");
-      userEvent.type(screen.getByLabelText(/nombre/i), "Pedro");
-      userEvent.type(screen.getByLabelText(/paterno/i), "Paramo");
-      userEvent.type(screen.getByLabelText(/materno/i), "Preciado");
-      userEvent.type(screen.getByLabelText(/celular/i), "3411234567");
-      userEvent.selectOptions(screen.getByTestId("carrera"), ["Abogado"]);
-      userEvent.type(screen.getByLabelText(/correo/i), "pedro@mail.com");
-      userEvent.selectOptions(screen.getByTestId("curso"), ["french"]);
-    });
+    const inputs = {
+      codigo: screen.getByLabelText(/código/i),
+      nombre: screen.getByLabelText(/nombre/i),
+      paterno: screen.getByLabelText(/paterno/i),
+      materno: screen.getByLabelText(/materno/i),
+      celular: screen.getByLabelText(/celular/i),
+      carrera: screen.getByTestId("carrera"),
+      correo: screen.getByLabelText(/correo/i),
+      curso: screen.getByTestId("curso"),
+    };
+
+    userEvent.type(inputs.codigo, "1234567890");
+    userEvent.type(inputs.nombre, "Pedro");
+    userEvent.type(inputs.paterno, "Paramo");
+    userEvent.type(inputs.materno, "Preciado");
+    userEvent.type(inputs.celular, "3411234567");
+    userEvent.selectOptions(inputs.carrera, ["Abogado"]);
+    userEvent.type(inputs.correo, "pedro@mail.com");
+    userEvent.selectOptions(inputs.curso, ["fr"]);
+
     userEvent.click(screen.getByRole("button", { name: /enviar/i }));
     expect(await screen.findByText(/seccion/i)).toBeInTheDocument();
   });

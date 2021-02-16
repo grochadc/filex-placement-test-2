@@ -49,13 +49,16 @@ const PersonalForm = () => {
     dispatch(setApplicant(values));
     history.push("test");
   };
-  const { data, loading } = useQuery(GET_CARRERAS);
+  const { data, loading, error } = useQuery(GET_CARRERAS);
   const isClosed = loading ? false : data && data.isClosed;
   const carreras = loading
-    ? false
-    : data && data.carreras.map((el: { name: string }) => el.name);
+    ? []
+    : data?.carreras.map((el: { name: string }) => el.name);
 
   if (loading) return <div>Cargando...</div>;
+  if (error?.networkError)
+    return <div>No pudimos conectarnos con el servidor.</div>;
+  if (error) return <div data-testid="gql-errors">{JSON.stringify(error)}</div>;
   if (isClosed)
     return (
       <div>
