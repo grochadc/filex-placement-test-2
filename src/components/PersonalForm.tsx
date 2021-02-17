@@ -10,6 +10,7 @@ import { Applicant } from "../store/types";
 import { useDispatch } from "react-redux";
 import { gql, useQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
+import { Loading, Error } from "./utils/components";
 
 export const GET_CARRERAS = gql`
   query {
@@ -55,10 +56,15 @@ const PersonalForm = () => {
     ? []
     : data?.carreras.map((el: { name: string }) => el.name);
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <Loading />;
   if (error?.networkError)
     return <div>No pudimos conectarnos con el servidor.</div>;
-  if (error) return <div data-testid="gql-errors">{JSON.stringify(error)}</div>;
+  if (error)
+    return (
+      <Error>
+        <div data-testid="gql-errors">{JSON.stringify(error)}</div>
+      </Error>
+    );
   if (isClosed)
     return (
       <div>

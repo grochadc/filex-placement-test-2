@@ -7,6 +7,7 @@ import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import { Loading, Error } from "./utils/components";
 
 export const CLOSE_EXAM = gql`
   mutation {
@@ -24,14 +25,17 @@ export const GET_DEFAULT_SETTINGS = gql`
 `;
 
 export const Dashboard = () => {
-  const { loading: loadingDefaults, data: defaults } = useQuery(
-    GET_DEFAULT_SETTINGS
-  );
+  const {
+    loading: loadingDefaults,
+    data: defaults,
+    error: errorDefaults,
+  } = useQuery(GET_DEFAULT_SETTINGS);
   const [closeExam] = useMutation(CLOSE_EXAM, {
     onCompleted: (data) =>
       alert(`Exam is now ${data.closeExam.isClosed ? "closed" : "open"}`),
   });
-  if (loadingDefaults) return <p>Loading...</p>;
+  if (loadingDefaults) return <Loading />;
+  if (errorDefaults) return <Error>{JSON.stringify(errorDefaults)}</Error>;
   return (
     <>
       <h1>Settings</h1>
@@ -81,12 +85,12 @@ interface LinksProps {
 }
 
 export const MeetLinksForm = (props: LinksProps) => {
-  const [updateServerLinks, { loading: updateLinksLoading }] = useMutation(
-    UPDATE_LINKS,
-    {
-      onCompleted: () => setUpdateLinksSuccess(true),
-    }
-  );
+  const [
+    updateServerLinks,
+    { loading: updateLinksLoading, error: updateLinksError },
+  ] = useMutation(UPDATE_LINKS, {
+    onCompleted: () => setUpdateLinksSuccess(true),
+  });
   const initialState = props.links;
   const reducer = (state = initialState, action: Action) => {
     switch (action.type) {
@@ -137,6 +141,8 @@ export const MeetLinksForm = (props: LinksProps) => {
     updateServerLinks({ variables: { links: links } });
     setShowUnsavedChanges(false);
   };
+
+  if (updateLinksError) <Error>{JSON.stringify(updateLinksError)}</Error>;
   return (
     <>
       <h4>Oral Exam Links:</h4>

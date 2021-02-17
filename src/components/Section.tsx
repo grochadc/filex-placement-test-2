@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import Question from "./Question";
 import Button from "react-bootstrap/Button";
 import { Header } from "./componentUtils";
+import { Loading, Error } from "./utils/components";
 
 import { RootState } from "../store/types";
 
@@ -120,12 +121,8 @@ const Section: React.FC<any> = (props: SectionProps) => {
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  } else if (error) {
-    return <p>Error... {JSON.stringify(error)}</p>;
-  }
-
+  if (loading) return <Loading />;
+  if (error) return <Error>{JSON.stringify(error)}</Error>;
   return (
     <div>
       <Header>
