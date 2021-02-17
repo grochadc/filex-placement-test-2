@@ -34,6 +34,11 @@ function App() {
           <PersonalForm />
         </Route>
       </Switch>
+      <>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd3Q1mA6cdkxBQxgbuo4rc6O2dkZXaBK_amkv7heFbwwiU9FQ/viewform?usp=sf_link">
+          Reportar un problema con la aplicación.
+        </a>
+      </>
     </Router>
   );
 }
