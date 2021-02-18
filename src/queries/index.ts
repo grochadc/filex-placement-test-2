@@ -40,3 +40,12 @@ export const SAVE_RESULTS_DB = gql`
     }
   }
 `;
+
+export const GET_CARRERAS = gql`
+  query {
+    carreras {
+      name
+    }
+    isClosed
+  }
+`;

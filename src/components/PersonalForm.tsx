@@ -8,18 +8,17 @@ import * as Yup from "yup";
 import { setApplicant } from "../store/actions";
 import { Applicant } from "../store/types";
 import { useDispatch } from "react-redux";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { Loading, Error } from "./utils/components";
+import { GET_CARRERAS } from "../queries";
+import allowedStudents from "../data/allowedStudents";
 
-export const GET_CARRERAS = gql`
-  query {
-    carreras {
-      name
-    }
-    isClosed
-  }
-`;
+Yup.addMethod<Yup.StringSchema>(Yup.string, "allowed", function (arr, message) {
+  return this.test("isAllowed", message, (value) => {
+    return arr.includes(value);
+  });
+});
 
 const InformationSchema = Yup.object().shape({
   nombre: Yup.string()
@@ -34,7 +33,13 @@ const InformationSchema = Yup.object().shape({
     .min(2, "Apellido muy corto")
     .max(50, "Apellido muy largo")
     .required("Obligatorio"),
-  codigo: Yup.number().min(7, "Codigo muy corto"),
+  codigo: Yup.string()
+    .min(7, "Codigo muy corto")
+    //@ts-ignore
+    .allowed(
+      allowedStudents,
+      "Hoy solo pueden hacer examen los alumnos de nuevo ingreso. Vuelve el dia correspondiente."
+    ),
   externo: Yup.boolean(),
   telefono: Yup.number().min(10, "Numero muy corto"),
   carrera: Yup.string(),
