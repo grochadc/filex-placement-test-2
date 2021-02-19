@@ -120,7 +120,7 @@ const PersonalForm = () => {
                   onChange={handleChange}
                   id="externo"
                 />
-                <Form.Label> Externo</Form.Label>
+                <Form.Label> Externo (No eres alumno Cusur)</Form.Label>
               </Form.Group>
               <Form.Group controlId="nombre">
                 <Form.Label>Nombre:</Form.Label>
