@@ -154,7 +154,7 @@ const Section: React.FC<any> = (props: SectionProps) => {
       >
         Rendirse
       </Button>
-      {!data.hasNextPage ? ( //last section?
+      {data.section.pageInfo.hasNextPage ? (
         <Button
           disabled={!localState.answeredMin}
           variant="primary"
@@ -164,9 +164,18 @@ const Section: React.FC<any> = (props: SectionProps) => {
             window.scrollTo(0, 0);
           }}
         >
-          Continuar Exámen
+          Continuar Examen
         </Button>
-      ) : null}
+      ) : (
+        <Button
+          onClick={() => {
+            props.handleGiveup();
+            history.push("/result");
+          }}
+        >
+          Calificar examen
+        </Button>
+      )}
     </div>
   );
 };
