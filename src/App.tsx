@@ -13,6 +13,13 @@ import { setRoute } from "./store/actions";
 import { useTypedSelector } from "./store/reducers";
 import { RootState } from "./store/types";
 
+function updateDocumentTitle() {
+  let currentTitle = document.title;
+  if (window.location.hostname === "localhost") {
+    document.title = `LOCAL ${currentTitle}`;
+  }
+}
+
 function App() {
   const [logOut] = useLazyQuery(LOG_OUT);
   const dispatch = useDispatch();
@@ -20,6 +27,7 @@ function App() {
     (state: RootState) => state.system.isDoingExam
   );
   useEffect(() => {
+    updateDocumentTitle();
     window.addEventListener("beforeunload", () => {
       if (isDoingExam) logOut();
     });
