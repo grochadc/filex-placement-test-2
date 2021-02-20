@@ -10,6 +10,7 @@ import {
   SET_DB_ERROR,
   SET_APPLICANT,
   SET_ROUTE,
+  START_EXAM,
 } from "./types";
 import { generateCode } from "../lib";
 
@@ -19,6 +20,7 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 const initialStateSystem: SystemState = {
   route: window.location.pathname === "/dashboard" ? "dashboard" : "personal",
+  isDoingExam: false,
   course: "en",
   code: generateCode(1),
   level: 1,
@@ -41,9 +43,11 @@ const system = (state = initialStateSystem, action: ActionTypes) => {
         level: state.level + 1,
       };
     case FINISH_EXAM:
-      return { ...state, route: "result" };
+      return { ...state, route: "result", isDoingExam: false };
     case SET_APPLICANT:
       return { ...state, course: action.payload.curso };
+    case START_EXAM:
+      return { ...state, isDoingExam: true };
     default:
       return state;
   }

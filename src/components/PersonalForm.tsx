@@ -5,9 +5,9 @@ import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import * as Yup from "yup";
-import { setApplicant } from "../store/actions";
-import { Applicant } from "../store/types";
 import { useDispatch } from "react-redux";
+import { setApplicant, startExam } from "../store/actions";
+import { Applicant } from "../store/types";
 import { useQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { Loading, Error } from "./utils/components";
@@ -53,6 +53,7 @@ const PersonalForm = () => {
   const dispatch = useDispatch();
   const handleSubmit = (values: Applicant) => {
     dispatch(setApplicant(values));
+    dispatch(startExam());
     history.push("test");
   };
   const { data, loading, error } = useQuery(GET_CARRERAS);

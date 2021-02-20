@@ -12,6 +12,7 @@ import { RootState } from "../store/types";
 
 export const TEST_SECTION_QUERY = gql`
   query($course: String!, $level: Int!) {
+    logIn
     section(course: $course, level: $level) {
       questions {
         title

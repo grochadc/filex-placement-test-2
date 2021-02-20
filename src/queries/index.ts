@@ -1,5 +1,11 @@
 import { gql } from "@apollo/client";
 
+export const LOG_OUT = gql`
+  {
+    logOut
+  }
+`;
+
 export const SAVE_RESULTS_DB = gql`
   mutation Results(
     $code: String!

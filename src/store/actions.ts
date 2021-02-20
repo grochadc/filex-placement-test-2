@@ -10,6 +10,7 @@ import {
   SET_DEFAULT_LINKS,
   REMOVE_LINK,
   ADD_LINK,
+  START_EXAM,
 } from "./types";
 
 export function advanceLevel(): ActionTypes {
@@ -21,6 +22,12 @@ export function advanceLevel(): ActionTypes {
 export function finishExam(): ActionTypes {
   return {
     type: FINISH_EXAM,
+  };
+}
+
+export function startExam(): ActionTypes {
+  return {
+    type: START_EXAM,
   };
 }
 

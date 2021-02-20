@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import Container from "react-bootstrap/Container";
 import { useTypedSelector } from "../store/reducers";
 import { useHistory } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { SAVE_RESULTS_DB } from "../queries";
+import { useMutation, useLazyQuery } from "@apollo/client";
+import { SAVE_RESULTS_DB, LOG_OUT } from "../queries";
 import { Error, Loading } from "./utils/components";
 
 const Result = () => {
@@ -13,8 +13,10 @@ const Result = () => {
   const [saveResultsDB, { data, error, loading }] = useMutation(
     SAVE_RESULTS_DB
   );
+  const [logOut] = useLazyQuery(LOG_OUT);
   let info = useTypedSelector((state) => state.applicant);
   useEffect(() => {
+    logOut();
     if (info.codigo) {
       console.log("An applicant was found, posting to db");
       saveResultsDB({
@@ -38,7 +40,7 @@ const Result = () => {
       console.log("No applicant found, redirecting to home");
       history.push("/");
     }
-  }, [info, saveResultsDB, history]);
+  }, [info, saveResultsDB, history, logOut]);
   const meetLink = data && data.saveWrittenResults.meetLink;
 
   if (loading) return <Loading />;

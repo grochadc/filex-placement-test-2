@@ -16,6 +16,7 @@ export interface Applicant {
 
 export interface SystemState {
   route: string;
+  isDoingExam: boolean;
   course: string;
   code: string;
   level: number;
@@ -41,6 +42,7 @@ export const CHANGE_LINK = "CHANGE_LINK";
 export const REMOVE_LINK = "REMOVE_LINK";
 export const SET_DEFAULT_LINKS = "SET_DEFAULT_LINKS";
 export const ADD_LINK = "ADD_LINK";
+export const START_EXAM = "START_EXAM";
 
 interface setCurrentLinkAction {
   type: typeof SET_CURRENT_LINK;
@@ -49,6 +51,10 @@ interface setCurrentLinkAction {
 
 interface advanceLevelAction {
   type: typeof ADVANCE_LEVEL;
+}
+
+interface startExamAction {
+  type: typeof START_EXAM;
 }
 
 interface finishExamAction {
@@ -100,4 +106,5 @@ export type ActionTypes =
   | removeLinkAction
   | changeLinkAction
   | setDefaultLinksAction
-  | addLinkAction;
+  | addLinkAction
+  | startExamAction;
