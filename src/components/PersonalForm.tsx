@@ -125,6 +125,7 @@ const PersonalForm = () => {
                   value={(values.externo as unknown) as string}
                   onChange={handleChange}
                   id="externo"
+                  disabled
                 />
                 <Form.Label> Externo (No eres alumno Cusur)</Form.Label>
               </Form.Group>
