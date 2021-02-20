@@ -91,7 +91,7 @@ const PersonalForm = () => {
           nombre: "",
           apellido_paterno: "",
           apellido_materno: "",
-          genero: "",
+          genero: "M",
           ciclo: "",
           carrera: "Elige una opcion...",
           telefono: "",
