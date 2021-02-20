@@ -166,7 +166,12 @@ const PersonalForm = () => {
               </Form.Group>
               <Form.Group>
                 <Form.Label>Género:</Form.Label>
-                <Form.Control as="select" value={values.genero}>
+                <Form.Control
+                  name="genero"
+                  as="select"
+                  value={values.genero}
+                  onChange={handleChange}
+                >
                   <option value="M">M</option>
                   <option value="F">F</option>
                 </Form.Control>
