@@ -40,6 +40,11 @@ const InformationSchema = Yup.object().shape({
       allowedStudents,
       "Hoy solo pueden hacer examen los alumnos de nuevo ingreso. Vuelve el dia correspondiente."
     ),
+  genero: Yup.mixed().oneOf(["M", "F"]),
+  ciclo: Yup.string().matches(
+    /\d{4}(A|B)/,
+    "El ciclo debe tener el formato de cuatro digitos para el año y la letra A o B en mayúscula. Ej. 2021A"
+  ),
   externo: Yup.boolean(),
   telefono: Yup.number().min(10, "Numero muy corto"),
   carrera: Yup.string(),
@@ -159,6 +164,13 @@ const PersonalForm = () => {
                   <Alert variant="warning">{errors.apellido_materno}</Alert>
                 ) : null}
               </Form.Group>
+              <Form.Group>
+                <Form.Label>Género:</Form.Label>
+                <Form.Control as="select" value={values.genero}>
+                  <option value="M">M</option>
+                  <option value="F">F</option>
+                </Form.Control>
+              </Form.Group>
               <Form.Group controlId="telefono">
                 <Form.Label>Teléfono Celular:</Form.Label>
                 <Form.Control
@@ -181,6 +193,18 @@ const PersonalForm = () => {
                 />
                 {touched.email && errors.email ? (
                   <Alert variant="warning">{errors.email}</Alert>
+                ) : null}
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Ciclo de ingreso a CUSur (ej: 2021A):</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="ciclo"
+                  value={values.ciclo}
+                  onChange={handleChange}
+                />
+                {touched.ciclo && errors.ciclo ? (
+                  <Alert variant="warning">{errors.ciclo}</Alert>
                 ) : null}
               </Form.Group>
               <Form.Group controlId="carrera">
