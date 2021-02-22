@@ -3,6 +3,7 @@ import { CHANGE_LINK, REMOVE_LINK, ADD_LINK } from "../store/types";
 import { changeLink, removeLink, addLink } from "../store/actions";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useReducerMiddleware, Action, StoreAPI } from "./utils";
+import Form from "react-bootstrap/Form";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Button from "react-bootstrap/Button";
@@ -150,7 +151,7 @@ export const MeetLinksForm = (props: LinksProps) => {
         <ol>
           {links.map((link: string, index: number) => (
             <li key={index}>
-              <input
+              <Form.Control
                 type="text"
                 value={link}
                 onChange={(e) => handleChange(e.target.value, index)}
