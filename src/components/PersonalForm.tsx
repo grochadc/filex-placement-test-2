@@ -12,7 +12,6 @@ import { useQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { Loading, Error } from "./utils/components";
 import { GET_CARRERAS } from "../queries";
-import allowedStudents from "../data/allowedStudents";
 
 Yup.addMethod<Yup.StringSchema>(Yup.string, "allowed", function (arr, message) {
   return this.test("isAllowed", message, (value) => {
@@ -33,13 +32,7 @@ const InformationSchema = Yup.object().shape({
     .min(2, "Apellido muy corto")
     .max(50, "Apellido muy largo")
     .required("Obligatorio"),
-  codigo: Yup.string()
-    .min(7, "Codigo muy corto")
-    //@ts-ignore
-    .allowed(
-      allowedStudents,
-      "Hoy solo pueden hacer examen los alumnos de nuevo ingreso. Vuelve el dia correspondiente."
-    ),
+  codigo: Yup.string().min(7, "Codigo muy corto"),
   genero: Yup.mixed().oneOf(["M", "F"]),
   ciclo: Yup.string().matches(
     /\d{4}(A|B)/,
@@ -125,7 +118,6 @@ const PersonalForm = () => {
                   value={(values.externo as unknown) as string}
                   onChange={handleChange}
                   id="externo"
-                  disabled
                 />
                 <Form.Label> Externo (No eres alumno Cusur)</Form.Label>
               </Form.Group>
