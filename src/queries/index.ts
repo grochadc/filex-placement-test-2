@@ -55,3 +55,27 @@ export const GET_CARRERAS = gql`
     isClosed
   }
 `;
+
+export const CLOSE_EXAM = gql`
+  mutation {
+    closeExam {
+      isClosed
+    }
+  }
+`;
+
+export const GET_DEFAULT_SETTINGS = gql`
+  query {
+    isClosed
+    meetLinks {
+      teacher
+      link
+    }
+  }
+`;
+
+export const UPDATE_LINKS = gql`
+  mutation updateLinks($links: [MeetLinkInput]!) {
+    setMeetLinks(links: $links)
+  }
+`;

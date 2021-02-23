@@ -83,7 +83,7 @@ interface removeLinkAction {
 
 interface changeLinkAction {
   type: typeof CHANGE_LINK;
-  payload: { index: number; value: string };
+  payload: { key: string; index: number; value: string };
 }
 
 interface setDefaultLinksAction {

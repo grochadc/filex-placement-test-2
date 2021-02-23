@@ -1,29 +1,18 @@
 import React, { useState } from "react";
 import { CHANGE_LINK, REMOVE_LINK, ADD_LINK } from "../store/types";
 import { changeLink, removeLink, addLink } from "../store/actions";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useReducerMiddleware, Action, StoreAPI } from "./utils";
 import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import { Loading, Error } from "./utils/components";
-
-export const CLOSE_EXAM = gql`
-  mutation {
-    closeExam {
-      isClosed
-    }
-  }
-`;
-
-export const GET_DEFAULT_SETTINGS = gql`
-  query {
-    isClosed
-    meetLinks
-  }
-`;
+import { GET_DEFAULT_SETTINGS, CLOSE_EXAM, UPDATE_LINKS } from "../queries";
 
 export const Dashboard = () => {
   const {
@@ -75,15 +64,14 @@ export const CloseExamToggle = (props: {
   );
 };
 
-const UPDATE_LINKS = gql`
-  mutation updateLinks($links: [String]!) {
-    setMeetLinks(links: $links)
-  }
-`;
-
 interface LinksProps {
-  links: string[];
+  links: MeetLink[];
 }
+
+type MeetLink = {
+  teacher: string;
+  link: string;
+};
 
 export const MeetLinksForm = (props: LinksProps) => {
   const [
@@ -98,7 +86,10 @@ export const MeetLinksForm = (props: LinksProps) => {
       case CHANGE_LINK:
         return [
           ...state.slice(0, action.payload.index),
-          action.payload.value,
+          {
+            ...state[action.payload.index],
+            [action.payload.key]: action.payload.value,
+          },
           ...state.slice(action.payload.index + 1),
         ];
       case REMOVE_LINK:
@@ -129,55 +120,84 @@ export const MeetLinksForm = (props: LinksProps) => {
   const [updateLinksSuccess, setUpdateLinksSuccess] = useState(false);
   const [showUnsavedChanges, setShowUnsavedChanges] = useState(false);
 
-  const handleChange = (value: string, index: number) =>
-    dispatch(changeLink(value, index));
+  const handleChange = (key: string, value: string, index: number) => {
+    dispatch(changeLink(key, value, index));
+  };
 
   const handleRemove = (index: number) => {
     dispatch(removeLink(index));
   };
-  const handleAdd = (value: string) => {
+  const handleAdd = (value: MeetLink) => {
     dispatch(addLink(value));
   };
-  const handleSave = () => {
-    updateServerLinks({ variables: { links: links } });
+  const handleSave = (links: MeetLink[]) => {
+    updateServerLinks({ variables: { links } });
     setShowUnsavedChanges(false);
   };
 
   if (updateLinksError) <Error>{JSON.stringify(updateLinksError)}</Error>;
   return (
-    <>
-      <h4>Oral Exam Links:</h4>
-      <form>
-        <ol>
-          {links.map((link: string, index: number) => (
-            <li key={index}>
-              <Form.Control
-                type="text"
-                value={link}
-                onChange={(e) => handleChange(e.target.value, index)}
-              />
-              <Button variant="secondary" onClick={() => handleRemove(index)}>
-                Remove Link
-              </Button>
-            </li>
-          ))}
-        </ol>
-        <Button variant="secondary" onClick={() => handleAdd("")}>
-          Add Link
-        </Button>
-        <Button variant="secondary" onClick={handleSave}>
-          Save Links
-        </Button>
-        {updateLinksLoading ? (
-          <Alert color="success">Updating links...</Alert>
-        ) : updateLinksSuccess ? (
-          <Alert color="success">Links updated!</Alert>
-        ) : null}
-        {showUnsavedChanges ? (
-          <Alert>Some changes haven't been saved.</Alert>
-        ) : null}
-      </form>
-    </>
+    <Container>
+      <h2>Oral Exam Links:</h2>
+      <Row>
+        <Col>
+          <h3>Teacher</h3>
+        </Col>
+        <Col>
+          <h3>Link</h3>
+        </Col>
+      </Row>
+      <ol>
+        {links.map((meetLink: MeetLink, index: number) => (
+          <li key={index}>
+            <Form>
+              <Row>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    name="teacher"
+                    value={meetLink.teacher}
+                    onChange={({ target }) =>
+                      handleChange(target.name, target.value, index)
+                    }
+                  />
+                </Col>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    name="link"
+                    value={meetLink.link}
+                    onChange={({ target }) =>
+                      handleChange(target.name, target.value, index)
+                    }
+                  />
+                </Col>
+                <Button variant="secondary" onClick={() => handleRemove(index)}>
+                  Remove Link
+                </Button>
+              </Row>
+            </Form>
+          </li>
+        ))}
+      </ol>
+      <Button
+        variant="secondary"
+        onClick={() => handleAdd({ teacher: "", link: "" })}
+      >
+        Add Link
+      </Button>
+      <Button variant="secondary" onClick={() => handleSave(links)}>
+        Save Links
+      </Button>
+      {updateLinksLoading ? (
+        <Alert color="success">Updating links...</Alert>
+      ) : updateLinksSuccess ? (
+        <Alert color="success">Links updated!</Alert>
+      ) : null}
+      {showUnsavedChanges ? (
+        <Alert>Some changes haven't been saved.</Alert>
+      ) : null}
+    </Container>
   );
 };
 

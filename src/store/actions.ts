@@ -52,10 +52,14 @@ export function setRoute(route: string): ActionTypes {
   };
 }
 
-export function changeLink(value: string, index: number): ActionTypes {
+export function changeLink(
+  key: string,
+  value: string,
+  index: number
+): ActionTypes {
   return {
     type: CHANGE_LINK,
-    payload: { value, index },
+    payload: { key, value, index },
   };
 }
 
@@ -73,7 +77,7 @@ export function removeLink(index: number): ActionTypes {
   };
 }
 
-export function addLink(value: string): ActionTypes {
+export function addLink(value: { teacher: string; link: string }): ActionTypes {
   return {
     type: ADD_LINK,
     payload: value,
