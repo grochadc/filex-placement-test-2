@@ -16,7 +16,7 @@ const Result = () => {
 
   let info = useTypedSelector((state) => state.applicant);
   useEffect(() => {
-    if (info.codigo) {
+    if (info.nombre) {
       console.log("An applicant was found, posting to db");
       saveResultsDB({
         variables: {
