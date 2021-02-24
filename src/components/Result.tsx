@@ -9,7 +9,7 @@ import { Error, Loading } from "./utils/components";
 
 const Result = () => {
   const history = useHistory();
-  const { level, course } = useSelector((state: any) => state.system);
+  const { level } = useSelector((state: any) => state.system);
   const [saveResultsDB, { data, error, loading }] = useMutation(
     SAVE_RESULTS_DB
   );
@@ -52,13 +52,7 @@ const Result = () => {
         <div>
           <p>
             Haz click en el enlace para continuar con tu Ubicación:{" "}
-            {course === "fr" ? (
-              <a href="https://meet.google.com/kib-wbvn-doa">
-                {"https://meet.google.com/kib-wbvn-doa"}
-              </a>
-            ) : (
-              <a href={meetLink}>{meetLink}</a>
-            )}
+            <a href={meetLink}>{meetLink}</a>
           </p>
           <p>
             (Probablemente tendras que esperar unos minutos a que te den acceso.
@@ -66,7 +60,11 @@ const Result = () => {
           </p>
         </div>
       ) : (
-        <p>Has terminado tu proceso de ubicación.</p>
+        <>
+          <p>Has terminado tu proceso de ubicación.</p>
+          <p>Quedaste en nivel {level}.</p>
+          <p>Nos vemos en las fechas de registro.</p>
+        </>
       )}
     </Container>
   );
