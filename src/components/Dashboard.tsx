@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CHANGE_LINK, REMOVE_LINK, ADD_LINK } from "../store/types";
 import { changeLink, removeLink, addLink } from "../store/actions";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery, gql } from "@apollo/client";
 import { useReducerMiddleware, Action, StoreAPI } from "./utils";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
@@ -12,7 +12,25 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import { Loading, Error } from "./utils/components";
-import { GET_DEFAULT_SETTINGS, CLOSE_EXAM, UPDATE_LINKS } from "../queries";
+import { UPDATE_LINKS } from "../queries";
+
+export const GET_DEFAULT_SETTINGS = gql`
+  query {
+    isClosed
+    meetLinks {
+      teacher
+      link
+    }
+  }
+`;
+
+export const CLOSE_EXAM = gql`
+  mutation {
+    closeExam {
+      isClosed
+    }
+  }
+`;
 
 export const Dashboard = () => {
   const {
