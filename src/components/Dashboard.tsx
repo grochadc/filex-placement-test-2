@@ -14,11 +14,6 @@ import Alert from "react-bootstrap/Alert";
 import { Loading, Error } from "./utils/components";
 import { UPDATE_LINKS } from "../queries";
 
-type ActionTypes = {
-  type: "CHANGE_LINK";
-  payload: { key: string; value: string | boolean; index: number };
-};
-
 export const GET_DEFAULT_SETTINGS = gql`
   query {
     isClosed
