@@ -54,7 +54,7 @@ export function setRoute(route: string): ActionTypes {
 
 export function changeLink(
   key: string,
-  value: string,
+  value: string | boolean,
   index: number
 ): ActionTypes {
   return {

@@ -14,12 +14,18 @@ import Alert from "react-bootstrap/Alert";
 import { Loading, Error } from "./utils/components";
 import { UPDATE_LINKS } from "../queries";
 
+type ActionTypes = {
+  type: "CHANGE_LINK";
+  payload: { key: string; value: string | boolean; index: number };
+};
+
 export const GET_DEFAULT_SETTINGS = gql`
   query {
     isClosed
     meetLinks {
       teacher
       link
+      active
     }
   }
 `;
@@ -89,6 +95,7 @@ interface LinksProps {
 type MeetLink = {
   teacher: string;
   link: string;
+  active: boolean;
 };
 
 export const MeetLinksForm = (props: LinksProps) => {
@@ -138,7 +145,11 @@ export const MeetLinksForm = (props: LinksProps) => {
   const [updateLinksSuccess, setUpdateLinksSuccess] = useState(false);
   const [showUnsavedChanges, setShowUnsavedChanges] = useState(false);
 
-  const handleChange = (key: string, value: string, index: number) => {
+  const handleChange = (
+    key: string,
+    value: string | boolean,
+    index: number
+  ) => {
     dispatch(changeLink(key, value, index));
   };
 
@@ -163,6 +174,9 @@ export const MeetLinksForm = (props: LinksProps) => {
         </Col>
         <Col>
           <h3>Link</h3>
+        </Col>
+        <Col>
+          <h3>Active</h3>
         </Col>
       </Row>
       <ol>
@@ -190,6 +204,16 @@ export const MeetLinksForm = (props: LinksProps) => {
                     }
                   />
                 </Col>
+                <Col>
+                  <Form.Control
+                    type="checkbox"
+                    name="active"
+                    checked={meetLink.active}
+                    onChange={({ target }) =>
+                      handleChange(target.name, !meetLink.active, index)
+                    }
+                  />
+                </Col>
                 <Button variant="secondary" onClick={() => handleRemove(index)}>
                   Remove Link
                 </Button>
@@ -200,7 +224,7 @@ export const MeetLinksForm = (props: LinksProps) => {
       </ol>
       <Button
         variant="secondary"
-        onClick={() => handleAdd({ teacher: "", link: "" })}
+        onClick={() => handleAdd({ teacher: "", link: "", active: false })}
       >
         Add Link
       </Button>
