@@ -46,6 +46,225 @@ const InformationSchema = Yup.object().shape({
   curso: Yup.string().required("Campo Obligatorio"),
 });
 
+type FormikSchema = {
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  codigo: string;
+  genero: string;
+  ciclo: string;
+  externo: boolean;
+  telefono: string;
+  carrera: string;
+  reubicacion: boolean;
+  email: string;
+  curso: string;
+};
+
+type FormComponentProps = {
+  values: FormikSchema;
+  errors: any;
+  touched: any;
+  handleSubmit: (e: any) => void;
+  handleChange: (e: any) => void;
+  disabled: boolean;
+  carreras: Array<string>;
+};
+
+const FormComponent = ({
+  values,
+  errors,
+  touched,
+  handleSubmit,
+  handleChange,
+  disabled,
+  carreras,
+}: FormComponentProps) => {
+  return (
+    <Container>
+      {disabled ? (
+        <Alert variant="primary">
+          En estos momentos no estamos aplicando examenes. Por favor vuelve mas
+          tarde.
+        </Alert>
+      ) : null}
+      <Form onSubmit={(e) => handleSubmit(e as any)}>
+        <Form.Group controlId="codigo">
+          <Form.Label>Código:</Form.Label>
+          <Form.Control
+            type="text"
+            name="codigo"
+            value={values.codigo}
+            onChange={handleChange}
+            disabled={disabled ? true : values.externo}
+          />
+          {touched.codigo && errors.codigo ? (
+            <Alert variant="warning">{errors.codigo}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group controlId="externo">
+          <input
+            type="checkbox"
+            value={(values.externo as unknown) as string}
+            onChange={handleChange}
+            id="externo"
+            disabled={disabled}
+          />
+          <Form.Label> Externo (No eres alumno Cusur)</Form.Label>
+        </Form.Group>
+        <Form.Group controlId="nombre">
+          <Form.Label>Nombre:</Form.Label>
+          <Form.Control
+            type="text"
+            name="nombre"
+            value={values.nombre}
+            onChange={handleChange}
+            disabled={disabled}
+          />
+          {touched.nombre && errors.nombre ? (
+            <Alert variant="warning">{errors.nombre}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group controlId="apellido_paterno">
+          <Form.Label>Apellido Paterno:</Form.Label>
+          <Form.Control
+            type="text"
+            name="apellido_paterno"
+            value={values.apellido_paterno}
+            onChange={handleChange}
+            disabled={disabled}
+          />
+          {touched.apellido_paterno && errors.apellido_paterno ? (
+            <Alert variant="warning">{errors.apellido_paterno}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group controlId="apellido_materno">
+          <Form.Label>Apellido Materno:</Form.Label>
+          <Form.Control
+            type="text"
+            name="apellido_materno"
+            value={values.apellido_materno}
+            onChange={handleChange}
+            disabled={disabled}
+          />
+          {touched.apellido_materno && errors.apellido_materno ? (
+            <Alert variant="warning">{errors.apellido_materno}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Género:</Form.Label>
+          <Form.Control
+            name="genero"
+            as="select"
+            value={values.genero}
+            onChange={handleChange}
+            disabled={disabled}
+          >
+            <option value="M">M</option>
+            <option value="F">F</option>
+          </Form.Control>
+        </Form.Group>
+        <Form.Group controlId="telefono">
+          <Form.Label>Teléfono Celular:</Form.Label>
+          <Form.Control
+            type="text"
+            name="telefono"
+            value={values.telefono}
+            onChange={handleChange}
+            disabled={disabled}
+          />
+          {touched.telefono && errors.telefono ? (
+            <Alert variant="warning">{errors.telefono}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group controlId="email">
+          <Form.Label>Correo Electrónico:</Form.Label>
+          <Form.Control
+            type="text"
+            name="email"
+            value={values.email}
+            onChange={handleChange}
+            disabled={disabled}
+          />
+          {touched.email && errors.email ? (
+            <Alert variant="warning">{errors.email}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Ciclo de ingreso a CUSur (ej: 2021A):</Form.Label>
+          <Form.Control
+            type="text"
+            name="ciclo"
+            value={values.ciclo}
+            onChange={handleChange}
+            disabled={disabled}
+          />
+          {touched.ciclo && errors.ciclo ? (
+            <Alert variant="warning">{errors.ciclo}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group controlId="carrera">
+          <Form.Label>Carrera:</Form.Label>
+          <Form.Control
+            name="carrera"
+            as="select"
+            data-testid="carrera"
+            value={values.carrera}
+            onChange={handleChange}
+            disabled={disabled ? true : values.externo}
+          >
+            <option key={"a"} disabled>
+              Elige una opcion...
+            </option>
+            {carreras.map((carrera: string, index: number) => (
+              <option key={index} value={carrera}>
+                {carrera}
+              </option>
+            ))}
+          </Form.Control>
+          {touched.carrera && errors.carrera ? (
+            <Alert variant="warning">{errors.carrera}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group>
+          <Form.Label id="curso">Curso:</Form.Label>
+          <Form.Control
+            aria-labelledby="curso"
+            data-testid="curso"
+            name="curso"
+            as="select"
+            value={values.curso}
+            onChange={handleChange}
+            disabled={disabled}
+          >
+            <option>Selecciona el curso:</option>
+            <option value="en">Inglés</option>
+            <option value="fr">Francés</option>
+          </Form.Control>
+        </Form.Group>
+        <Form.Group controlId="reubicacion">
+          <input
+            type="checkbox"
+            name="reubicacion"
+            value={(values.reubicacion as unknown) as string}
+            disabled={disabled}
+          />{" "}
+          Reubicacion
+        </Form.Group>
+        <Button type="submit" variant="primary" disabled={disabled}>
+          Enviar
+        </Button>
+      </Form>
+      <Alert variant="warning" style={{ margin: "1em" }}>
+        <small>
+          Es probable que al finalizar el examen escrito debas hacer un examen
+          oral.
+        </small>
+      </Alert>
+    </Container>
+  );
+};
+
 const PersonalForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -69,12 +288,6 @@ const PersonalForm = () => {
         <div data-testid="gql-errors">{JSON.stringify(error)}</div>
       </Error>
     );
-  if (isClosed)
-    return (
-      <div>
-        <h1>Por el momento no se estan aplicando examenes. Vuelve despues.</h1>
-      </div>
-    );
   return (
     <div>
       <Formik
@@ -97,171 +310,15 @@ const PersonalForm = () => {
         onSubmit={(values) => handleSubmit(values)}
       >
         {({ values, errors, touched, handleSubmit, handleChange }) => (
-          <Container>
-            <Form onSubmit={(e) => handleSubmit(e as any)}>
-              <Form.Group controlId="codigo">
-                <Form.Label>Código:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="codigo"
-                  value={values.codigo}
-                  onChange={handleChange}
-                  disabled={values.externo}
-                />
-                {touched.codigo && errors.codigo ? (
-                  <Alert variant="warning">{errors.codigo}</Alert>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="externo">
-                <input
-                  type="checkbox"
-                  value={(values.externo as unknown) as string}
-                  onChange={handleChange}
-                  id="externo"
-                />
-                <Form.Label> Externo (No eres alumno Cusur)</Form.Label>
-              </Form.Group>
-              <Form.Group controlId="nombre">
-                <Form.Label>Nombre:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="nombre"
-                  value={values.nombre}
-                  onChange={handleChange}
-                />
-                {touched.nombre && errors.nombre ? (
-                  <Alert variant="warning">{errors.nombre}</Alert>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="apellido_paterno">
-                <Form.Label>Apellido Paterno:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="apellido_paterno"
-                  value={values.apellido_paterno}
-                  onChange={handleChange}
-                />
-                {touched.apellido_paterno && errors.apellido_paterno ? (
-                  <Alert variant="warning">{errors.apellido_paterno}</Alert>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="apellido_materno">
-                <Form.Label>Apellido Materno:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="apellido_materno"
-                  value={values.apellido_materno}
-                  onChange={handleChange}
-                />
-                {touched.apellido_materno && errors.apellido_materno ? (
-                  <Alert variant="warning">{errors.apellido_materno}</Alert>
-                ) : null}
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Género:</Form.Label>
-                <Form.Control
-                  name="genero"
-                  as="select"
-                  value={values.genero}
-                  onChange={handleChange}
-                >
-                  <option value="M">M</option>
-                  <option value="F">F</option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group controlId="telefono">
-                <Form.Label>Teléfono Celular:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="telefono"
-                  value={values.telefono}
-                  onChange={handleChange}
-                />
-                {touched.telefono && errors.telefono ? (
-                  <Alert variant="warning">{errors.telefono}</Alert>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="email">
-                <Form.Label>Correo Electrónico:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="email"
-                  value={values.email}
-                  onChange={handleChange}
-                />
-                {touched.email && errors.email ? (
-                  <Alert variant="warning">{errors.email}</Alert>
-                ) : null}
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Ciclo de ingreso a CUSur (ej: 2021A):</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="ciclo"
-                  value={values.ciclo}
-                  onChange={handleChange}
-                />
-                {touched.ciclo && errors.ciclo ? (
-                  <Alert variant="warning">{errors.ciclo}</Alert>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="carrera">
-                <Form.Label>Carrera:</Form.Label>
-                <Form.Control
-                  name="carrera"
-                  as="select"
-                  data-testid="carrera"
-                  value={values.carrera}
-                  onChange={handleChange}
-                  disabled={values.externo}
-                >
-                  <option key={"a"} disabled>
-                    Elige una opcion...
-                  </option>
-                  {carreras.map((carrera: string, index: number) => (
-                    <option key={index} value={carrera}>
-                      {carrera}
-                    </option>
-                  ))}
-                </Form.Control>
-                {touched.carrera && errors.carrera ? (
-                  <Alert variant="warning">{errors.carrera}</Alert>
-                ) : null}
-              </Form.Group>
-              <Form.Group>
-                <Form.Label id="curso">Curso:</Form.Label>
-                <Form.Control
-                  aria-labelledby="curso"
-                  data-testid="curso"
-                  name="curso"
-                  as="select"
-                  value={values.curso}
-                  onChange={handleChange}
-                >
-                  <option>Selecciona el curso:</option>
-                  <option value="en">Inglés</option>
-                  <option value="fr">Francés</option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group controlId="reubicacion">
-                <input
-                  type="checkbox"
-                  name="reubicacion"
-                  value={(values.reubicacion as unknown) as string}
-                />{" "}
-                Reubicacion
-              </Form.Group>
-              <Button type="submit" variant="primary">
-                Enviar
-              </Button>
-            </Form>
-            <Alert variant="warning" style={{ margin: "1em" }}>
-              <small>
-                Es probable que al finalizar el examen escrito debas hacer un
-                examen oral.
-              </small>
-            </Alert>
-          </Container>
+          <FormComponent
+            values={values}
+            errors={errors}
+            touched={touched}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            disabled={isClosed}
+            carreras={carreras}
+          />
         )}
       </Formik>
     </div>
