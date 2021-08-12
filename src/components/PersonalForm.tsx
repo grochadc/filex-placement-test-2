@@ -42,7 +42,11 @@ const InformationSchema = Yup.object().shape({
   telefono: Yup.number().min(10, "Numero muy corto"),
   carrera: Yup.string(),
   reubicacion: Yup.boolean(),
-  email: Yup.string().email("email no valido").required("Obligatorio"),
+  email: Yup.string()
+    .email(
+      "Email no valido. Asegurate de incluir el @ y escribir los .com .mx etc. de forma correcta."
+    )
+    .required("Obligatorio"),
   curso: Yup.string().required("Campo Obligatorio"),
 });
 
