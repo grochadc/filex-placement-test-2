@@ -6,12 +6,8 @@ import PersonalForm from "./components/PersonalForm";
 import Dashboard from "./components/Dashboard";
 import { Header } from "./components/componentUtils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useLazyQuery } from "@apollo/client";
-import { LOG_OUT } from "./queries";
 import { useDispatch } from "react-redux";
 import { setRoute } from "./store/actions";
-import { useTypedSelector } from "./store/reducers";
-import { RootState } from "./store/types";
 
 function updateDocumentTitle() {
   let currentTitle = document.title;
@@ -21,16 +17,9 @@ function updateDocumentTitle() {
 }
 
 function App() {
-  const [logOut] = useLazyQuery(LOG_OUT);
   const dispatch = useDispatch();
-  let isDoingExam = useTypedSelector(
-    (state: RootState) => state.system.isDoingExam
-  );
   useEffect(() => {
     updateDocumentTitle();
-    window.addEventListener("beforeunload", () => {
-      if (isDoingExam) logOut();
-    });
   });
   const handleGiveup = () => {
     dispatch(setRoute("result"));
