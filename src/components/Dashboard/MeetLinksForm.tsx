@@ -1,105 +1,49 @@
 import React, { useState } from "react";
-import { CHANGE_LINK, REMOVE_LINK, ADD_LINK } from "../store/types";
-import { changeLink, removeLink, addLink } from "../store/actions";
-import { useMutation, useQuery, gql } from "@apollo/client";
-import { useReducerMiddleware, Action, StoreAPI } from "./utils";
+import { useMutation, gql } from "@apollo/client";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
-import { Loading, Error } from "./utils/components";
-import { UPDATE_LINKS } from "../queries";
-
-export const GET_DEFAULT_SETTINGS = gql`
-  query {
-    isClosed
-    meetLinks {
-      teacher
-      link
-      active
-    }
-  }
-`;
-
-export const CLOSE_EXAM = gql`
-  mutation {
-    closeExam {
-      isClosed
-    }
-  }
-`;
-
-export const Dashboard = () => {
-  const {
-    loading: loadingDefaults,
-    data: defaults,
-    error: errorDefaults,
-  } = useQuery(GET_DEFAULT_SETTINGS);
-  const [closeExam] = useMutation(CLOSE_EXAM, {
-    onCompleted: (data) =>
-      alert(`Exam is now ${data.closeExam.isClosed ? "closed" : "open"}`),
-  });
-  if (loadingDefaults) return <Loading />;
-  if (errorDefaults) return <Error>{JSON.stringify(errorDefaults)}</Error>;
-  return (
-    <>
-      <h1>Settings</h1>
-      <CloseExamToggle isClosed={defaults.isClosed} handleToggle={closeExam} />
-      <MeetLinksForm links={defaults.meetLinks} />
-    </>
-  );
-};
-
-export const CloseExamToggle = (props: {
-  isClosed: boolean;
-  handleToggle: () => void;
-}) => {
-  const [isClosed, setIsClosed] = useState(props.isClosed);
-  const handleChange = () => {
-    props.handleToggle();
-    setIsClosed(!isClosed);
-  };
-  return (
-    <>
-      <h4>Exam:</h4>
-      <ToggleButtonGroup
-        type="radio"
-        name="toggle"
-        value={isClosed}
-        onChange={handleChange}
-      >
-        <ToggleButton value={false} checked={false} variant="secondary">
-          Open
-        </ToggleButton>
-        <ToggleButton value={true} checked={true} variant="secondary">
-          Close
-        </ToggleButton>
-      </ToggleButtonGroup>
-    </>
-  );
-};
-
-interface LinksProps {
+import { CHANGE_LINK, REMOVE_LINK, ADD_LINK } from "../../store/types";
+import { changeLink, removeLink, addLink } from "../../store/actions";
+import { useReducerMiddleware, Action, StoreAPI } from "../utils";
+import { Error } from "../utils/components";
+import { getOddItem, generateId } from "../../utils";
+type LinksProps = {
   links: MeetLink[];
-}
+  refetch: any;
+};
 
 type MeetLink = {
+  id: string;
   teacher: string;
   link: string;
   active: boolean;
 };
 
-export const MeetLinksForm = (props: LinksProps) => {
+export const UPDATE_SINGLE_LINK = gql`
+  mutation updateSingleLink($link: MeetLinkInput!) {
+    setMeetLink(link: $link)
+  }
+`;
+
+const MeetLinksForm = (props: LinksProps) => {
+  const [
+    updateSingleServerLink,
+    { loading: updateLinksLoading, error: updateLinksError },
+  ] = useMutation(UPDATE_SINGLE_LINK, {
+    onCompleted: () => setUpdateLinksSuccess(true),
+  });
+  /*
   const [
     updateServerLinks,
     { loading: updateLinksLoading, error: updateLinksError },
   ] = useMutation(UPDATE_LINKS, {
     onCompleted: () => setUpdateLinksSuccess(true),
   });
+  */
   const initialState = props.links;
   const reducer = (state = initialState, action: Action) => {
     switch (action.type) {
@@ -155,8 +99,11 @@ export const MeetLinksForm = (props: LinksProps) => {
     dispatch(addLink(value));
   };
   const handleSave = (links: MeetLink[]) => {
-    updateServerLinks({ variables: { links } });
+    const link = getOddItem(props.links, links);
+    console.log("Sending this link to the server", link);
+    updateSingleServerLink({ variables: { link } });
     setShowUnsavedChanges(false);
+    props.refetch();
   };
 
   if (updateLinksError) <Error>{JSON.stringify(updateLinksError)}</Error>;
@@ -219,7 +166,9 @@ export const MeetLinksForm = (props: LinksProps) => {
       </ol>
       <Button
         variant="secondary"
-        onClick={() => handleAdd({ teacher: "", link: "", active: false })}
+        onClick={() =>
+          handleAdd({ id: generateId(), teacher: "", link: "", active: false })
+        }
       >
         Add Link
       </Button>
@@ -238,4 +187,4 @@ export const MeetLinksForm = (props: LinksProps) => {
   );
 };
 
-export default Dashboard;
+export default MeetLinksForm;

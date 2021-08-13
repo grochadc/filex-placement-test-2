@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Result from "./components/Result";
 import Section from "./components/Section";
 import PersonalForm from "./components/PersonalForm";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Dashboard/index";
 import { Header } from "./components/componentUtils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
