@@ -29,6 +29,12 @@ export const UPDATE_SINGLE_LINK = gql`
   }
 `;
 
+export const REMOVE_LINK_MUTATION = gql`
+  mutation removeSingleLink($link: MeetLinkInputWithID!) {
+    removeMeetLink(link: $link)
+  }
+`;
+
 const MeetLinksForm = (props: LinksProps) => {
   const [
     updateSingleServerLink,
@@ -36,6 +42,12 @@ const MeetLinksForm = (props: LinksProps) => {
   ] = useMutation(UPDATE_SINGLE_LINK, {
     onCompleted: () => setUpdateLinksSuccess(true),
   });
+  const [removeLinkFromDB, { error: removeLinkFromDBError }] = useMutation(
+    REMOVE_LINK_MUTATION,
+    {
+      onCompleted: () => alert("Removed link succesfully"),
+    }
+  );
   /*
   const [
     updateServerLinks,
@@ -71,8 +83,10 @@ const MeetLinksForm = (props: LinksProps) => {
     (store: StoreAPI) => (next: (action: Action) => any) => (
       action: Action
     ) => {
-      setShowUnsavedChanges(true);
-      setUpdateLinksSuccess(false);
+      if (action.type !== REMOVE_LINK) {
+        setShowUnsavedChanges(true);
+        setUpdateLinksSuccess(false);
+      }
       return next(action);
     },
   ];
@@ -92,7 +106,8 @@ const MeetLinksForm = (props: LinksProps) => {
     dispatch(changeLink(key, value, index));
   };
 
-  const handleRemove = (index: number) => {
+  const handleRemove = (index: number, link: MeetLink) => {
+    removeLinkFromDB({ variables: { link } });
     dispatch(removeLink(index));
   };
   const handleAdd = (value: MeetLink) => {
@@ -106,6 +121,7 @@ const MeetLinksForm = (props: LinksProps) => {
     props.refetch();
   };
 
+  if (removeLinkFromDBError) <Error>{JSON.stringify(updateLinksError)}</Error>;
   if (updateLinksError) <Error>{JSON.stringify(updateLinksError)}</Error>;
   return (
     <Container>
@@ -156,7 +172,10 @@ const MeetLinksForm = (props: LinksProps) => {
                     }
                   />
                 </Col>
-                <Button variant="secondary" onClick={() => handleRemove(index)}>
+                <Button
+                  variant="secondary"
+                  onClick={() => handleRemove(index, meetLink)}
+                >
                   Remove Link
                 </Button>
               </Row>
