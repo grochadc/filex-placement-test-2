@@ -24,7 +24,7 @@ type MeetLink = {
 };
 
 export const UPDATE_SINGLE_LINK = gql`
-  mutation updateSingleLink($link: MeetLinkInput!) {
+  mutation updateSingleLink($link: MeetLinkInputWithID!) {
     setMeetLink(link: $link)
   }
 `;
