@@ -64,16 +64,6 @@ export const CLOSE_EXAM = gql`
   }
 `;
 
-export const GET_DEFAULT_SETTINGS = gql`
-  query {
-    isClosed
-    meetLinks {
-      teacher
-      link
-    }
-  }
-`;
-
 export const UPDATE_LINKS = gql`
   mutation updateLinks($links: [MeetLinkInput]!) {
     setMeetLinks(links: $links)

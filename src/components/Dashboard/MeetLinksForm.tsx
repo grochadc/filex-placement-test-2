@@ -11,10 +11,6 @@ import { changeLink, removeLink, addLink } from "../../store/actions";
 import { useReducerMiddleware, Action, StoreAPI } from "../utils";
 import { Error } from "../utils/components";
 import { getOddItem, generateId } from "../../utils";
-type LinksProps = {
-  links: MeetLink[];
-  refetch: any;
-};
 
 type MeetLink = {
   id: string;
@@ -35,6 +31,11 @@ export const REMOVE_LINK_MUTATION = gql`
   }
 `;
 
+type LinksProps = {
+  course: string;
+  links: MeetLink[];
+  refetch: any;
+};
 const MeetLinksForm = (props: LinksProps) => {
   const [
     updateSingleServerLink,
@@ -125,7 +126,7 @@ const MeetLinksForm = (props: LinksProps) => {
   if (updateLinksError) <Error>{JSON.stringify(updateLinksError)}</Error>;
   return (
     <Container>
-      <h2>Oral Exam Links:</h2>
+      <h2>Oral Exam Links ({props.course}):</h2>
       <Row>
         <Col>
           <h3>Teacher</h3>

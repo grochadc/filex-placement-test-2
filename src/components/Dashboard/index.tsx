@@ -11,7 +11,13 @@ export const MeetLinksForm = _MeetLinksForm;
 export const GET_DEFAULT_SETTINGS = gql`
   query {
     isClosed
-    meetLinks {
+    englishLinks: meetLinks(course: "en") {
+      id
+      teacher
+      link
+      active
+    }
+    frenchLinks: meetLinks(course: "fr") {
       id
       teacher
       link
@@ -46,7 +52,16 @@ export const Dashboard = () => {
       <h1>Settings</h1>
       <CloseExamToggle isClosed={defaults.isClosed} handleToggle={closeExam} />
       <MeetLinksForm
-        links={defaults.meetLinks}
+        course="English"
+        links={defaults.englishLinks}
+        refetch={() => {
+          console.log("refectchingDefaults");
+          refecthDefaults();
+        }}
+      />
+      <MeetLinksForm
+        course="French"
+        links={defaults.frenchLinks}
         refetch={() => {
           console.log("refectchingDefaults");
           refecthDefaults();
