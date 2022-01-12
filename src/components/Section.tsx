@@ -1,7 +1,7 @@
 import React, { useState, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { advanceLevel } from "../store/actions";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import Question from "./Question";
 import Button from "react-bootstrap/Button";
@@ -10,8 +10,10 @@ import { Loading, Error } from "./utils/components";
 
 import { RootState } from "../store/types";
 
+import { useTestSectionQuery } from "../generated/grapqhl";
+
 export const TEST_SECTION_QUERY = gql`
-  query($course: String!, $level: Int!) {
+  query testSection($course: String!, $level: Int!) {
     section(course: $course, level: $level) {
       questions {
         title
@@ -28,7 +30,7 @@ export const TEST_SECTION_QUERY = gql`
   }
 `;
 
-const replaceAt = (arr: any, index: number, value: any) => [
+const replaceAt = (arr: any[], index: number, value: any) => [
   ...arr.slice(0, index),
   value,
   ...arr.slice(index + 1),
@@ -44,12 +46,13 @@ const Section: React.FC<any> = (props: SectionProps) => {
 
   const handleQueryComplete: (data: any) => void = (data) =>
     localDispatch(actionCreators.resetValues(data.section.questions.length));
-  const { data, loading, error } = useQuery(TEST_SECTION_QUERY, {
+  const { data, loading, error } = useTestSectionQuery({
     variables: { course: course, level: level },
     onCompleted: handleQueryComplete,
   });
 
-  const questions = data ? data.section.questions : [0];
+  const questions = data?.section ? data.section.questions : [0];
+
   const initialState = {
     answers: new Array(10).fill(0),
     checked: new Array(10).fill(0),
@@ -109,7 +112,6 @@ const Section: React.FC<any> = (props: SectionProps) => {
     },
   };
   const [localState, localDispatch] = useReducer(reducer, initialState);
-  const [resetOptions, setResetOptions] = useState(false);
 
   const dispatch = useDispatch();
   const nextLevel = (pass: boolean) => {
@@ -140,7 +142,6 @@ const Section: React.FC<any> = (props: SectionProps) => {
             }}
             questionObj={question}
             questionIndex={index}
-            resetOptions={resetOptions}
           />
         );
       })}
@@ -154,28 +155,30 @@ const Section: React.FC<any> = (props: SectionProps) => {
       >
         Rendirse
       </Button>
-      {data.section.pageInfo.hasNextPage ? (
-        <Button
-          disabled={!localState.answeredMin}
-          variant="primary"
-          onClick={() => {
-            nextLevel(localState.pass);
-            setResetOptions(true);
-            window.scrollTo(0, 0);
-          }}
-        >
-          Continuar Examen
-        </Button>
-      ) : (
-        <Button
-          onClick={() => {
-            props.handleGiveup();
-            history.push("/result");
-          }}
-        >
-          Calificar examen
-        </Button>
-      )}
+      {
+        //@ts-ignore
+        data?.section.pageInfo.hasNextPage ? (
+          <Button
+            disabled={!localState.answeredMin}
+            variant="primary"
+            onClick={() => {
+              nextLevel(localState.pass);
+              window.scrollTo(0, 0);
+            }}
+          >
+            Continuar Examen
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              props.handleGiveup();
+              history.push("/result");
+            }}
+          >
+            Calificar examen
+          </Button>
+        )
+      }
     </div>
   );
 };

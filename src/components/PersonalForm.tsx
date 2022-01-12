@@ -1,17 +1,10 @@
 import React from "react";
-import { Formik } from "formik";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
+import Alert from "react-bootstrap/Alert";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { setApplicant, startExam } from "../store/actions";
-import { Applicant } from "../store/types";
-import { useQuery } from "@apollo/client";
-import { useHistory } from "react-router-dom";
-import { Loading, Error } from "./utils/components";
-import { GET_CARRERAS } from "../queries";
 
 Yup.addMethod<Yup.StringSchema>(Yup.string, "allowed", function (arr, message) {
   return this.test("isAllowed", message, (value) => {
@@ -48,9 +41,17 @@ const InformationSchema = Yup.object().shape({
     )
     .required("Obligatorio"),
   curso: Yup.string().required("Campo Obligatorio"),
+  institucionalEmail: Yup.string()
+    .email(
+      "Email no valido. Asegurate de incluir el @ y escribir los .com .mx etc. de forma correcta."
+    )
+    .matches(
+      /[\w\.]*@alumnos.udg.mx/,
+      "El correo debe terminar en @alumnos.udg.mx"
+    ),
 });
 
-type FormikSchema = {
+export type FormikSchema = {
   nombre: string;
   apellido_paterno: string;
   apellido_materno: string;
@@ -62,57 +63,62 @@ type FormikSchema = {
   carrera: string;
   reubicacion: boolean;
   email: string;
+  institucionalEmail: string;
   curso: string;
 };
 
 type FormComponentProps = {
-  values: FormikSchema;
-  errors: any;
-  touched: any;
-  handleSubmit: (e: any) => void;
-  handleChange: (e: any) => void;
   disabled: boolean;
   carreras: Array<string>;
+  onSubmit: (applicantInformation: FormikSchema) => void;
 };
 
-const FormComponent = ({
-  values,
-  errors,
-  touched,
-  handleSubmit,
-  handleChange,
-  disabled,
-  carreras,
-}: FormComponentProps) => {
+const FormComponent = (props: FormComponentProps) => {
+  const formik = useFormik({
+    initialValues: {
+      codigo: "",
+      nombre: "",
+      apellido_paterno: "",
+      apellido_materno: "",
+      genero: "M",
+      ciclo: "",
+      carrera: "Elige una opcion...",
+      telefono: "",
+      email: "",
+      institucionalEmail: "",
+      nivel_escrito: 1,
+      curso: "",
+      externo: false,
+      reubicacion: false,
+    },
+    onSubmit: props.onSubmit,
+    validationSchema: InformationSchema,
+  });
   return (
     <Container>
-      {disabled ? (
-        <Alert variant="primary">
-          En estos momentos no estamos aplicando examenes. Por favor vuelve mas
-          tarde.
-        </Alert>
-      ) : null}
-      <Form onSubmit={(e) => handleSubmit(e as any)}>
+      <Form onSubmit={(e) => formik.handleSubmit(e as any)}>
         <Form.Group controlId="codigo">
           <Form.Label>Código:</Form.Label>
           <Form.Control
             type="text"
             name="codigo"
-            value={values.codigo}
-            onChange={handleChange}
-            disabled={disabled ? true : values.externo}
+            value={formik.values.codigo}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled ? true : formik.values.externo}
           />
-          {touched.codigo && errors.codigo ? (
-            <Alert variant="warning">{errors.codigo}</Alert>
+          {formik.touched.codigo && formik.errors.codigo ? (
+            <Alert variant="warning">{formik.errors.codigo}</Alert>
           ) : null}
         </Form.Group>
         <Form.Group controlId="externo">
           <input
             type="checkbox"
-            value={(values.externo as unknown) as string}
-            onChange={handleChange}
+            value={formik.values.externo as unknown as string}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             id="externo"
-            disabled={disabled}
+            disabled={props.disabled}
           />
           <Form.Label> Externo (No eres alumno Cusur)</Form.Label>
         </Form.Group>
@@ -121,12 +127,13 @@ const FormComponent = ({
           <Form.Control
             type="text"
             name="nombre"
-            value={values.nombre}
-            onChange={handleChange}
-            disabled={disabled}
+            value={formik.values.nombre}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
           />
-          {touched.nombre && errors.nombre ? (
-            <Alert variant="warning">{errors.nombre}</Alert>
+          {formik.touched.nombre && formik.errors.nombre ? (
+            <Alert variant="warning">{formik.errors.nombre}</Alert>
           ) : null}
         </Form.Group>
         <Form.Group controlId="apellido_paterno">
@@ -134,12 +141,13 @@ const FormComponent = ({
           <Form.Control
             type="text"
             name="apellido_paterno"
-            value={values.apellido_paterno}
-            onChange={handleChange}
-            disabled={disabled}
+            value={formik.values.apellido_paterno}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
           />
-          {touched.apellido_paterno && errors.apellido_paterno ? (
-            <Alert variant="warning">{errors.apellido_paterno}</Alert>
+          {formik.touched.apellido_paterno && formik.errors.apellido_paterno ? (
+            <Alert variant="warning">{formik.errors.apellido_paterno}</Alert>
           ) : null}
         </Form.Group>
         <Form.Group controlId="apellido_materno">
@@ -147,12 +155,13 @@ const FormComponent = ({
           <Form.Control
             type="text"
             name="apellido_materno"
-            value={values.apellido_materno}
-            onChange={handleChange}
-            disabled={disabled}
+            value={formik.values.apellido_materno}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
           />
-          {touched.apellido_materno && errors.apellido_materno ? (
-            <Alert variant="warning">{errors.apellido_materno}</Alert>
+          {formik.touched.apellido_materno && formik.errors.apellido_materno ? (
+            <Alert variant="warning">{formik.errors.apellido_materno}</Alert>
           ) : null}
         </Form.Group>
         <Form.Group>
@@ -160,9 +169,10 @@ const FormComponent = ({
           <Form.Control
             name="genero"
             as="select"
-            value={values.genero}
-            onChange={handleChange}
-            disabled={disabled}
+            value={formik.values.genero}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
           >
             <option value="M">M</option>
             <option value="F">F</option>
@@ -171,40 +181,65 @@ const FormComponent = ({
         <Form.Group controlId="telefono">
           <Form.Label>Teléfono Celular:</Form.Label>
           <Form.Control
-            type="text"
+            type="tel"
             name="telefono"
-            value={values.telefono}
-            onChange={handleChange}
-            disabled={disabled}
+            value={formik.values.telefono}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
           />
-          {touched.telefono && errors.telefono ? (
-            <Alert variant="warning">{errors.telefono}</Alert>
-          ) : null}
-        </Form.Group>
-        <Form.Group controlId="email">
-          <Form.Label>Correo Electrónico:</Form.Label>
-          <Form.Control
-            type="text"
-            name="email"
-            value={values.email}
-            onChange={handleChange}
-            disabled={disabled}
-          />
-          {touched.email && errors.email ? (
-            <Alert variant="warning">{errors.email}</Alert>
+          {formik.touched.telefono && formik.errors.telefono ? (
+            <Alert variant="warning">{formik.errors.telefono}</Alert>
           ) : null}
         </Form.Group>
         <Form.Group>
-          <Form.Label>Ciclo de ingreso a CUSur (ej: 2021A):</Form.Label>
+          <Form.Label htmlFor="emailLabel">Correo Electrónico:</Form.Label>
           <Form.Control
+            id="emailLabel"
+            type="email"
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
+          />
+          {formik.touched.email && formik.errors.email ? (
+            <Alert variant="warning">{formik.errors.email}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="institucionalEmailLabel">
+            Correo institucional (@alumnos.udg.mx) [Opcional]
+          </Form.Label>
+          <Form.Control
+            id="institucionalEmailLabel"
+            type="email"
+            name="institucionalEmail"
+            value={formik.values.institucionalEmail}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
+          />
+          {formik.touched.institucionalEmail &&
+          formik.errors.institucionalEmail ? (
+            <Alert variant="warning">{formik.errors.institucionalEmail}</Alert>
+          ) : null}
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="cicloLabel">
+            Ciclo de ingreso a CUSur (ej: 2021A):
+          </Form.Label>
+          <Form.Control
+            id="cicloLabel"
             type="text"
             name="ciclo"
-            value={values.ciclo}
-            onChange={handleChange}
-            disabled={disabled}
+            value={formik.values.ciclo}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
           />
-          {touched.ciclo && errors.ciclo ? (
-            <Alert variant="warning">{errors.ciclo}</Alert>
+          {formik.touched.ciclo && formik.errors.ciclo ? (
+            <Alert variant="warning">{formik.errors.ciclo}</Alert>
           ) : null}
         </Form.Group>
         <Form.Group controlId="carrera">
@@ -213,21 +248,22 @@ const FormComponent = ({
             name="carrera"
             as="select"
             data-testid="carrera"
-            value={values.carrera}
-            onChange={handleChange}
-            disabled={disabled ? true : values.externo}
+            value={formik.values.carrera}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled ? true : formik.values.externo}
           >
             <option key={"a"} disabled>
               Elige una opcion...
             </option>
-            {carreras.map((carrera: string, index: number) => (
-              <option key={index} value={carrera}>
+            {props.carreras.map((carrera: string) => (
+              <option key={carrera} value={carrera}>
                 {carrera}
               </option>
             ))}
           </Form.Control>
-          {touched.carrera && errors.carrera ? (
-            <Alert variant="warning">{errors.carrera}</Alert>
+          {formik.touched.carrera && formik.errors.carrera ? (
+            <Alert variant="warning">{formik.errors.carrera}</Alert>
           ) : null}
         </Form.Group>
         <Form.Group>
@@ -237,9 +273,10 @@ const FormComponent = ({
             data-testid="curso"
             name="curso"
             as="select"
-            value={values.curso}
-            onChange={handleChange}
-            disabled={disabled}
+            value={formik.values.curso}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            disabled={props.disabled}
           >
             <option>Selecciona el curso:</option>
             <option value="en">Inglés</option>
@@ -250,83 +287,17 @@ const FormComponent = ({
           <input
             type="checkbox"
             name="reubicacion"
-            value={(values.reubicacion as unknown) as string}
-            disabled={disabled}
+            value={formik.values.reubicacion as unknown as string}
+            disabled={props.disabled}
           />{" "}
           Reubicacion
         </Form.Group>
-        <Button type="submit" variant="primary" disabled={disabled}>
+        <Button type="submit" variant="primary" disabled={props.disabled}>
           Enviar
         </Button>
       </Form>
-      <Alert variant="warning" style={{ margin: "1em" }}>
-        <small>
-          Es probable que al finalizar el examen escrito debas hacer un examen
-          oral.
-        </small>
-      </Alert>
     </Container>
   );
 };
 
-const PersonalForm = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const handleSubmit = (values: Applicant) => {
-    dispatch(setApplicant(values));
-    dispatch(startExam());
-    history.push("test");
-  };
-  const { data, loading, error } = useQuery(GET_CARRERAS);
-  const isClosed = loading ? false : data && data.isClosed;
-  const carreras = loading
-    ? []
-    : data?.carreras.map((el: { name: string }) => el.name);
-
-  if (loading) return <Loading />;
-  if (error?.networkError)
-    return <div>No pudimos conectarnos con el servidor.</div>;
-  if (error)
-    return (
-      <Error>
-        <div data-testid="gql-errors">{JSON.stringify(error)}</div>
-      </Error>
-    );
-  return (
-    <div>
-      <Formik
-        validationSchema={InformationSchema}
-        initialValues={{
-          codigo: "",
-          nombre: "",
-          apellido_paterno: "",
-          apellido_materno: "",
-          genero: "M",
-          ciclo: "",
-          carrera: "Elige una opcion...",
-          telefono: "",
-          email: "",
-          nivel_escrito: 1,
-          curso: "",
-          externo: false,
-          reubicacion: false,
-        }}
-        onSubmit={(values) => handleSubmit(values)}
-      >
-        {({ values, errors, touched, handleSubmit, handleChange }) => (
-          <FormComponent
-            values={values}
-            errors={errors}
-            touched={touched}
-            handleSubmit={handleSubmit}
-            handleChange={handleChange}
-            disabled={isClosed}
-            carreras={carreras}
-          />
-        )}
-      </Formik>
-    </div>
-  );
-};
-
-export default PersonalForm;
+export default FormComponent;

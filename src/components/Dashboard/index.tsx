@@ -2,22 +2,21 @@ import React from "react";
 import { useMutation, useQuery, gql } from "@apollo/client";
 import { Loading, Error } from "../utils/components";
 
+/*
+Re-export as Dashboard/index.tsx
+*/
 import _CloseExamToggle from "./CloseExamToggle";
 import _MeetLinksForm from "./MeetLinksForm";
+import _HomePageMessage from "./HomePageMessage";
 
 export const CloseExamToggle = _CloseExamToggle;
 export const MeetLinksForm = _MeetLinksForm;
+export const HomePageMessage = _HomePageMessage;
 
 export const GET_DEFAULT_SETTINGS = gql`
-  query {
+  query GET_DEFAULT_SETTINGS {
     isClosed
-    englishLinks: meetLinks(course: "en") {
-      id
-      teacher
-      link
-      active
-    }
-    frenchLinks: meetLinks(course: "fr") {
+    meetLinks {
       id
       teacher
       link
@@ -27,7 +26,7 @@ export const GET_DEFAULT_SETTINGS = gql`
 `;
 
 export const CLOSE_EXAM = gql`
-  mutation {
+  mutation CLOSE_EXAM {
     closeExam {
       isClosed
     }

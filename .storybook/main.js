@@ -1,4 +1,5 @@
 module.exports = {
+  "typescript": { "reactDocgen": false },
   "stories": [
     "../src/**/*.stories.mdx",
     "../src/**/*.stories.@(js|jsx|ts|tsx)"
@@ -7,6 +8,10 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/preset-create-react-app",
-    "storybook-addon-apollo-client",
-  ]
+    "storybook-addon-apollo-client"
+  ],
+  "framework": "@storybook/react",
+  "core": {
+    "builder": "webpack5"
+  }
 }

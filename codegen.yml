@@ -1,0 +1,15 @@
+overwrite: true
+schema: "http://localhost:5000"
+documents: "(src/**/*.tsx)"
+generates:
+  src/generated/grapqhl.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"
+  src/testutils/generatedMocks.js:
+    plugins:
+      - "apollo-typed-documents/lib/codegenApolloMock" 
