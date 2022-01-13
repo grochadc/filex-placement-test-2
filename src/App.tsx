@@ -110,9 +110,8 @@ const App: React.FC = () => {
         <Route path="result">
           <Result
             level={currentLevel}
-            meetLink={
-              mutationResponse?.saveWrittenResults.meetLink || undefined
-            }
+            //@ts-ignore
+            meetLink={mutationResponse?.saveWrittenResults.meetLink}
           />
         </Route>
         <Route path="dashboard">
