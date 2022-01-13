@@ -97,8 +97,12 @@ const App: React.FC = () => {
           <Section
             currentLevel={currentLevel}
             course={applicant.curso}
-            onNextLevel={() => {
-              setCurrentLevel(currentLevel + 1);
+            onNextLevel={(pass) => {
+              if (pass) {
+                setCurrentLevel(currentLevel + 1);
+              } else {
+                setCurrentPath("result");
+              }
             }}
             onFinishExam={handleFinishExam}
           />

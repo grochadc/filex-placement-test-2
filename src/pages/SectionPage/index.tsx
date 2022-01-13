@@ -74,7 +74,7 @@ const ButtonsComponent = styled.div`
 
 type SectionPageProps = {
   onFinishExam: () => void;
-  onNextLevel: () => void;
+  onNextLevel: (pass: boolean) => void;
   currentLevel: number;
   course: string;
 };
@@ -114,7 +114,7 @@ const SectionPage = (props: SectionPageProps) => {
               <Button
                 variant="primary"
                 disabled={!localState.answeredMin}
-                onClick={props.onNextLevel}
+                onClick={() => props.onNextLevel(localState.pass)}
               >
                 Continuar
               </Button>
