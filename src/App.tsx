@@ -69,7 +69,9 @@ export const PostResultsMutation = gql`
 
 const App: React.FC = () => {
   const [postResults, { data: mutationResponse, error }] =
-    usePostResultsMutation();
+    usePostResultsMutation({
+      onCompleted: () => console.log("Completed post results"),
+    });
   const defaultPath =
     window.location.pathname === "/dashboard" ? "dashboard" : "home";
   const [currentPath, setCurrentPath] = useState(defaultPath);
@@ -101,7 +103,7 @@ const App: React.FC = () => {
               if (pass) {
                 setCurrentLevel(currentLevel + 1);
               } else {
-                setCurrentPath("result");
+                handleFinishExam();
               }
             }}
             onFinishExam={handleFinishExam}
