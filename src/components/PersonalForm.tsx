@@ -95,49 +95,41 @@ const FormComponent = (props: FormComponentProps) => {
     validationSchema: InformationSchema,
   });
   return (
-    <Container>
-      <Form onSubmit={(e) => formik.handleSubmit(e as any)}>
-        <Form.Group controlId="codigo">
-          <Form.Label>Código:</Form.Label>
-          <Form.Control
-            type="text"
-            name="codigo"
+    <main>
+      <form onSubmit={(e) => formik.handleSubmit(e as any)}>
+        <div>
+          <label>Código:
+          <input
+            type="number"
             value={formik.values.codigo}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            disabled={props.disabled ? true : formik.values.externo}
-          />
-          <div>
+            disabled={props.disabled ? true : false}
+          /></label>
+        </div>
+        <div>
+          <label>
             <input 
               type="checkbox"
-              id="externoid"
               value={formik.values.externo as unknown as string}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               disabled={props.disabled}
               className="mx-2"
               />
-              <label htmlFor="externoid">Externo</label>
-          </div>
-          <Form.Group controlId="externo">
-          <input
-            type="checkbox"
-            value={formik.values.externo as unknown as string}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            id="externo"
-            disabled={props.disabled}
-          />
-          <Form.Label> Externo (No eres alumno Cusur)</Form.Label>
-        </Form.Group>
+            Externo (No soy alumno CUSur)
+          </label>
+          <span>{formik.values.externo ? "Si eres externo usa tu telefono en lugar de codigo" : null}</span>
+        </div>
           <button className="mt-1">Buscar mi Información</button>
+          <div>
           {formik.touched.codigo && formik.errors.codigo ? (
             <Alert variant="warning">{formik.errors.codigo}</Alert>
           ) : null}
-        </Form.Group>
-        <Form.Group controlId="nombre">
-          <Form.Label>Nombre:</Form.Label>
-          <Form.Control
+        </div>
+        <div>
+          <label>Nombre:
+          <input
             type="text"
             name="nombre"
             value={formik.values.nombre}
@@ -145,10 +137,11 @@ const FormComponent = (props: FormComponentProps) => {
             onBlur={formik.handleBlur}
             disabled={props.disabled}
           />
+          </label>
           {formik.touched.nombre && formik.errors.nombre ? (
             <Alert variant="warning">{formik.errors.nombre}</Alert>
           ) : null}
-        </Form.Group>
+        </div>
         <Form.Group controlId="apellido_paterno">
           <Form.Label>Apellido Paterno:</Form.Label>
           <Form.Control
@@ -308,8 +301,8 @@ const FormComponent = (props: FormComponentProps) => {
         <Button type="submit" variant="primary" disabled={props.disabled}>
           Enviar
         </Button>
-      </Form>
-    </Container>
+      </form>
+    </main>
   );
 };
 
