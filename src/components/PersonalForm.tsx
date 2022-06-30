@@ -107,11 +107,19 @@ const FormComponent = (props: FormComponentProps) => {
             onBlur={formik.handleBlur}
             disabled={props.disabled ? true : formik.values.externo}
           />
-          {formik.touched.codigo && formik.errors.codigo ? (
-            <Alert variant="warning">{formik.errors.codigo}</Alert>
-          ) : null}
-        </Form.Group>
-        <Form.Group controlId="externo">
+          <div>
+            <input 
+              type="checkbox"
+              id="externoid"
+              value={formik.values.externo as unknown as string}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              disabled={props.disabled}
+              className="mx-2"
+              />
+              <label htmlFor="externoid">Externo</label>
+          </div>
+          <Form.Group controlId="externo">
           <input
             type="checkbox"
             value={formik.values.externo as unknown as string}
@@ -121,6 +129,11 @@ const FormComponent = (props: FormComponentProps) => {
             disabled={props.disabled}
           />
           <Form.Label> Externo (No eres alumno Cusur)</Form.Label>
+        </Form.Group>
+          <button className="mt-1">Buscar mi Información</button>
+          {formik.touched.codigo && formik.errors.codigo ? (
+            <Alert variant="warning">{formik.errors.codigo}</Alert>
+          ) : null}
         </Form.Group>
         <Form.Group controlId="nombre">
           <Form.Label>Nombre:</Form.Label>

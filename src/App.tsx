@@ -87,7 +87,7 @@ const App: React.FC = () => {
     <>
       <SimpleRouter currentPath={currentPath}>
         <Route path="home">
-          <Header title="DATOS PERSONALES" />
+          <Header title="Exámen de Ubicación" />
           <HomePage
             onSubmitApplicantInformation={(applicant) => {
               setApplicant({ ...applicant, nivel_escrito: "" });
