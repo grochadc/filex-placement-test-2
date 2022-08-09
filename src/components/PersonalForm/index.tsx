@@ -1,10 +1,9 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
+import React, {useState} from "react";
 import Alert from "react-bootstrap/Alert";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
+//import * as tw from "tailwind-styled-components";
 
 Yup.addMethod<Yup.StringSchema>(Yup.string, "allowed", function (arr, message) {
   return this.test("isAllowed", message, (value) => {
@@ -73,6 +72,7 @@ type FormComponentProps = {
   onSubmit: (applicantInformation: FormikSchema) => void;
 };
 
+const ControlGroup = ({children}: any) => <div className="flex flex-col my-3 w-full">{children}</div>
 const FormComponent = (props: FormComponentProps) => {
   const formik = useFormik({
     initialValues: {
@@ -94,20 +94,28 @@ const FormComponent = (props: FormComponentProps) => {
     onSubmit: props.onSubmit,
     validationSchema: InformationSchema,
   });
+  const findInfo = (codigo: string) => {
+    setFindingInfo(true);
+      return (new Promise((resolve) => {
+        setTimeout(() => resolve(null), 2000);
+      }));
+  };
+  const [findingInfo, setFindingInfo] = useState(false);
   return (
-    <main>
+    <div>
       <form onSubmit={(e) => formik.handleSubmit(e as any)}>
-        <div>
-          <label>Código:
+        <ControlGroup>
+          <div><label htmlFor="codigo">Código:</label></div>
           <input
-            type="number"
+            id="codigo"
+            type="text"
             value={formik.values.codigo}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             disabled={props.disabled ? true : false}
-          /></label>
-        </div>
-        <div>
+          />
+        </ControlGroup>
+        <ControlGroup>
           <label>
             <input 
               type="checkbox"
@@ -120,33 +128,38 @@ const FormComponent = (props: FormComponentProps) => {
             Externo (No soy alumno CUSur)
           </label>
           <span>{formik.values.externo ? "Si eres externo usa tu telefono en lugar de codigo" : null}</span>
-        </div>
-          <button className="mt-1">Buscar mi Información</button>
+        </ControlGroup>
+          <button 
+            className="my-1" 
+            onClick={() => findInfo(formik.values.codigo).then(() => setFindingInfo(false))}
+          >
+            Buscar mis datos
+          </button>
+          {findingInfo ? <Alert variant="primary">Buscando tus datos...</Alert> : null}
           <div>
           {formik.touched.codigo && formik.errors.codigo ? (
             <Alert variant="warning">{formik.errors.codigo}</Alert>
           ) : null}
         </div>
-        <div>
-          <label>Nombre:
+        <ControlGroup>
+          <div><label htmlFor="nombre">Nombre:</label></div>
           <input
             type="text"
-            name="nombre"
+            id="nombre"
             value={formik.values.nombre}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             disabled={props.disabled}
           />
-          </label>
           {formik.touched.nombre && formik.errors.nombre ? (
             <Alert variant="warning">{formik.errors.nombre}</Alert>
           ) : null}
-        </div>
-        <Form.Group controlId="apellido_paterno">
-          <Form.Label>Apellido Paterno:</Form.Label>
-          <Form.Control
+        </ControlGroup>
+        <ControlGroup>
+          <label htmlFor="apellido_paterno">Apellido Paterno:</label>
+          <input
             type="text"
-            name="apellido_paterno"
+            id="apellido_paterno"
             value={formik.values.apellido_paterno}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -155,12 +168,12 @@ const FormComponent = (props: FormComponentProps) => {
           {formik.touched.apellido_paterno && formik.errors.apellido_paterno ? (
             <Alert variant="warning">{formik.errors.apellido_paterno}</Alert>
           ) : null}
-        </Form.Group>
-        <Form.Group controlId="apellido_materno">
-          <Form.Label>Apellido Materno:</Form.Label>
-          <Form.Control
+        </ControlGroup>
+        <ControlGroup>
+          <label htmlFor="apellido_materno">Apellido Materno:</label>
+          <input
             type="text"
-            name="apellido_materno"
+            id="apellido_materno"
             value={formik.values.apellido_materno}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -169,26 +182,27 @@ const FormComponent = (props: FormComponentProps) => {
           {formik.touched.apellido_materno && formik.errors.apellido_materno ? (
             <Alert variant="warning">{formik.errors.apellido_materno}</Alert>
           ) : null}
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Género:</Form.Label>
-          <Form.Control
-            name="genero"
-            as="select"
+        </ControlGroup>
+        <ControlGroup>
+          <label htmlFor="genero">Género:</label>
+          <select
+            style={{display: "block"}}
+            id="genero"
             value={formik.values.genero}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             disabled={props.disabled}
           >
-            <option value="M">M</option>
-            <option value="F">F</option>
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="telefono">
-          <Form.Label>Teléfono Celular:</Form.Label>
-          <Form.Control
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+            <option value="NB">No Binario</option>
+          </select>
+        </ControlGroup>
+        <ControlGroup>
+          <label htmlFor="telefono">Teléfono Celular:</label>
+          <input
+            id="telefono"
             type="tel"
-            name="telefono"
             value={formik.values.telefono}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -197,13 +211,12 @@ const FormComponent = (props: FormComponentProps) => {
           {formik.touched.telefono && formik.errors.telefono ? (
             <Alert variant="warning">{formik.errors.telefono}</Alert>
           ) : null}
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor="emailLabel">Correo Electrónico:</Form.Label>
-          <Form.Control
-            id="emailLabel"
+        </ControlGroup>
+        <ControlGroup>
+          <label htmlFor="email">Correo Electrónico:</label>
+          <input
+            id="email"
             type="email"
-            name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -212,15 +225,14 @@ const FormComponent = (props: FormComponentProps) => {
           {formik.touched.email && formik.errors.email ? (
             <Alert variant="warning">{formik.errors.email}</Alert>
           ) : null}
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor="institucionalEmailLabel">
-            Correo institucional (@alumnos.udg.mx) [Opcional]
-          </Form.Label>
-          <Form.Control
-            id="institucionalEmailLabel"
+        </ControlGroup>
+        <ControlGroup>
+          <label htmlFor="institucionalEmail">
+            Correo institucional (@alumnos.udg.mx)
+          </label>
+          <input
+            id="institucionalEmail"
             type="email"
-            name="institucionalEmail"
             value={formik.values.institucionalEmail}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -230,15 +242,14 @@ const FormComponent = (props: FormComponentProps) => {
           formik.errors.institucionalEmail ? (
             <Alert variant="warning">{formik.errors.institucionalEmail}</Alert>
           ) : null}
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor="cicloLabel">
+        </ControlGroup>
+        <ControlGroup>
+          <label htmlFor="ciclo_ingreso">
             Ciclo de ingreso a CUSur (ej: 2021A):
-          </Form.Label>
-          <Form.Control
-            id="cicloLabel"
+          </label>
+          <input
+            id="ciclo_ingreso"
             type="text"
-            name="ciclo"
             value={formik.values.ciclo}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -247,12 +258,12 @@ const FormComponent = (props: FormComponentProps) => {
           {formik.touched.ciclo && formik.errors.ciclo ? (
             <Alert variant="warning">{formik.errors.ciclo}</Alert>
           ) : null}
-        </Form.Group>
-        <Form.Group controlId="carrera">
-          <Form.Label>Carrera:</Form.Label>
-          <Form.Control
-            name="carrera"
-            as="select"
+        </ControlGroup>
+        <ControlGroup>
+          <label htmlFor="carrera">Carrera:</label>
+          <select
+            style={{display: "block"}}
+            id="carrera"
             data-testid="carrera"
             value={formik.values.carrera}
             onChange={formik.handleChange}
@@ -267,42 +278,33 @@ const FormComponent = (props: FormComponentProps) => {
                 {carrera}
               </option>
             ))}
-          </Form.Control>
+          </select>
           {formik.touched.carrera && formik.errors.carrera ? (
             <Alert variant="warning">{formik.errors.carrera}</Alert>
           ) : null}
-        </Form.Group>
-        <Form.Group>
-          <Form.Label id="curso">Curso:</Form.Label>
-          <Form.Control
+        </ControlGroup>
+        <ControlGroup>
+          <label id="curso">Idioma:</label>
+          <select
+            style={{display: "block"}}
+            id="curso"
             aria-labelledby="curso"
             data-testid="curso"
-            name="curso"
-            as="select"
             value={formik.values.curso}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             disabled={props.disabled}
           >
-            <option>Selecciona el curso:</option>
+            <option>Selecciona el idioma:</option>
             <option value="en">Inglés</option>
             <option value="fr">Francés</option>
-          </Form.Control>
-        </Form.Group>
-        <Form.Group controlId="reubicacion">
-          <input
-            type="checkbox"
-            name="reubicacion"
-            value={formik.values.reubicacion as unknown as string}
-            disabled={props.disabled}
-          />{" "}
-          Reubicacion
-        </Form.Group>
-        <Button type="submit" variant="primary" disabled={props.disabled}>
-          Enviar
-        </Button>
+          </select>
+        </ControlGroup>
+        <button type="submit" disabled={props.disabled}>
+          Iniciar Exámen
+        </button>
       </form>
-    </main>
+    </div>
   );
 };
 

@@ -23,3 +23,8 @@ export function generateId() {
   let str = Math.random().toString(36).substring(7);
   return str;
 }
+
+
+export function tableReducer<Row>(state: Row[], action: {type: any, payload: any }): Row[] {
+  return state;
+}
