@@ -3642,6 +3642,18 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@tanstack/react-table@^8.5.11":
+  version "8.5.11"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.5.11.tgz#544f551f15412087edfc2df01bed9697aab4651f"
+  integrity sha512-bIegBJ3VPUX3Z7rMnFEnTRCRgPccTsciilQA1ib/pA6M7Qq1boTNPjNjSbEHmBKytaxPrPfcUfzkZLogYtvu3g==
+  dependencies:
+    "@tanstack/table-core" "8.5.11"
+
+"@tanstack/table-core@8.5.11":
+  version "8.5.11"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.5.11.tgz#a23178a097df4b0b64bdfa6f79e6d8933e97c7f7"
+  integrity sha512-ZN61ockLaIAiiPbZfMKT2S03nbWx28OHg/nAiDnNfmN4QmAMcdwVajPn2QQwnNVGAr4jS4nbhbYzCcjq8livXQ==
+
 "@testing-library/dom@^7.22.3", "@testing-library/dom@^7.29.4":
   version "7.31.2"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-7.31.2.tgz#df361db38f5212b88555068ab8119f5d841a8c4a"
@@ -9371,6 +9383,11 @@ hash.js@^1.0.0, hash.js@^1.0.3:
   dependencies:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
+
+hashlru@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/hashlru/-/hashlru-2.3.0.tgz#5dc15928b3f6961a2056416bb3a4910216fdfb51"
+  integrity sha512-0cMsjjIC8I+D3M44pOQdsy0OHXGLVz6Z0beRuufhKa0KfaD2wGwAev6jILzXsd3/vpnNQJmWyZtIILqM1N+n5A==
 
 hast-to-hyperscript@^9.0.0:
   version "9.0.1"
@@ -16130,6 +16147,20 @@ synchronous-promise@^2.0.13, synchronous-promise@^2.0.15:
   version "2.0.15"
   resolved "https://registry.yarnpkg.com/synchronous-promise/-/synchronous-promise-2.0.15.tgz#07ca1822b9de0001f5ff73595f3d08c4f720eb8e"
   integrity sha512-k8uzYIkIVwmT+TcglpdN50pS2y1BDcUnBPK9iJeGu0Pl1lOI8pD6wtzgw91Pjpe+RxtTncw32tLxs/R0yNL2Mg==
+
+tailwind-merge@^1.2.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.3.0.tgz#fa29557a2e1c6947904143e45884e554f491937d"
+  integrity sha512-M+DC6DO5eypc3/iOt/oTuqUH68Ip+XCu/Afybg9/ATxUX6KMPk4UGU4z4EMx08BMOBL+iOL93+hx3Jxpb9qNGw==
+  dependencies:
+    hashlru "^2.3.0"
+
+tailwind-styled-components@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/tailwind-styled-components/-/tailwind-styled-components-2.1.8.tgz#fa87bc34773ac35320c2e9436110f7af9a28c841"
+  integrity sha512-8RfMqGGOpgrd1j6MU5kWe4mzqjR2ikPfPS2xee9By2ynKQH5UFO5upLK6yw3Vc0pJ2ACEduJWoxUItDG8FZSvw==
+  dependencies:
+    tailwind-merge "^1.2.0"
 
 tailwindcss@^3.0.2:
   version "3.0.11"

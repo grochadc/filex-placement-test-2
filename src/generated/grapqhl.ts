@@ -33,6 +33,7 @@ export type Applicant = {
   email: Scalars['String'];
   externo: Scalars['Boolean'];
   genero: Scalars['String'];
+  institucionalEmail?: Maybe<Scalars['String']>;
   nivel: Scalars['String'];
   nombre: Scalars['String'];
   registeredSchedule?: Maybe<Schedule>;
@@ -52,6 +53,7 @@ export type ApplicantInput = {
   email: Scalars['String'];
   externo: Scalars['Boolean'];
   genero: Scalars['String'];
+  institucionalEmail?: InputMaybe<Scalars['String']>;
   nivel: Scalars['String'];
   nombre: Scalars['String'];
   telefono: Scalars['String'];
@@ -69,6 +71,7 @@ export type ApplicantResponse = {
   email: Scalars['String'];
   externo: Scalars['Boolean'];
   genero: Scalars['String'];
+  institucionalEmail?: Maybe<Scalars['String']>;
   nivel: Scalars['String'];
   nombre: Scalars['String'];
   telefono: Scalars['String'];
@@ -96,6 +99,12 @@ export type CloseExamResponse = {
   __typename?: 'CloseExamResponse';
   isClosed: Scalars['Boolean'];
 };
+
+export enum Filter {
+  All = 'ALL',
+  Assigned = 'ASSIGNED',
+  Nonassigned = 'NONASSIGNED'
+}
 
 export type Grades = {
   __typename?: 'Grades';
@@ -147,6 +156,7 @@ export type Mutation = {
   removeMeetLink: Scalars['Int'];
   resetReservations: Scalars['Boolean'];
   saveApplicant: ApplicantResponse;
+  saveOralResults: Scalars['Boolean'];
   saveRegisteringLevels: Array<Scalars['String']>;
   saveWorkshopsAttendance: Scalars['Boolean'];
   saveWrittenResults: MutationResponse;
@@ -197,6 +207,11 @@ export type MutationSaveApplicantArgs = {
 };
 
 
+export type MutationSaveOralResultsArgs = {
+  input?: InputMaybe<OralResults>;
+};
+
+
 export type MutationSaveRegisteringLevelsArgs = {
   course: Scalars['String'];
   levels: Array<Scalars['String']>;
@@ -243,6 +258,7 @@ export type MutationResponse = {
 
 export type Option = {
   __typename?: 'Option';
+  active: Scalars['Boolean'];
   available: Scalars['Boolean'];
   day: Scalars['String'];
   id: Scalars['ID'];
@@ -254,6 +270,12 @@ export type Option = {
   workshop_id: Scalars['String'];
   workshop_name: Scalars['String'];
   zoom_id?: Maybe<Scalars['String']>;
+};
+
+export type OralResults = {
+  id: Scalars['Int'];
+  nivelFinal: Scalars['Int'];
+  nivelOral: Scalars['Int'];
 };
 
 export type PageInfo = {
@@ -286,6 +308,7 @@ export type Query = {
   student: Student;
   teacher: Teacher;
   teachers: Array<Teacher>;
+  testResults: Array<Maybe<TestResults>>;
   workshops: Array<Workshop>;
 };
 
@@ -338,6 +361,11 @@ export type QueryStudentArgs = {
 
 export type QueryTeacherArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryTestResultsArgs = {
+  filter?: InputMaybe<Filter>;
 };
 
 export type Question = {
@@ -425,6 +453,8 @@ export type Student = {
   nivel: Scalars['String'];
   nombre: Scalars['String'];
   reservation?: Maybe<StudentReservation>;
+  reservationCount: Scalars['Int'];
+  reservationLimit: Scalars['Int'];
   telefono: Scalars['String'];
 };
 
@@ -455,6 +485,7 @@ export type StudentInput = {
   externo: Scalars['Boolean'];
   genero: Scalars['String'];
   grupo: Scalars['String'];
+  institucionalEmail?: InputMaybe<Scalars['String']>;
   nivel: Scalars['String'];
   nombre: Scalars['String'];
   telefono: Scalars['String'];
@@ -497,6 +528,28 @@ export type TeacherOption = {
   workshop_id: Scalars['String'];
   workshop_name: Scalars['String'];
   zoom_id?: Maybe<Scalars['String']>;
+};
+
+export type TestResults = {
+  __typename?: 'TestResults';
+  apellidoMaterno: Scalars['String'];
+  apellidoPaterno: Scalars['String'];
+  carrera: Scalars['String'];
+  ciclo: Scalars['String'];
+  codigo: Scalars['String'];
+  curso: Scalars['String'];
+  email: Scalars['String'];
+  externo: Scalars['Boolean'];
+  generated_id: Scalars['String'];
+  genero: Scalars['String'];
+  institutionalEmail?: Maybe<Scalars['String']>;
+  meetLink: Scalars['String'];
+  nivelEscrito: Scalars['Int'];
+  nivelFinal?: Maybe<Scalars['Int']>;
+  nivelOral?: Maybe<Scalars['Int']>;
+  nombre: Scalars['String'];
+  reubicacion: Scalars['Boolean'];
+  telefono: Scalars['String'];
 };
 
 export type Workshop = {
@@ -571,6 +624,13 @@ export type RemoveSingleLinkMutationVariables = Exact<{
 
 
 export type RemoveSingleLinkMutation = { __typename?: 'Mutation', removeMeetLink: number };
+
+export type GetTestResultsQueryVariables = Exact<{
+  filter?: InputMaybe<Filter>;
+}>;
+
+
+export type GetTestResultsQuery = { __typename?: 'Query', testResults: Array<{ __typename?: 'TestResults', codigo: string, nombre: string, apellidoPaterno: string, apellidoMaterno: string, genero: string, ciclo: string, carrera: string, telefono: string, email: string, institutionalEmail?: string | null | undefined, curso: string, externo: boolean, reubicacion: boolean, generated_id: string, meetLink: string, nivelEscrito: number, nivelOral?: number | null | undefined, nivelFinal?: number | null | undefined } | null | undefined> };
 
 export type Get_Default_SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -724,6 +784,58 @@ export function useRemoveSingleLinkMutation(baseOptions?: Apollo.MutationHookOpt
 export type RemoveSingleLinkMutationHookResult = ReturnType<typeof useRemoveSingleLinkMutation>;
 export type RemoveSingleLinkMutationResult = Apollo.MutationResult<RemoveSingleLinkMutation>;
 export type RemoveSingleLinkMutationOptions = Apollo.BaseMutationOptions<RemoveSingleLinkMutation, RemoveSingleLinkMutationVariables>;
+export const GetTestResultsDocument = gql`
+    query getTestResults($filter: Filter) {
+  testResults(filter: $filter) {
+    codigo
+    nombre
+    apellidoPaterno
+    apellidoMaterno
+    genero
+    ciclo
+    carrera
+    telefono
+    email
+    institutionalEmail
+    curso
+    externo
+    reubicacion
+    generated_id
+    meetLink
+    nivelEscrito
+    nivelOral
+    nivelFinal
+  }
+}
+    `;
+
+/**
+ * __useGetTestResultsQuery__
+ *
+ * To run a query within a React component, call `useGetTestResultsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTestResultsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTestResultsQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useGetTestResultsQuery(baseOptions?: Apollo.QueryHookOptions<GetTestResultsQuery, GetTestResultsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTestResultsQuery, GetTestResultsQueryVariables>(GetTestResultsDocument, options);
+      }
+export function useGetTestResultsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTestResultsQuery, GetTestResultsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTestResultsQuery, GetTestResultsQueryVariables>(GetTestResultsDocument, options);
+        }
+export type GetTestResultsQueryHookResult = ReturnType<typeof useGetTestResultsQuery>;
+export type GetTestResultsLazyQueryHookResult = ReturnType<typeof useGetTestResultsLazyQuery>;
+export type GetTestResultsQueryResult = Apollo.QueryResult<GetTestResultsQuery, GetTestResultsQueryVariables>;
 export const Get_Default_SettingsDocument = gql`
     query GET_DEFAULT_SETTINGS {
   isClosed

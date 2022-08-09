@@ -135,7 +135,7 @@ describe("nivel 1", () => {
     userEvent.type(inputs.ciclo, applicantTestInfo.ciclo);
 
     await act(async () => {
-      userEvent.click(screen.getByRole("button", { name: /enviar/i }));
+      userEvent.click(screen.getByRole("button", { name: /iniciar/i }));
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
     await waitForElementToBeRemoved(() => screen.queryByText(/cargando/i));
@@ -181,7 +181,7 @@ describe("nivel 1", () => {
     userEvent.type(inputs.ciclo, applicantTestInfo.ciclo);
 
     await act(async () => {
-      userEvent.click(screen.getByRole("button", { name: /enviar/i }));
+      userEvent.click(screen.getByRole("button", { name: /iniciar/i }));
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
     await waitForElementToBeRemoved(() => screen.queryByText(/cargando/i));
@@ -240,7 +240,7 @@ describe("nivel 2", () => {
     userEvent.type(inputs.ciclo, applicantTestInfo.ciclo);
 
     await act(async () => {
-      userEvent.click(screen.getByRole("button", { name: /enviar/i }));
+      userEvent.click(screen.getByRole("button", { name: /iniciar/i }));
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
     await waitForElementToBeRemoved(() => screen.queryByText(/cargando/i));
@@ -303,7 +303,7 @@ describe("nivel 2", () => {
     userEvent.type(inputs.ciclo, applicantTestInfo.ciclo);
 
     await act(async () => {
-      userEvent.click(screen.getByRole("button", { name: /enviar/i }));
+      userEvent.click(screen.getByRole("button", { name: /iniciar/i }));
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
     await waitForElementToBeRemoved(() => screen.queryByText(/cargando/i));
@@ -395,7 +395,7 @@ describe("nivel 3", () => {
     userEvent.type(inputs.ciclo, applicantTestInfo.ciclo);
 
     await act(async () => {
-      userEvent.click(screen.getByRole("button", { name: /enviar/i }));
+      userEvent.click(screen.getByRole("button", { name: /iniciar/i }));
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
     await waitForElementToBeRemoved(() => screen.queryByText(/cargando/i));
@@ -493,7 +493,7 @@ describe("nivel 3", () => {
     userEvent.type(inputs.ciclo, applicantTestInfo.ciclo);
 
     await act(async () => {
-      userEvent.click(screen.getByRole("button", { name: /enviar/i }));
+      userEvent.click(screen.getByRole("button", { name: /iniciar/i }));
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
     await waitForElementToBeRemoved(() => screen.queryByText(/cargando/i));
