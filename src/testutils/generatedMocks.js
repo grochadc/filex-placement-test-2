@@ -96,9 +96,10 @@ operations.getTestResults.data = (values = {}, options = {}) => {
   return {
     testResults: (values.testResults || []).map(item => ((values = {}, options = {}) => {
       const __typename = 'TestResults';
-      values = (({ codigo = null, nombre = null, apellidoPaterno = null, apellidoMaterno = null, genero = null, ciclo = null, carrera = null, telefono = null, email = null, institutionalEmail = null, curso = null, externo = null, reubicacion = null, generated_id = null, meetLink = null, nivelEscrito = null, nivelOral = null, nivelFinal = null }) => ({ codigo, nombre, apellidoPaterno, apellidoMaterno, genero, ciclo, carrera, telefono, email, institutionalEmail, curso, externo, reubicacion, generated_id, meetLink, nivelEscrito, nivelOral, nivelFinal }))(values);
+      values = (({ id = null, codigo = null, nombre = null, apellidoPaterno = null, apellidoMaterno = null, genero = null, ciclo = null, carrera = null, telefono = null, email = null, institutionalEmail = null, curso = null, externo = null, reubicacion = null, generated_id = null, meetLink = null, nivelEscrito = null, nivelOral = null, nivelFinal = null }) => ({ id, codigo, nombre, apellidoPaterno, apellidoMaterno, genero, ciclo, carrera, telefono, email, institutionalEmail, curso, externo, reubicacion, generated_id, meetLink, nivelEscrito, nivelOral, nivelFinal }))(values);
       values.__typename = __typename;
       return {
+        id: (values.id === null || values.id === undefined) ? options.getDefaultScalarValue({ scalarTypeName: 'ID', mappedTypeName: 'string', fieldName: 'id', __typename, scalarValues: options.scalarValues }) : values.id,
         codigo: (values.codigo === null || values.codigo === undefined) ? options.getDefaultScalarValue({ scalarTypeName: 'String', mappedTypeName: 'string', fieldName: 'codigo', __typename, scalarValues: options.scalarValues }) : values.codigo,
         nombre: (values.nombre === null || values.nombre === undefined) ? options.getDefaultScalarValue({ scalarTypeName: 'String', mappedTypeName: 'string', fieldName: 'nombre', __typename, scalarValues: options.scalarValues }) : values.nombre,
         apellidoPaterno: (values.apellidoPaterno === null || values.apellidoPaterno === undefined) ? options.getDefaultScalarValue({ scalarTypeName: 'String', mappedTypeName: 'string', fieldName: 'apellidoPaterno', __typename, scalarValues: options.scalarValues }) : values.apellidoPaterno,
@@ -120,6 +121,26 @@ operations.getTestResults.data = (values = {}, options = {}) => {
         ...(options.addTypename ? { __typename } : {})
       };
     })(item, options))
+  };
+};
+
+operations.saveFinalResults = {};
+operations.saveFinalResults.variables = (values = {}, options = {}) => {
+  const __typename = '';
+  values = (({ id = undefined, nivelOral = undefined, nivelFinal = undefined }) => ({ id, nivelOral, nivelFinal }))(values);
+  values.__typename = __typename;
+  return {
+    id: (values.id === null || values.id === undefined) ? options.getDefaultScalarValue({ scalarTypeName: 'ID', mappedTypeName: 'string', fieldName: 'id', __typename, scalarValues: options.scalarValues }) : values.id,
+    nivelOral: (values.nivelOral === null || values.nivelOral === undefined) ? options.getDefaultScalarValue({ scalarTypeName: 'Int', mappedTypeName: 'number', fieldName: 'nivelOral', __typename, scalarValues: options.scalarValues }) : values.nivelOral,
+    nivelFinal: (values.nivelFinal === null || values.nivelFinal === undefined) ? options.getDefaultScalarValue({ scalarTypeName: 'Int', mappedTypeName: 'number', fieldName: 'nivelFinal', __typename, scalarValues: options.scalarValues }) : values.nivelFinal
+  };
+};
+operations.saveFinalResults.data = (values = {}, options = {}) => {
+  const __typename = '';
+  values = (({ saveOralResults = null }) => ({ saveOralResults }))(values);
+  values.__typename = __typename;
+  return {
+    saveOralResults: (values.saveOralResults === null || values.saveOralResults === undefined) ? options.getDefaultScalarValue({ scalarTypeName: 'Boolean', mappedTypeName: 'boolean', fieldName: 'saveOralResults', __typename, scalarValues: options.scalarValues }) : values.saveOralResults
   };
 };
 
