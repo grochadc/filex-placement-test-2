@@ -273,7 +273,7 @@ export type Option = {
 };
 
 export type OralResults = {
-  id: Scalars['Int'];
+  id: Scalars['ID'];
   nivelFinal: Scalars['Int'];
   nivelOral: Scalars['Int'];
 };
@@ -542,6 +542,7 @@ export type TestResults = {
   externo: Scalars['Boolean'];
   generated_id: Scalars['String'];
   genero: Scalars['String'];
+  id: Scalars['ID'];
   institutionalEmail?: Maybe<Scalars['String']>;
   meetLink: Scalars['String'];
   nivelEscrito: Scalars['Int'];
@@ -630,7 +631,16 @@ export type GetTestResultsQueryVariables = Exact<{
 }>;
 
 
-export type GetTestResultsQuery = { __typename?: 'Query', testResults: Array<{ __typename?: 'TestResults', codigo: string, nombre: string, apellidoPaterno: string, apellidoMaterno: string, genero: string, ciclo: string, carrera: string, telefono: string, email: string, institutionalEmail?: string | null | undefined, curso: string, externo: boolean, reubicacion: boolean, generated_id: string, meetLink: string, nivelEscrito: number, nivelOral?: number | null | undefined, nivelFinal?: number | null | undefined } | null | undefined> };
+export type GetTestResultsQuery = { __typename?: 'Query', testResults: Array<{ __typename?: 'TestResults', id: string, codigo: string, nombre: string, apellidoPaterno: string, apellidoMaterno: string, genero: string, ciclo: string, carrera: string, telefono: string, email: string, institutionalEmail?: string | null | undefined, curso: string, externo: boolean, reubicacion: boolean, generated_id: string, meetLink: string, nivelEscrito: number, nivelOral?: number | null | undefined, nivelFinal?: number | null | undefined } | null | undefined> };
+
+export type SaveFinalResultsMutationVariables = Exact<{
+  id: Scalars['ID'];
+  nivelOral: Scalars['Int'];
+  nivelFinal: Scalars['Int'];
+}>;
+
+
+export type SaveFinalResultsMutation = { __typename?: 'Mutation', saveOralResults: boolean };
 
 export type Get_Default_SettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -787,6 +797,7 @@ export type RemoveSingleLinkMutationOptions = Apollo.BaseMutationOptions<RemoveS
 export const GetTestResultsDocument = gql`
     query getTestResults($filter: Filter) {
   testResults(filter: $filter) {
+    id
     codigo
     nombre
     apellidoPaterno
@@ -836,6 +847,41 @@ export function useGetTestResultsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetTestResultsQueryHookResult = ReturnType<typeof useGetTestResultsQuery>;
 export type GetTestResultsLazyQueryHookResult = ReturnType<typeof useGetTestResultsLazyQuery>;
 export type GetTestResultsQueryResult = Apollo.QueryResult<GetTestResultsQuery, GetTestResultsQueryVariables>;
+export const SaveFinalResultsDocument = gql`
+    mutation saveFinalResults($id: ID!, $nivelOral: Int!, $nivelFinal: Int!) {
+  saveOralResults(
+    input: {id: $id, nivelOral: $nivelOral, nivelFinal: $nivelFinal}
+  )
+}
+    `;
+export type SaveFinalResultsMutationFn = Apollo.MutationFunction<SaveFinalResultsMutation, SaveFinalResultsMutationVariables>;
+
+/**
+ * __useSaveFinalResultsMutation__
+ *
+ * To run a mutation, you first call `useSaveFinalResultsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveFinalResultsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveFinalResultsMutation, { data, loading, error }] = useSaveFinalResultsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      nivelOral: // value for 'nivelOral'
+ *      nivelFinal: // value for 'nivelFinal'
+ *   },
+ * });
+ */
+export function useSaveFinalResultsMutation(baseOptions?: Apollo.MutationHookOptions<SaveFinalResultsMutation, SaveFinalResultsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveFinalResultsMutation, SaveFinalResultsMutationVariables>(SaveFinalResultsDocument, options);
+      }
+export type SaveFinalResultsMutationHookResult = ReturnType<typeof useSaveFinalResultsMutation>;
+export type SaveFinalResultsMutationResult = Apollo.MutationResult<SaveFinalResultsMutation>;
+export type SaveFinalResultsMutationOptions = Apollo.BaseMutationOptions<SaveFinalResultsMutation, SaveFinalResultsMutationVariables>;
 export const Get_Default_SettingsDocument = gql`
     query GET_DEFAULT_SETTINGS {
   isClosed
