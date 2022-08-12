@@ -81,9 +81,7 @@ const MeetLinksForm = (props: LinksProps) => {
     }
   };
   const middleware = [
-    (store: StoreAPI) => (next: (action: Action) => any) => (
-      action: Action
-    ) => {
+    (store: StoreAPI) => (next: (action: Action) => any) => (action: Action) => {
       if (action.type !== REMOVE_LINK) {
         setShowUnsavedChanges(true);
         setUpdateLinksSuccess(false);
@@ -122,8 +120,8 @@ const MeetLinksForm = (props: LinksProps) => {
     props.refetch();
   };
 
-  if (removeLinkFromDBError) <Error>{JSON.stringify(updateLinksError)}</Error>;
-  if (updateLinksError) <Error>{JSON.stringify(updateLinksError)}</Error>;
+  if (removeLinkFromDBError) <Error e={removeLinkFromDBError} />;
+  if (updateLinksError) <Error e={updateLinksError} />;
   return (
     <Container>
       <h2>Oral Exam Links ({props.course}):</h2>

@@ -2,7 +2,7 @@ import React, { useState, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { advanceLevel } from "../store/actions";
 import { gql } from "@apollo/client";
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 import Question from "./Question";
 import Button from "react-bootstrap/Button";
 import { Header } from "./componentUtils";
@@ -42,7 +42,7 @@ const sumArray = (arr: number[]) =>
 type SectionProps = { handleGiveup: () => void };
 const Section: React.FC<any> = (props: SectionProps) => {
   const { level, course } = useSelector((state: RootState) => state.system);
-  const history = useHistory();
+  //const history = useHistory();
 
   const handleQueryComplete: (data: any) => void = (data) =>
     localDispatch(actionCreators.resetValues(data.section.questions.length));
@@ -119,12 +119,12 @@ const Section: React.FC<any> = (props: SectionProps) => {
       dispatch(advanceLevel());
     } else {
       props.handleGiveup();
-      history.push("/result");
+      //history.push("/result");
     }
   };
 
   if (loading) return <Loading />;
-  if (error) return <Error>{JSON.stringify(error)}</Error>;
+  if (error) return <Error e={error} />;
   return (
     <div>
       <Header>
@@ -149,7 +149,7 @@ const Section: React.FC<any> = (props: SectionProps) => {
       <Button
         variant="primary"
         onClick={() => {
-          history.push("/result");
+          //history.push("/result");
           props.handleGiveup();
         }}
       >
@@ -172,7 +172,7 @@ const Section: React.FC<any> = (props: SectionProps) => {
           <Button
             onClick={() => {
               props.handleGiveup();
-              history.push("/result");
+              //history.push("/result");
             }}
           >
             Calificar examen

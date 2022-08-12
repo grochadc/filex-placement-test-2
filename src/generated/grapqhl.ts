@@ -563,8 +563,8 @@ export type Workshop = {
 };
 
 export type WrittenResultsInput = {
-  apellido_materno: Scalars['String'];
-  apellido_paterno: Scalars['String'];
+  apellidoMaterno: Scalars['String'];
+  apellidoPaterno: Scalars['String'];
   carrera: Scalars['String'];
   ciclo: Scalars['String'];
   codigo: Scalars['String'];
@@ -573,7 +573,7 @@ export type WrittenResultsInput = {
   externo: Scalars['Boolean'];
   genero: Scalars['String'];
   institucionalEmail?: InputMaybe<Scalars['String']>;
-  nivel_escrito: Scalars['Int'];
+  nivelEscrito: Scalars['Int'];
   nombre: Scalars['String'];
   reubicacion: Scalars['Boolean'];
   telefono: Scalars['String'];
@@ -595,8 +595,8 @@ export type MeetLink = {
 export type PostResultsMutationVariables = Exact<{
   codigo: Scalars['String'];
   nombre: Scalars['String'];
-  apellido_paterno: Scalars['String'];
-  apellido_materno: Scalars['String'];
+  apellidoPaterno: Scalars['String'];
+  apellidoMaterno: Scalars['String'];
   genero: Scalars['String'];
   ciclo: Scalars['String'];
   carrera: Scalars['String'];
@@ -605,7 +605,7 @@ export type PostResultsMutationVariables = Exact<{
   institucionalEmail?: InputMaybe<Scalars['String']>;
   externo: Scalars['Boolean'];
   reubicacion: Scalars['Boolean'];
-  nivel_escrito: Scalars['Int'];
+  nivelEscrito: Scalars['Int'];
   curso: Scalars['String'];
 }>;
 
@@ -684,9 +684,9 @@ export type HomePageQuery = { __typename?: 'Query', isClosed: boolean, carreras:
 
 
 export const PostResultsDocument = gql`
-    mutation PostResults($codigo: String!, $nombre: String!, $apellido_paterno: String!, $apellido_materno: String!, $genero: String!, $ciclo: String!, $carrera: String!, $telefono: String!, $email: String!, $institucionalEmail: String, $externo: Boolean!, $reubicacion: Boolean!, $nivel_escrito: Int!, $curso: String!) {
+    mutation PostResults($codigo: String!, $nombre: String!, $apellidoPaterno: String!, $apellidoMaterno: String!, $genero: String!, $ciclo: String!, $carrera: String!, $telefono: String!, $email: String!, $institucionalEmail: String, $externo: Boolean!, $reubicacion: Boolean!, $nivelEscrito: Int!, $curso: String!) {
   saveWrittenResults(
-    input: {codigo: $codigo, nombre: $nombre, apellido_paterno: $apellido_paterno, apellido_materno: $apellido_materno, genero: $genero, ciclo: $ciclo, carrera: $carrera, telefono: $telefono, email: $email, institucionalEmail: $institucionalEmail, externo: $externo, reubicacion: $reubicacion, nivel_escrito: $nivel_escrito, curso: $curso}
+    input: {codigo: $codigo, nombre: $nombre, apellidoPaterno: $apellidoPaterno, apellidoMaterno: $apellidoMaterno, genero: $genero, ciclo: $ciclo, carrera: $carrera, telefono: $telefono, email: $email, institucionalEmail: $institucionalEmail, externo: $externo, reubicacion: $reubicacion, nivelEscrito: $nivelEscrito, curso: $curso}
   ) {
     id
     meetLink
@@ -710,8 +710,8 @@ export type PostResultsMutationFn = Apollo.MutationFunction<PostResultsMutation,
  *   variables: {
  *      codigo: // value for 'codigo'
  *      nombre: // value for 'nombre'
- *      apellido_paterno: // value for 'apellido_paterno'
- *      apellido_materno: // value for 'apellido_materno'
+ *      apellidoPaterno: // value for 'apellidoPaterno'
+ *      apellidoMaterno: // value for 'apellidoMaterno'
  *      genero: // value for 'genero'
  *      ciclo: // value for 'ciclo'
  *      carrera: // value for 'carrera'
@@ -720,7 +720,7 @@ export type PostResultsMutationFn = Apollo.MutationFunction<PostResultsMutation,
  *      institucionalEmail: // value for 'institucionalEmail'
  *      externo: // value for 'externo'
  *      reubicacion: // value for 'reubicacion'
- *      nivel_escrito: // value for 'nivel_escrito'
+ *      nivelEscrito: // value for 'nivelEscrito'
  *      curso: // value for 'curso'
  *   },
  * });

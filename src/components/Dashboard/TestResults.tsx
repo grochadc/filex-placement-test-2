@@ -1,6 +1,7 @@
 import "./stickyTableHead.css";
 import React from "react";
 import { gql } from "@apollo/client";
+import tw from "tailwind-styled-components";
 import {
   TestResults,
   useGetTestResultsQuery,
@@ -158,6 +159,26 @@ const columns = [
     header: "Apellido Materno",
     cell: (info) => info.getValue(),
   }),
+  columnHelper.accessor("email", {
+    header: "E-Mail",
+    cell: (info) => (
+      <a href={`mailto:${info.getValue()}`} target="_blank">
+        {info.getValue()}
+      </a>
+    ),
+  }),
+  columnHelper.accessor("telefono", {
+    header: "Telefono",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("ciclo",{
+    header: "Ciclo Ingreso",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("carrera",{
+    header: "Carrera",
+    cell: (info) => info.getValue(),
+  }),
   columnHelper.accessor("meetLink", {
     header: "Link",
     cell: (info) => <a href={info.getValue()}>{info.getValue()}</a>,
@@ -222,6 +243,9 @@ const reducer = (state: TestResults[], action: Action) => {
       return state;
   }
 };
+
+
+const StyledTd = tw.td`border border-black`;
 
 type ResultsListProps = {
   reloadPage: () => void;
@@ -330,9 +354,9 @@ function ResultsList(props: ResultsListProps) {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-2 border border-black">
+                <StyledTd key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                </StyledTd>
               ))}
             </tr>
           ))}
