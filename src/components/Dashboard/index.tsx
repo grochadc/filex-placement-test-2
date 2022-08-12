@@ -1,7 +1,6 @@
 import React from "react";
 import { useMutation, useQuery, gql } from "@apollo/client";
-import { Loading, Error } from "../utils/components";
-
+import { Error, Loading } from "../utils/components";
 /*
 Re-export as Dashboard/index.tsx
 */
@@ -45,7 +44,7 @@ export const Dashboard = () => {
       alert(`Exam is now ${data.closeExam.isClosed ? "closed" : "open"}`),
   });
   if (loadingDefaults) return <Loading />;
-  if (errorDefaults) return <Error>{JSON.stringify(errorDefaults)}</Error>;
+  if (errorDefaults) return <Error e={errorDefaults} />;
   return (
     <>
       <h1>Settings</h1>

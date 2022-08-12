@@ -11,8 +11,8 @@ import { DashboardPageQuery } from "./pages/DashboardPage";
 const testApplicant: PostResultsMutationVariables = {
   codigo: "1234567890",
   nombre: "Benito Antonio",
-  apellido_paterno: "Martinez",
-  apellido_materno: "Ocasio",
+  apellidoPaterno: "Martinez",
+  apellidoMaterno: "Ocasio",
   genero: "M",
   email: "bad@bunny.pr",
   institucionalEmail: "benito.martinez@alumnos.udg.mx",
@@ -22,7 +22,7 @@ const testApplicant: PostResultsMutationVariables = {
   ciclo: "2021B",
   externo: false,
   reubicacion: false,
-  nivel_escrito: 1,
+  nivelEscrito: 1,
 };
 
 export default {

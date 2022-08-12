@@ -4,7 +4,14 @@ import Section from "./pages/SectionPage";
 import Result from "./pages/ResultPage";
 import HomePage from "./pages/HomePage";
 import Header from "./components/Header";
-import SimpleRouter, { Route } from "./components/SimpleRouter";
+import ResultsList from "./components/Dashboard/TestResults";
+import { Error } from "./components/utils/components";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 
 import { gql } from "@apollo/client";
 import { usePostResultsMutation } from "./generated/grapqhl";
@@ -12,8 +19,8 @@ import { usePostResultsMutation } from "./generated/grapqhl";
 const initialApplicant = {
   codigo: "",
   nombre: "",
-  apellido_paterno: "",
-  apellido_materno: "",
+  apellidoPaterno: "",
+  apellidoMaterno: "",
   genero: "M",
   ciclo: "",
   carrera: "Elige una opcion...",
@@ -23,15 +30,15 @@ const initialApplicant = {
   curso: "",
   externo: false,
   reubicacion: false,
-  nivel_escrito: "",
+  nivelEscrito: "",
 };
 
 export const PostResultsMutation = gql`
   mutation PostResults(
     $codigo: String!
     $nombre: String!
-    $apellido_paterno: String!
-    $apellido_materno: String!
+    $apellidoPaterno: String!
+    $apellidoMaterno: String!
     $genero: String!
     $ciclo: String!
     $carrera: String!
@@ -40,15 +47,15 @@ export const PostResultsMutation = gql`
     $institucionalEmail: String
     $externo: Boolean!
     $reubicacion: Boolean!
-    $nivel_escrito: Int!
+    $nivelEscrito: Int!
     $curso: String!
   ) {
     saveWrittenResults(
       input: {
         codigo: $codigo
         nombre: $nombre
-        apellido_paterno: $apellido_paterno
-        apellido_materno: $apellido_materno
+        apellidoPaterno: $apellidoPaterno
+        apellidoMaterno: $apellidoMaterno
         genero: $genero
         ciclo: $ciclo
         carrera: $carrera
@@ -57,7 +64,7 @@ export const PostResultsMutation = gql`
         institucionalEmail: $institucionalEmail
         externo: $externo
         reubicacion: $reubicacion
-        nivel_escrito: $nivel_escrito
+        nivelEscrito: $nivelEscrito
         curso: $curso
       }
     ) {
@@ -68,6 +75,7 @@ export const PostResultsMutation = gql`
 `;
 
 const App: React.FC = () => {
+  const routerNavigate = useNavigate();
   const [postResults, { data: mutationResponse, error }] =
     usePostResultsMutation({
       onCompleted: () => console.log("Completed post results"),
@@ -79,23 +87,35 @@ const App: React.FC = () => {
   const [currentLevel, setCurrentLevel] = useState(1);
 
   const handleFinishExam = () => {
-    postResults({ variables: { ...applicant, nivel_escrito: currentLevel } });
-    setCurrentPath("result");
+    console.log("finishing exam", applicant);
+    postResults({ variables: { ...applicant, nivelEscrito: currentLevel } });
+    routerNavigate("/result");
   };
-  if (error) return <>{JSON.stringify(error)}</>;
+  if (error)
+    return (
+      <>
+        Error from App: <Error e={error} />
+      </>
+    );
   return (
-    <>
-      <SimpleRouter currentPath={currentPath}>
-        <Route path="home">
-          <Header title="Exámen de Ubicación" />
-          <HomePage
-            onSubmitApplicantInformation={(applicant) => {
-              setApplicant({ ...applicant, nivel_escrito: "" });
-              setCurrentPath("test");
-            }}
-          />
-        </Route>
-        <Route path="test">
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            <Header title="Exámen de Ubicación" />
+            <HomePage
+              onSubmitApplicantInformation={(applicant) => {
+                setApplicant({ ...applicant, nivelEscrito: "" });
+                routerNavigate("/test");
+              }}
+            />
+          </>
+        }
+      />
+      <Route
+        path="/test"
+        element={
           <Section
             currentLevel={currentLevel}
             course={applicant.curso}
@@ -108,23 +128,29 @@ const App: React.FC = () => {
             }}
             onFinishExam={handleFinishExam}
           />
-        </Route>
-        <Route path="result">
+        }
+      />
+      <Route
+        path="/result"
+        element={
           <Result
             level={currentLevel}
-            //@ts-ignore
-            meetLink={mutationResponse?.saveWrittenResults.meetLink}
+            meetLink={
+              mutationResponse?.saveWrittenResults.meetLink
+                ? mutationResponse?.saveWrittenResults.meetLink
+                : ""
+            }
           />
-        </Route>
-        <Route path="dashboard">
-          <Header title="DASHBOARD" />
-          <Dashboard />
-        </Route>
-      </SimpleRouter>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd3Q1mA6cdkxBQxgbuo4rc6O2dkZXaBK_amkv7heFbwwiU9FQ/viewform?usp=sf_link">
-        Reportar un problema con la aplicación.
-      </a>
-    </>
+        }
+      />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route
+        path="/dashboard/results"
+        element={
+          <ResultsList reloadPage={() => alert("simulated page reload")} />
+        }
+      />
+    </Routes>
   );
 };
 

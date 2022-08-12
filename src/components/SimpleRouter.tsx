@@ -11,6 +11,7 @@ const Router = (props: any) => {
 };
 
 export const Route = (props: any) => {
+  console.log(`Rendering route ${props.currentPath}`);
   return <>{props.path === props.currentPath ? <>{props.children}</> : null}</>;
 };
 

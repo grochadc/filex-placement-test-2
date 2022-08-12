@@ -1,9 +1,12 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-//import * as tw from "tailwind-styled-components";
+import tw from "tailwind-styled-components";
+const StyledInput = tw.input`border border-black p-2 m-2`;
+const StyledButton = tw.button`border border-black bg-blue-600 p-2 rounded text-white`;
+const StyledSelect = tw.select`border-black p-2 m-2`;
 
 Yup.addMethod<Yup.StringSchema>(Yup.string, "allowed", function (arr, message) {
   return this.test("isAllowed", message, (value) => {
@@ -16,11 +19,11 @@ const InformationSchema = Yup.object().shape({
     .min(2, "Nombre muy corto")
     .max(50, "Nombre muy largo")
     .required("Obligatorio"),
-  apellido_paterno: Yup.string()
+  apellidoPaterno: Yup.string()
     .min(2, "Apellido muy corto")
     .max(50, "Apellido muy largo")
     .required("Obligatorio"),
-  apellido_materno: Yup.string()
+  apellidoMaterno: Yup.string()
     .min(2, "Apellido muy corto")
     .max(50, "Apellido muy largo")
     .required("Obligatorio"),
@@ -52,8 +55,8 @@ const InformationSchema = Yup.object().shape({
 
 export type FormikSchema = {
   nombre: string;
-  apellido_paterno: string;
-  apellido_materno: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
   codigo: string;
   genero: string;
   ciclo: string;
@@ -72,14 +75,16 @@ type FormComponentProps = {
   onSubmit: (applicantInformation: FormikSchema) => void;
 };
 
-const ControlGroup = ({children}: any) => <div className="flex flex-col my-3 w-full">{children}</div>
+const ControlGroup = ({ children }: any) => (
+  <div className="flex flex-col my-3 w-full">{children}</div>
+);
 const FormComponent = (props: FormComponentProps) => {
   const formik = useFormik({
     initialValues: {
       codigo: "",
       nombre: "",
-      apellido_paterno: "",
-      apellido_materno: "",
+      apellidoPaterno: "",
+      apellidoMaterno: "",
       genero: "M",
       ciclo: "",
       carrera: "Elige una opcion...",
@@ -96,17 +101,20 @@ const FormComponent = (props: FormComponentProps) => {
   });
   const findInfo = (codigo: string) => {
     setFindingInfo(true);
-      return (new Promise((resolve) => {
-        setTimeout(() => resolve(null), 2000);
-      }));
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(null), 2000);
+    });
   };
   const [findingInfo, setFindingInfo] = useState(false);
   return (
     <div>
       <form onSubmit={(e) => formik.handleSubmit(e as any)}>
         <ControlGroup>
-          <div><label htmlFor="codigo">Código:</label></div>
-          <input
+          <div>
+            <label htmlFor="codigo">Código:</label>
+          </div>
+          <StyledInput
+            className="border border-black"
             id="codigo"
             type="text"
             value={formik.values.codigo}
@@ -117,33 +125,43 @@ const FormComponent = (props: FormComponentProps) => {
         </ControlGroup>
         <ControlGroup>
           <label>
-            <input 
+            <StyledInput
               type="checkbox"
               value={formik.values.externo as unknown as string}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               disabled={props.disabled}
               className="mx-2"
-              />
+            />
             Externo (No soy alumno CUSur)
           </label>
-          <span>{formik.values.externo ? "Si eres externo usa tu telefono en lugar de codigo" : null}</span>
+          <span>
+            {formik.values.externo
+              ? "Si eres externo usa tu telefono en lugar de codigo"
+              : null}
+          </span>
         </ControlGroup>
-          <button 
-            className="my-1" 
-            onClick={() => findInfo(formik.values.codigo).then(() => setFindingInfo(false))}
-          >
-            Buscar mis datos
-          </button>
-          {findingInfo ? <Alert variant="primary">Buscando tus datos...</Alert> : null}
-          <div>
+        <StyledButton
+          className="my-1"
+          onClick={() =>
+            findInfo(formik.values.codigo).then(() => setFindingInfo(false))
+          }
+        >
+          Buscar mis datos
+        </StyledButton>
+        {findingInfo ? (
+          <Alert variant="primary">Buscando tus datos...</Alert>
+        ) : null}
+        <div>
           {formik.touched.codigo && formik.errors.codigo ? (
             <Alert variant="warning">{formik.errors.codigo}</Alert>
           ) : null}
         </div>
         <ControlGroup>
-          <div><label htmlFor="nombre">Nombre:</label></div>
-          <input
+          <div>
+            <label htmlFor="nombre">Nombre:</label>
+          </div>
+          <StyledInput
             type="text"
             id="nombre"
             value={formik.values.nombre}
@@ -156,37 +174,37 @@ const FormComponent = (props: FormComponentProps) => {
           ) : null}
         </ControlGroup>
         <ControlGroup>
-          <label htmlFor="apellido_paterno">Apellido Paterno:</label>
-          <input
+          <label htmlFor="apellidoPaterno">Apellido Paterno:</label>
+          <StyledInput
             type="text"
-            id="apellido_paterno"
-            value={formik.values.apellido_paterno}
+            id="apellidoPaterno"
+            value={formik.values.apellidoPaterno}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             disabled={props.disabled}
           />
-          {formik.touched.apellido_paterno && formik.errors.apellido_paterno ? (
-            <Alert variant="warning">{formik.errors.apellido_paterno}</Alert>
+          {formik.touched.apellidoPaterno && formik.errors.apellidoPaterno ? (
+            <Alert variant="warning">{formik.errors.apellidoPaterno}</Alert>
           ) : null}
         </ControlGroup>
         <ControlGroup>
-          <label htmlFor="apellido_materno">Apellido Materno:</label>
-          <input
+          <label htmlFor="apellidoMaterno">Apellido Materno:</label>
+          <StyledInput
             type="text"
-            id="apellido_materno"
-            value={formik.values.apellido_materno}
+            id="apellidoMaterno"
+            value={formik.values.apellidoMaterno}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             disabled={props.disabled}
           />
-          {formik.touched.apellido_materno && formik.errors.apellido_materno ? (
-            <Alert variant="warning">{formik.errors.apellido_materno}</Alert>
+          {formik.touched.apellidoMaterno && formik.errors.apellidoMaterno ? (
+            <Alert variant="warning">{formik.errors.apellidoMaterno}</Alert>
           ) : null}
         </ControlGroup>
         <ControlGroup>
           <label htmlFor="genero">Género:</label>
-          <select
-            style={{display: "block"}}
+          <StyledSelect
+            style={{ display: "block" }}
             id="genero"
             value={formik.values.genero}
             onChange={formik.handleChange}
@@ -196,11 +214,11 @@ const FormComponent = (props: FormComponentProps) => {
             <option value="M">Masculino</option>
             <option value="F">Femenino</option>
             <option value="NB">No Binario</option>
-          </select>
+          </StyledSelect>
         </ControlGroup>
         <ControlGroup>
           <label htmlFor="telefono">Teléfono Celular:</label>
-          <input
+          <StyledInput
             id="telefono"
             type="tel"
             value={formik.values.telefono}
@@ -214,7 +232,7 @@ const FormComponent = (props: FormComponentProps) => {
         </ControlGroup>
         <ControlGroup>
           <label htmlFor="email">Correo Electrónico:</label>
-          <input
+          <StyledInput
             id="email"
             type="email"
             value={formik.values.email}
@@ -230,7 +248,7 @@ const FormComponent = (props: FormComponentProps) => {
           <label htmlFor="institucionalEmail">
             Correo institucional (@alumnos.udg.mx)
           </label>
-          <input
+          <StyledInput
             id="institucionalEmail"
             type="email"
             value={formik.values.institucionalEmail}
@@ -244,11 +262,9 @@ const FormComponent = (props: FormComponentProps) => {
           ) : null}
         </ControlGroup>
         <ControlGroup>
-          <label htmlFor="ciclo_ingreso">
-            Ciclo de ingreso a CUSur (ej: 2021A):
-          </label>
-          <input
-            id="ciclo_ingreso"
+          <label htmlFor="ciclo">Ciclo de ingreso a CUSur (ej: 2021A):</label>
+          <StyledInput
+            id="ciclo"
             type="text"
             value={formik.values.ciclo}
             onChange={formik.handleChange}
@@ -261,8 +277,8 @@ const FormComponent = (props: FormComponentProps) => {
         </ControlGroup>
         <ControlGroup>
           <label htmlFor="carrera">Carrera:</label>
-          <select
-            style={{display: "block"}}
+          <StyledSelect
+            style={{ display: "block" }}
             id="carrera"
             data-testid="carrera"
             value={formik.values.carrera}
@@ -278,15 +294,15 @@ const FormComponent = (props: FormComponentProps) => {
                 {carrera}
               </option>
             ))}
-          </select>
+          </StyledSelect>
           {formik.touched.carrera && formik.errors.carrera ? (
             <Alert variant="warning">{formik.errors.carrera}</Alert>
           ) : null}
         </ControlGroup>
         <ControlGroup>
           <label id="curso">Idioma:</label>
-          <select
-            style={{display: "block"}}
+          <StyledSelect
+            style={{ display: "block" }}
             id="curso"
             aria-labelledby="curso"
             data-testid="curso"
@@ -298,11 +314,11 @@ const FormComponent = (props: FormComponentProps) => {
             <option>Selecciona el idioma:</option>
             <option value="en">Inglés</option>
             <option value="fr">Francés</option>
-          </select>
+          </StyledSelect>
         </ControlGroup>
-        <button type="submit" disabled={props.disabled}>
+        <StyledButton type="submit" disabled={props.disabled}>
           Iniciar Exámen
-        </button>
+        </StyledButton>
       </form>
     </div>
   );
