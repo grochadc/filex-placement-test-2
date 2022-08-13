@@ -8,7 +8,8 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/preset-create-react-app",
-    "storybook-addon-apollo-client"
+    "storybook-addon-apollo-client",
+    "storybook-addon-react-router-v6"
   ],
   "framework": "@storybook/react",
   "core": {

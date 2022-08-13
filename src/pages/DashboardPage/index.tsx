@@ -12,6 +12,7 @@ import {
 } from "../../generated/grapqhl";
 import styled from "styled-components";
 import Jumbotron from "react-bootstrap/Jumbotron";
+import { Link } from "react-router-dom";
 
 export const DashboardPageQuery = gql`
   query DefaultSettings {
@@ -93,6 +94,9 @@ function DashboardPage() {
         <h1>Dashboard</h1>
       </Jumbotron>
       <section>
+        <div>
+          <Link to="/dashboard/results" className="underline color-blue">Exam Results</Link>
+        </div>
         <div>
           <CloseExamToggle
             isClosed={data ? data.isClosed : true}
