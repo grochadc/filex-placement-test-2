@@ -8,6 +8,8 @@ import Question from "../../components/Question";
 import styled, { css } from "styled-components";
 import useSection from "./useSection";
 
+import { StyledButton } from "../../components/utils/styled";
+
 export const SectionPageQuery = gql`
   query testSection($course: String!, $level: Int!) {
     section(course: $course, level: $level) {
@@ -98,26 +100,26 @@ const SectionPage = (props: SectionPageProps) => {
         <h1>Examen FILEX - ingles/frances</h1>
         <ButtonsComponent>
           {data?.section.pageInfo.hasNextPage ? (
-            <Button variant="secondary" onClick={props.onFinishExam}>
+            <StyledButton variant="secondary" onClick={props.onFinishExam}>
               Rendirse
-            </Button>
+            </StyledButton>
           ) : (
-            <Button
+            <StyledButton
               variant={localState.answeredMin ? "primary" : "secondary"}
               onClick={props.onFinishExam}
             >
               Enviar Examen
-            </Button>
+            </StyledButton>
           )}
           {data?.section.pageInfo.hasNextPage ? (
             <>
-              <Button
+              <StyledButton
                 variant="primary"
                 disabled={!localState.answeredMin}
                 onClick={() => props.onNextLevel(localState.pass)}
               >
                 Continuar
-              </Button>
+              </StyledButton>
               ({localState.checked.reduce((c: number, a: number) => c + a)}/6)
             </>
           ) : null}
