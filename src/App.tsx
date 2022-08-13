@@ -7,7 +7,6 @@ import Header from "./components/Header";
 import ResultsList from "./components/Dashboard/TestResults";
 import { Error } from "./components/utils/components";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   useNavigate,
@@ -80,9 +79,6 @@ const App: React.FC = () => {
     usePostResultsMutation({
       onCompleted: () => console.log("Completed post results"),
     });
-  const defaultPath =
-    window.location.pathname === "/dashboard" ? "dashboard" : "home";
-  const [currentPath, setCurrentPath] = useState(defaultPath);
   const [applicant, setApplicant] = useState(initialApplicant);
   const [currentLevel, setCurrentLevel] = useState(1);
 
@@ -147,7 +143,7 @@ const App: React.FC = () => {
       <Route
         path="/dashboard/results"
         element={
-          <ResultsList reloadPage={() => alert("simulated page reload")} />
+          <ResultsList reloadPage={() => window.location.reload() } />
         }
       />
     </Routes>

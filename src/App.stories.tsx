@@ -8,6 +8,8 @@ import { HomePageQuery } from "./pages/HomePage";
 import { SectionPageQuery } from "./pages/SectionPage";
 import { DashboardPageQuery } from "./pages/DashboardPage";
 
+import { withRouter } from 'storybook-addon-react-router-v6';
+
 const testApplicant: PostResultsMutationVariables = {
   codigo: "1234567890",
   nombre: "Benito Antonio",
@@ -28,7 +30,11 @@ const testApplicant: PostResultsMutationVariables = {
 export default {
   title: "App",
   component: App,
+  decorators: [withRouter],
   parameters: {
+    reactRouter: {
+      routePath: '/'
+    },
     apolloClient: {
       mocks: [
         generateMock(

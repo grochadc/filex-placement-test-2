@@ -13,7 +13,6 @@ import {
   Column,
   Row,
   Table,
-  TableMeta,
   RowData,
   createColumnHelper,
   getCoreRowModel,
@@ -21,6 +20,7 @@ import {
   useReactTable,
   flexRender,
 } from "@tanstack/react-table";
+import { Link } from "react-router-dom";
 
 declare module "@tanstack/table-core" {
   interface TableMeta<TData extends RowData> {
@@ -64,6 +64,7 @@ export const SaveFinalLevelsMutation = gql`
   }
 `;
 
+const Button = tw.button`border border-black rounded p-1`;
 type SubmitButtonProps = {
   row: Row<TestResults>;
   table: Table<TestResults>;
@@ -71,7 +72,7 @@ type SubmitButtonProps = {
 const SubmitButton = (props: SubmitButtonProps) => {
   const value = props.row.getValue;
   return (
-    <button
+    <Button
       onClick={() =>
         props.table.options.meta?.mutate(
           String(value("id")),
@@ -81,7 +82,7 @@ const SubmitButton = (props: SubmitButtonProps) => {
       }
     >
       Submit
-    </button>
+    </Button>
   );
 };
 
@@ -162,7 +163,7 @@ const columns = [
   columnHelper.accessor("email", {
     header: "E-Mail",
     cell: (info) => (
-      <a href={`mailto:${info.getValue()}`} target="_blank">
+      <a href={`mailto:${info.getValue()}`} target="_blank" rel="noreferrer">
         {info.getValue()}
       </a>
     ),
@@ -171,11 +172,11 @@ const columns = [
     header: "Telefono",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("ciclo",{
+  columnHelper.accessor("ciclo", {
     header: "Ciclo Ingreso",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("carrera",{
+  columnHelper.accessor("carrera", {
     header: "Carrera",
     cell: (info) => info.getValue(),
   }),
@@ -216,11 +217,11 @@ type Action =
       options: { rowIndex: number; columnId: string; value: any };
     };
 
-function actionCreator<T>(
+function actionCreator(
   type: "replace" | "append" | "update",
   payload: any
 ): Action {
-  if (type == "update") return { type, options: payload };
+  if (type === "update") return { type, options: payload };
   return { type, payload };
 }
 
@@ -243,7 +244,6 @@ const reducer = (state: TestResults[], action: Action) => {
       return state;
   }
 };
-
 
 const StyledTd = tw.td`border border-black`;
 
@@ -274,16 +274,14 @@ function ResultsList(props: ResultsListProps) {
     onCompleted: (data) => setLocalState(data.testResults),
   });
 
-  const [
-    fetchAssignedResults,
-    { loading: loadingLazy, error: errorLazy, data: dataAssignedResults },
-  ] = useGetTestResultsLazyQuery({
-    variables: { filter: Filter.Assigned },
-    onCompleted: (data) => {
-      appendToLocalState(data.testResults);
-    },
-    onError: (err) => console.error(err),
-  });
+  const [fetchAssignedResults, { data: dataAssignedResults }] =
+    useGetTestResultsLazyQuery({
+      variables: { filter: Filter.Assigned },
+      onCompleted: (data) => {
+        appendToLocalState(data.testResults);
+      },
+      onError: (err) => console.error(err),
+    });
 
   const [mutate] = useSaveFinalResultsMutation({
     onCompleted: (data) => {
@@ -311,12 +309,13 @@ function ResultsList(props: ResultsListProps) {
   const [filterEnabled, setFilterEnabled] = React.useState(false);
   React.useEffect(() => {
     table.getColumn("nivelFinal").setFilterValue(filterEnabled);
-  }, [filterEnabled]);
+  }, [filterEnabled, table]);
 
   if (error) return null;
   if (loading) return null;
   return (
     <section title="TestResults">
+      <Link to="/dashboard">Back to Dashboard</Link>
       <div>
         {dataAssignedResults ? (
           filterEnabled ? (
