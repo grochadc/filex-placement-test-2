@@ -1,5 +1,7 @@
 import { MockedProvider } from '@apollo/client/testing'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../src/index.css';
+
 export const parameters = {
   apolloClient: {
     MockedProvider,
