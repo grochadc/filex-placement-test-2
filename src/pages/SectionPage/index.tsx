@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gql } from "@apollo/client";
 import { Loading } from "../../components/utils/components";
-import Button from "react-bootstrap/Button";
 import { Question as QuestionType } from "../../generated/grapqhl";
 import { useQuery } from "@apollo/client";
 import Question from "../../components/Question";
@@ -83,7 +82,6 @@ type SectionPageProps = {
 
 const SectionPage = (props: SectionPageProps) => {
   const [localState, answerQuestion, resetValues] = useSection();
-
   const { data, loading, error } = useQuery(SectionPageQuery, {
     variables: { course: props.course, level: props.currentLevel },
   });
