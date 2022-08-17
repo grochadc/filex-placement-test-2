@@ -2,6 +2,7 @@ import "./stickyTableHead.css";
 import React from "react";
 import tw from "tailwind-styled-components";
 import { TestResults } from "../../generated/grapqhl";
+import { StyledButton } from "../utils/styled";
 import {
   Column,
   Row,
@@ -205,6 +206,7 @@ const reducer = (state: TestResults[], action: Action) => {
 };
 
 const StyledTd = tw.td`border border-black`;
+const ButtonsWrapper = tw.div`flex`;
 
 type ResultsListProps = {
   reloadPage: () => void;
@@ -284,20 +286,22 @@ function ResultsList(props: ResultsListProps) {
 
   return (
     <section title="TestResults">
-      <button onClick={createCsvFile}>Download everything as Excel</button>
-      <div>
-        {props.appendData ? (
-          filterEnabled ? (
-            <button onClick={() => setFilterEnabled(false)}>Unfilter</button>
+      <ButtonsWrapper>
+        <StyledButton variant="primary" onClick={createCsvFile}>
+          Download Data
+        </StyledButton>
+        <div>
+          {props.appendData ? (
+            filterEnabled ? (
+              <button onClick={() => setFilterEnabled(false)}>Unfilter</button>
+            ) : (
+              <button onClick={() => setFilterEnabled(true)}>Filter</button>
+            )
           ) : (
-            <button onClick={() => setFilterEnabled(true)}>Filter</button>
-          )
-        ) : (
-          <button onClick={() => props.fetchDataToAppend()}>
-            Mostrar Todos
-          </button>
-        )}
-      </div>
+            <button onClick={() => props.fetchDataToAppend()}>Show All</button>
+          )}
+        </div>
+      </ButtonsWrapper>
       <table className="table-fixed">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
