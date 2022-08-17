@@ -1,14 +1,7 @@
 import "./stickyTableHead.css";
 import React from "react";
-import { gql } from "@apollo/client";
 import tw from "tailwind-styled-components";
-import {
-  TestResults,
-  useGetTestResultsQuery,
-  useGetTestResultsLazyQuery,
-  useSaveFinalResultsMutation,
-  Filter,
-} from "../../generated/grapqhl";
+import { TestResults } from "../../generated/grapqhl";
 import {
   Column,
   Row,
@@ -20,7 +13,6 @@ import {
   useReactTable,
   flexRender,
 } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
 
 declare module "@tanstack/table-core" {
   interface TableMeta<TData extends RowData> {
@@ -29,40 +21,6 @@ declare module "@tanstack/table-core" {
     localDispatch: React.Dispatch<any>;
   }
 }
-
-export const TestResultsQuery = gql`
-  query getTestResults($filter: Filter) {
-    testResults(filter: $filter) {
-      id
-      codigo
-      nombre
-      apellidoPaterno
-      apellidoMaterno
-      genero
-      ciclo
-      carrera
-      telefono
-      email
-      institutionalEmail
-      curso
-      externo
-      reubicacion
-      generated_id
-      meetLink
-      nivelEscrito
-      nivelOral
-      nivelFinal
-    }
-  }
-`;
-
-export const SaveFinalLevelsMutation = gql`
-  mutation saveFinalResults($id: ID!, $nivelOral: Int!, $nivelFinal: Int!) {
-    saveOralResults(
-      input: { id: $id, nivelOral: $nivelOral, nivelFinal: $nivelFinal }
-    )
-  }
-`;
 
 const Button = tw.button`border border-black rounded p-1`;
 type SubmitButtonProps = {
@@ -98,6 +56,7 @@ const FilterComponent = ({ column, table }: FilterComponentProps) => {
         value={column.getFilterValue() as string}
         placeholder={`Filtrar ${column.id}`}
         style={{ width: smallInput ? "30px" : "" }}
+        className="border border black"
       />
     </div>
   );
@@ -249,7 +208,12 @@ const StyledTd = tw.td`border border-black`;
 
 type ResultsListProps = {
   reloadPage: () => void;
+  initialData?: TestResults[];
+  appendData?: TestResults[];
+  fetchDataToAppend: () => void;
+  submitEntry: (id: any, nivelOral: any, nivelFinal: any) => void;
 };
+
 function ResultsList(props: ResultsListProps) {
   const [localState, dispatch] = React.useReducer(reducer, []);
 
@@ -264,32 +228,18 @@ function ResultsList(props: ResultsListProps) {
     if (arr) dispatch(appendAction);
   };
 
+  React.useEffect(() => {
+    if (props.initialData) setLocalState(props.initialData);
+  }, [props.initialData]);
+
+  React.useEffect(() => {
+    if (props.appendData) appendToLocalState(props.appendData);
+  }, [props.appendData]);
+
   const updateCell = (rowIndex: number, columnId: string, value: any) => {
     const updateAction = actionCreator("update", { rowIndex, columnId, value });
     dispatch(updateAction);
   };
-
-  const { error, loading } = useGetTestResultsQuery({
-    variables: { filter: Filter.Nonassigned },
-    onCompleted: (data) => setLocalState(data.testResults),
-  });
-
-  const [fetchAssignedResults, { data: dataAssignedResults }] =
-    useGetTestResultsLazyQuery({
-      variables: { filter: Filter.Assigned },
-      onCompleted: (data) => {
-        appendToLocalState(data.testResults);
-      },
-      onError: (err) => console.error(err),
-    });
-
-  const [mutate] = useSaveFinalResultsMutation({
-    onCompleted: (data) => {
-      alert(`Mutation response ${data.saveOralResults}`);
-      props.reloadPage();
-    },
-    onError: (err) => alert(`There was an error ${JSON.stringify(error)}`),
-  });
 
   const table = useReactTable({
     columns,
@@ -299,7 +249,7 @@ function ResultsList(props: ResultsListProps) {
     globalFilterFn: "equalsString",
     meta: {
       mutate: (id, nivelOral, nivelFinal) => {
-        mutate({ variables: { id, nivelOral, nivelFinal } });
+        props.submitEntry(id, nivelOral, nivelFinal);
       },
       updateData: updateCell,
       localDispatch: dispatch,
@@ -311,20 +261,41 @@ function ResultsList(props: ResultsListProps) {
     table.getColumn("nivelFinal").setFilterValue(filterEnabled);
   }, [filterEnabled, table]);
 
-  if (error) return null;
-  if (loading) return null;
+  const createCsvFile = () => {
+    if (Boolean(props.appendData?.length)) {
+      const el = document.createElement("a");
+      const file = new Blob([parse(localState)], { type: "text/csv" });
+      el.hidden = true;
+      el.href = URL.createObjectURL(file);
+      el.download = "test_results.csv";
+      document.body.appendChild(el);
+      el.click();
+    } else {
+      props.fetchDataToAppend();
+    }
+  };
+  function parse(array: any[]) {
+    const headers = Object.keys(array[0]);
+    const table = array.map((row) => {
+      return headers.map((column) => row[column]);
+    });
+    return [headers].concat(table).join("\n");
+  }
+
   return (
     <section title="TestResults">
-      <Link to="/dashboard">Back to Dashboard</Link>
+      <button onClick={createCsvFile}>Download everything as Excel</button>
       <div>
-        {dataAssignedResults ? (
+        {props.appendData ? (
           filterEnabled ? (
             <button onClick={() => setFilterEnabled(false)}>Unfilter</button>
           ) : (
             <button onClick={() => setFilterEnabled(true)}>Filter</button>
           )
         ) : (
-          <button onClick={() => fetchAssignedResults()}>Mostrar Todos</button>
+          <button onClick={() => props.fetchDataToAppend()}>
+            Mostrar Todos
+          </button>
         )}
       </div>
       <table className="table-fixed">

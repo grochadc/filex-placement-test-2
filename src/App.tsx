@@ -4,7 +4,7 @@ import Section from "./pages/SectionPage";
 import Result from "./pages/ResultPage";
 import HomePage from "./pages/HomePage";
 import Header from "./components/Header";
-import ResultsList from "./components/Dashboard/TestResults";
+import AssignLevelsPage from "./pages/AssignLevelsPage";
 import { Error } from "./components/utils/components";
 import {
   Routes,
@@ -143,7 +143,7 @@ const App: React.FC = () => {
       <Route
         path="/dashboard/results"
         element={
-          <ResultsList reloadPage={() => window.location.reload() } />
+          <AssignLevelsPage />
         }
       />
     </Routes>

@@ -3,10 +3,9 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import apolloMock from "../../testutils/generatedMocks";
 import { Filter, TestResults } from "../../generated/grapqhl";
 
-import ResultsList, {
-  TestResultsQuery,
-  SaveFinalLevelsMutation,
-} from "./TestResults";
+import { withRouter } from "storybook-addon-react-router-v6";
+
+import AssignLevelsPage, { TestResultsQuery, SaveFinalLevelsMutation } from ".";
 
 const results: TestResults[] = [
   {
@@ -64,7 +63,11 @@ const defaultMock = apolloMock(
   }
 );
 
-const emptyObjects = emptyObjGenerator(10).map((el) => ({...el, nivelOral: 3, nivelFinal: 3}));
+const emptyObjects = emptyObjGenerator(10).map((el) => ({
+  ...el,
+  nivelOral: 3,
+  nivelFinal: 3,
+}));
 
 const assignedMock = apolloMock(
   TestResultsQuery,
@@ -93,7 +96,7 @@ const assignedMock = apolloMock(
           nivelOral: 3,
           nivelFinal: 3,
         },
-        ...emptyObjects
+        ...emptyObjects,
       ],
     },
   }
@@ -106,20 +109,24 @@ const mutationMock = apolloMock(
 );
 
 export default {
-  title: "Test Results List",
-  component: ResultsList,
+  title: "Pages/AssignLevelsPage",
+  component: AssignLevelsPage,
   argTypes: {
     reloadPage: { action: "page reload" },
   },
+  decorators: [withRouter],
   parameters: {
+    reactRouter: {
+      routePath: "/dashboard/results",
+    },
     apolloClient: {
       mocks: [defaultMock, assignedMock, mutationMock],
     },
   },
-} as ComponentMeta<typeof ResultsList>;
+} as ComponentMeta<typeof AssignLevelsPage>;
 
-const Template: ComponentStory<typeof ResultsList> = (args) => (
-  <ResultsList {...args} />
+const Template: ComponentStory<typeof AssignLevelsPage> = (args) => (
+  <AssignLevelsPage {...(args as any)} />
 );
 
 export const Normal = Template.bind({});
