@@ -8,10 +8,17 @@ import DashboardPage, {
   UpdateHomePageMessageMutation,
 } from ".";
 import generateMock from "../../testutils/generatedMocks";
+import { withRouter } from "storybook-addon-react-router-v6";
 
 export default {
   title: "Pages/Dashboard",
   component: DashboardPage,
+  decorators: [withRouter],
+  parameters: {
+    reactRouter: {
+      routePath: "/dashboard"
+    }
+  }
 } as ComponentMeta<typeof DashboardPage>;
 
 const Template: ComponentStory<typeof DashboardPage> = () => <DashboardPage />;
