@@ -10,10 +10,7 @@ import "./index.css";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-const ServerUri =
-  process.env.NODE_ENV === "production"
-    ? "https://filex-database.herokuapp.com/"
-    : "http://localhost:5000";
+const ServerUri = "/.netlify/functions/graphql";
 
 const clientEnviroment =
   process.env.NODE_ENV === "development" ? "dev" : "prod";

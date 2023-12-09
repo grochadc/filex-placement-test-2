@@ -1,7 +1,20 @@
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import { Resolvers } from "./types";
+import type { Resolvers } from "./types";
 import { gql } from "graphql-tag";
+import QuestionsBank from "./questions.json";
+
+
+type QuestionsPage = {
+    title: string,
+    options: { text: string, correct: boolean }[]
+}[]
+class QuestionsAPI {
+
+  async getQuestions(page: number): Promise<QuestionsPage> {
+    return QuestionsBank.sections[page].questions;
+  }
+}
+
 
 const typeDefs = gql`
   type Query {
@@ -33,20 +46,10 @@ const typeDefs = gql`
 
 const resolvers: Resolvers = {
   Query: {
-    section: (root, { course, level }, context) => {
+    section: (root, { course, level }, { dataSources }) => {
       return {
-        course: "en",
-        questions: [
-          {
-            title: "Question 1",
-            options: [
-              {
-                text: "Answer A",
-                correct: true,
-              },
-            ],
-          },
-        ],
+        course: course,
+        questions: dataSources.questionsAPI.getQuestions(level - 1),
         pageInfo: {
           hasNextPage: true,
           hasPreviousPage: false,
@@ -56,23 +59,24 @@ const resolvers: Resolvers = {
   },
 };
 
-const server = new ApolloServer({
+interface ContextValue {
+  dataSources: {
+    questionsAPI: QuestionsAPI;
+  }
+}
+
+export async function createContext():Promise<ContextValue> {
+  return {
+    dataSources: {
+      questionsAPI: new QuestionsAPI()
+    }
+  }
+}
+
+export const server = new ApolloServer<ContextValue>({
   typeDefs,
   resolvers,
   introspection: true,
 });
 
-const { url } = await startStandaloneServer(server, {
-    context: function({req,res}) {
-        return new Promise(() => {
-            return {
-                miContexto: "Toma tu contexto!"
-            }
-        });
-    },
-    listen: {
-      port: 5000
-    }
-});
 
-console.log(`🚀  Server ready at: ${url}`);
