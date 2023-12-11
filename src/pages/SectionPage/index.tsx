@@ -56,6 +56,7 @@ const Container = styled.div`
       : null}
 `;
 
+//@ts-ignore
 const Sticky: React.FC = ({ children }) => {
   const inputRef = useRef<HTMLDivElement>(null);
   const stuck = useSticky(inputRef);
@@ -98,7 +99,8 @@ const SectionPage = (props: SectionPageProps) => {
         <h1>Examen FILEX - ingles/frances</h1>
         <ButtonsComponent>
           {data?.section.pageInfo.hasNextPage ? (
-            <StyledButton variant="secondary" onClick={props.onFinishExam}>
+            <StyledButton 
+            variant="secondary" onClick={props.onFinishExam}>
               Rendirse
             </StyledButton>
           ) : (

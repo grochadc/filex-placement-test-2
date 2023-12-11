@@ -1,6 +1,10 @@
 import tw from "tailwind-styled-components";
 
-export const StyledButton = tw.button`
+type CustomButtonProps= {
+  variant: string
+}
+
+export const StyledButton = tw.button<CustomButtonProps>`
 p-2
 rounded
 m-2

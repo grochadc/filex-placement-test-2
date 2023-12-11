@@ -45,7 +45,7 @@ const SubmitButton = (props: SubmitButtonProps) => {
   );
 };
 
-type FilterComponentProps = { column: Column<any, unknown>; table: Table<any> };
+type FilterComponentProps = { column: Column<any, unknown>; table: any }; //table: Table<any>
 const FilterComponent = ({ column, table }: FilterComponentProps) => {
   const smallIds = ["id", "nivelEscrito", "nivelOral", "nivelFinal"];
   const smallInput = smallIds.includes(column.id);
@@ -142,7 +142,7 @@ const columns = [
   }),
   columnHelper.accessor("meetLink", {
     header: "Link",
-    cell: (info) => <a href={info.getValue()}>{info.getValue()}</a>,
+    cell: (info) => <a href={info.getValue() || ""}>{info.getValue()}</a>,
   }),
   columnHelper.accessor("nivelEscrito", {
     header: "Escrito",
@@ -260,7 +260,7 @@ function ResultsList(props: ResultsListProps) {
 
   const [filterEnabled, setFilterEnabled] = React.useState(false);
   React.useEffect(() => {
-    table.getColumn("nivelFinal").setFilterValue(filterEnabled);
+    table.getColumn("nivelFinal")?.setFilterValue(filterEnabled);
   }, [filterEnabled, table]);
 
   const createCsvFile = () => {

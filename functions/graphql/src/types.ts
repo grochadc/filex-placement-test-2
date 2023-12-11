@@ -20,15 +20,37 @@ export type AnswerOption = {
   text: Scalars['String'];
 };
 
+export type Carrera = {
+  __typename?: 'Carrera';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type HomePageMessage = {
+  __typename?: 'HomePageMessage';
+  active: Scalars['Boolean'];
+  message: Scalars['String'];
+};
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   hasNextPage: Scalars['Boolean'];
   hasPreviousPage: Scalars['Boolean'];
 };
 
+export type PlacementSettings = {
+  __typename?: 'PlacementSettings';
+  homePageMessage: HomePageMessage;
+  isClosed: Scalars['Boolean'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  carreras: Array<Carrera>;
+  isClosed: Scalars['Boolean'];
+  placementHomePageMessage: HomePageMessage;
   section: Section;
+  settings?: Maybe<PlacementSettings>;
 };
 
 
@@ -46,6 +68,7 @@ export type Question = {
 export type Section = {
   __typename?: 'Section';
   course: Scalars['String'];
+  id: Scalars['ID'];
   pageInfo?: Maybe<PageInfo>;
   questions: Array<Question>;
 };
@@ -123,8 +146,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   AnswerOption: ResolverTypeWrapper<AnswerOption>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  Carrera: ResolverTypeWrapper<Carrera>;
+  HomePageMessage: ResolverTypeWrapper<HomePageMessage>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
+  PlacementSettings: ResolverTypeWrapper<PlacementSettings>;
   Query: ResolverTypeWrapper<{}>;
   Question: ResolverTypeWrapper<Question>;
   Section: ResolverTypeWrapper<Section>;
@@ -135,8 +162,12 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   AnswerOption: AnswerOption;
   Boolean: Scalars['Boolean']['output'];
+  Carrera: Carrera;
+  HomePageMessage: HomePageMessage;
+  ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   PageInfo: PageInfo;
+  PlacementSettings: PlacementSettings;
   Query: {};
   Question: Question;
   Section: Section;
@@ -149,14 +180,36 @@ export type AnswerOptionResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CarreraResolvers<ContextType = any, ParentType extends ResolversParentTypes['Carrera'] = ResolversParentTypes['Carrera']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type HomePageMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['HomePageMessage'] = ResolversParentTypes['HomePageMessage']> = {
+  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
   hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   hasPreviousPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type PlacementSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlacementSettings'] = ResolversParentTypes['PlacementSettings']> = {
+  homePageMessage?: Resolver<ResolversTypes['HomePageMessage'], ParentType, ContextType>;
+  isClosed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  carreras?: Resolver<Array<ResolversTypes['Carrera']>, ParentType, ContextType>;
+  isClosed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  placementHomePageMessage?: Resolver<ResolversTypes['HomePageMessage'], ParentType, ContextType>;
   section?: Resolver<ResolversTypes['Section'], ParentType, ContextType, RequireFields<QuerySectionArgs, 'course' | 'level'>>;
+  settings?: Resolver<Maybe<ResolversTypes['PlacementSettings']>, ParentType, ContextType>;
 };
 
 export type QuestionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Question'] = ResolversParentTypes['Question']> = {
@@ -167,6 +220,7 @@ export type QuestionResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type SectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Section'] = ResolversParentTypes['Section']> = {
   course?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
   questions?: Resolver<Array<ResolversTypes['Question']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -174,7 +228,10 @@ export type SectionResolvers<ContextType = any, ParentType extends ResolversPare
 
 export type Resolvers<ContextType = any> = {
   AnswerOption?: AnswerOptionResolvers<ContextType>;
+  Carrera?: CarreraResolvers<ContextType>;
+  HomePageMessage?: HomePageMessageResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
+  PlacementSettings?: PlacementSettingsResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Question?: QuestionResolvers<ContextType>;
   Section?: SectionResolvers<ContextType>;
