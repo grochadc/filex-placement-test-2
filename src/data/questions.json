@@ -3,7 +3,7 @@
     {
       "questions": [
         {
-          "title": "Jessica _______ a good dancer.",
+          "title": "Jessica _______ a good student.",
           "options": [
             {
               "text": "are",
@@ -24,14 +24,14 @@
           ]
         },
         {
-          "title": "What is it? \n It's a____ .",
+          "title": "What is it? \n It's an ____ .",
           "options": [
             {
               "text": "e-book",
               "correct": false
             },
             {
-              "text": "cellphone",
+              "text": "smartphone",
               "correct": true
             },
             {
@@ -66,7 +66,7 @@
           ]
         },
         {
-          "title": "Nathan is _______ husband. ",
+          "title": "John is _______ husband. ",
           "options": [
             {
               "text": "Jeniffer",
@@ -87,7 +87,7 @@
           ]
         },
         {
-          "title": "____ are you having for breakfast?",
+          "title": " ____ are you having for breakfast?",
           "options": [
             {
               "text": "Why",
@@ -108,7 +108,7 @@
           ]
         },
         {
-          "title": "_____ a lot of food.",
+          "title": " _____ a book on the table.",
           "options": [
             {
               "text": "There are",
@@ -129,23 +129,23 @@
           ]
         },
         {
-          "title": "What ________ ?",
+          "title": "I think the movie is very _______. I loved it.",
           "options": [
             {
-              "text": "are they do",
+              "text": "bored",
               "correct": false
             },
             {
-              "text": "are they doing",
+              "text": "boring",
+              "correct": false
+            },
+            {
+              "text": "excited",
+              "correct": false
+            },
+            {
+              "text": "exciting",
               "correct": true
-            },
-            {
-              "text": "does they do",
-              "correct": false
-            },
-            {
-              "text": "is they doing",
-              "correct": false
             }
           ]
         },
@@ -214,7 +214,7 @@
         },
         {
           "title":
-            "The movie theatre is ______ the corner of Evergreen St. and Peak St.",
+            "The movie theatre is ______ the corner of Evergreen street and Peak street.",
           "options": [
             {
               "text": "across",
@@ -407,64 +407,64 @@
           ]
         },
         {
-          "title": "Amy is very _____. She never tells lies.",
+          "title": "She gave_______ a present.",
           "options": [
             {
-              "text": "honest",
+              "text": "her",
               "correct": true
             },
             {
-              "text": "organized",
+              "text": "the",
               "correct": false
             },
             {
-              "text": "patient",
+              "text": "you",
               "correct": false
             },
             {
-              "text": "reliable",
+              "text": "she",
               "correct": false
             }
           ]
         },
         {
-          "title": "This cellphone is very versatile. _______",
+          "title": "You_______ wear a jacket; it's cold outside",
           "options": [
             {
-              "text": "It doesn't cost very much.",
+              "text": "can",
               "correct": false
             },
             {
-              "text": "It's easy to use.",
+              "text": "could",
               "correct": false
             },
             {
-              "text": "It can do many things.",
+              "text": "should",
               "correct": true
             },
             {
-              "text": "It's very fast.",
+              "text": "can't",
               "correct": false
             }
           ]
         },
         {
-          "title": "I thought the movie was very _______. I loved it.",
+          "title": "I thought the movie ____ very boring. I loved it.",
           "options": [
             {
-              "text": "bored",
+              "text": "be",
               "correct": false
             },
             {
-              "text": "boring",
+              "text": "were",
               "correct": false
             },
             {
-              "text": "excited",
+              "text": "being",
               "correct": false
             },
             {
-              "text": "exciting",
+              "text": "was",
               "correct": true
             }
           ]
@@ -474,106 +474,235 @@
     {
       "questions": [
         {
-          "title": "Emma was living in Barcelona when she _______ her husband.",
+          "title": "She has lived in this city _____ 2010.",
           "options": [
             {
-              "text": "met",
+              "text": "for",
+              "correct": false
+            },
+            {
+              "text": "since",
               "correct": true
             },
             {
-              "text": "meet",
+              "text": "ever",
               "correct": false
             },
             {
-              "text": "meeting",
-              "correct": false
-            },
-            {
-              "text": "was meeting",
+              "text": "ago",
               "correct": false
             }
           ]
         },
         {
-          "title": "Basketball is _____ soccer.",
+          "title": "They were _____ a movie when I called.",
           "options": [
-            { "text": "popular as ", "correct": false },
-            { "text": "not as popular", "correct": false },
-            { "text": "not as popular as", "correct": true },
-            { "text": "not as popular than", "correct": false }
+            {
+              "text": "watches",
+              "correct": false
+            },
+            {
+              "text": "watch",
+              "correct": false
+            },
+            {
+              "text": "watching",
+              "correct": true
+            },
+            {
+              "text": "watched",
+              "correct": false
+            }
           ]
         },
         {
-          "title": "I haven't seen him ______ two years.",
+          "title": "She is the _____ person I know.",
           "options": [
-            { "text": "ever", "correct": false },
-            { "text": "for", "correct": true },
-            { "text": "for long", "correct": false },
-            { "text": "since", "correct": false }
+            {
+              "text": "tall",
+              "correct": false
+            },
+            {
+              "text": "more tall",
+              "correct": false
+            },
+            {
+              "text": "taller",
+              "correct": false
+            },
+            {
+              "text": "tallest",
+              "correct": true
+            }
           ]
         },
         {
-          "title": "Maddona is the ____ singer ever!",
+          "title": " I haven't seen him _____ a month. ",
           "options": [
-            { "text": "good", "correct": false },
-            { "text": "well", "correct": false },
-            { "text": "best", "correct": true },
-            { "text": "goodest", "correct": false }
+            {
+              "text": "during",
+              "correct": false
+            },
+            {
+              "text": "for",
+              "correct": true
+            },
+            {
+              "text": "from",
+              "correct": false
+            },
+            {
+              "text": "since'",
+              "correct": false
+            }
           ]
         },
         {
-          "title": "Unfortunately Nicky ______ the wrong bus to school.",
+          "title": "There is _____ time to finish the assignment. We don't need to hurry.",
           "options": [
-            { "text": "had", "correct": false },
-            { "text": "gave", "correct": false },
-            { "text": "got", "correct": false },
-            { "text": "took", "correct": true }
+            {
+              "text": "many",
+              "correct": false
+            },
+            {
+              "text": "a",
+              "correct": false
+            },
+            {
+              "text": "few",
+              "correct": false
+            },
+            {
+              "text": "enough",
+              "correct": true
+            }
           ]
         },
         {
-          "title": "We sent...",
+          "title": "This is the _____ book I've ever read.",
           "options": [
-            { "text": "them a card", "correct": true },
-            { "text": "a card to them", "correct": false },
-            { "text": "to them a card", "correct": false },
-            { "text": "a card to they", "correct": false }
+            {
+              "text": "most interesting",
+              "correct": true
+            },
+            {
+              "text": "more interesting",
+              "correct": false
+            },
+            {
+              "text": "interestinger",
+              "correct": false
+            },
+            {
+              "text": "interesting",
+              "correct": false
+            }
           ]
         },
         {
-          "title": "You _____ to buy your concert tickets early.",
+          "title": " I _____ play the guitar when I was younger, but I don't do it anymore.",
           "options": [
-            { "text": "must", "correct": false },
-            { "text": "ought", "correct": true },
-            { "text": "should", "correct": false },
-            { "text": "had better", "correct": false }
+            {
+              "text": "was used to",
+              "correct": false
+            },
+            {
+              "text": "used to",
+              "correct": true
+            },
+            {
+              "text": "uses to",
+              "correct": false
+            },
+            {
+              "text": "used",
+              "correct": false
+            }
           ]
         },
         {
-          "title": "These questions are very difficult. I'm a little _______.",
+          "title": "While they _____ dinner, the phone rang.",
           "options": [
-            { "text": "confused", "correct": true },
-            { "text": "embarrassed", "correct": false },
-            { "text": "exhausted", "correct": false },
-            { "text": "proud", "correct": false }
+            {
+              "text": "eat",
+              "correct": false
+            },
+            {
+              "text": "are eating",
+              "correct": false
+            },
+            {
+              "text": "eating",
+              "correct": false
+            },
+            {
+              "text": "were eating",
+              "correct": true
+            }
           ]
         },
         {
-          "title": "Sharon always _______ the trash.",
+          "title": "She is not _____ tall _____ her sister.",
           "options": [
-            { "text": "cleans up", "correct": false },
-            { "text": "takes out", "correct": true },
-            { "text": "gives away", "correct": false },
-            { "text": "takes up", "correct": false }
+            {
+              "text": "as ___ as",
+              "correct": true
+            },
+            {
+              "text": "so ___ as",
+              "correct": false
+            },
+            {
+              "text": "as __ so",
+              "correct": false
+            },
+            {
+              "text": "so _ so",
+              "correct": false
+            }
+          ]
+        },
+        {
+          "title": "Have you _____ been to Paris? \n No, I've _____ been there.",
+          "options": [
+            {
+              "text": "never; ever",
+              "correct": false
+            },
+            {
+              "text": "ever; never",
+              "correct": true
+            },
+            {
+              "text": "ever; ever",
+              "correct": false
+            },
+            {
+              "text": "never; never",
+              "correct": false
+            }
           ]
         },
         {
           "title":
-            "On the way to the airport, she _____ an accident so she _______ the plane.",
+            "There is _____ sugar in this coffee. It's bitter.",
           "options": [
-            { "text": "found - won", "correct": false },
-            { "text": "took - had", "correct": false },
-            { "text": "had - missed", "correct": true },
-            { "text": "got - bought", "correct": false }
+            {
+              "text": "enough",
+              "correct": false
+            },
+            {
+              "text": "much enough",
+              "correct": false
+            },
+            {
+              "text": "not enough",
+              "correct": true
+            },
+            {
+              "text": "too",
+              "correct": false
+            }
           ]
         }
       ]

@@ -7,6 +7,7 @@ import { withRouter } from "storybook-addon-react-router-v6";
 
 import AssignLevelsPage, { TestResultsQuery, SaveFinalLevelsMutation } from ".";
 
+
 const results: TestResults[] = [
   {
     id: "1",
@@ -53,6 +54,7 @@ const emptyObjGenerator = (num: number) => {
   return arr.fill({});
 };
 
+//@ts-ignore
 const defaultMock = apolloMock(
   TestResultsQuery,
   { filter: Filter.Nonassigned },
