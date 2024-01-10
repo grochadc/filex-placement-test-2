@@ -10,7 +10,7 @@ import "./index.css";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-const ServerUri = process.env.NODE_ENV === "development" ? "http://localhost:5000/" : process.env.GQL_URI;
+const ServerUri = process.env.NODE_ENV === "development" ? "http://localhost:5000/" : process.env.REACT_APP_GQL_URI;
 
 const clientEnviroment =
   process.env.NODE_ENV === "development" ? "dev" : "prod";
